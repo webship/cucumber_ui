@@ -1,0 +1,9 @@
+create tests with cucumber ui:
+  title: "Create tests with Cucumber UI"
+  description: "Be able to create testing scenarios and be able to run them. Download own created scenarios."
+run all tests in cucumber ui:
+  title: "Run all tests in Cucumber UI"
+  description: "Be able to run all tests in the selected Cucumber Features path."
+administer cucumber ui settings:
+  title: "Administer Cucumber UI settings"
+  description: "Be able to change Cucumber UI settings."

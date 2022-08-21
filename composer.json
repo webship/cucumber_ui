@@ -1,0 +1,40 @@
+{
+  "name": "drupal/cucumber_ui",
+  "description": "Create and run Cucumber/Mink tests from the web interface",
+  "type": "drupal-module",
+  "homepage": "https://www.drupal.org/project/cucumber_ui",
+  "license": "GPL-2.0-or-later",
+  "minimum-stability": "dev",
+  "authors": [
+    {
+      "name": "Vardot",
+      "homepage": "https://www.drupal.org/vardot",
+      "role": "Maintaining Drupal 8/9 module"
+    },
+    {
+      "name": "Webship",
+      "homepage": "https://www.drupal.org/webship",
+      "role": "Volunteer contributions"
+    },
+    {
+      "name": "Meedan",
+      "homepage": "https://www.drupal.org/meedan",
+      "role": "Sponsorship Drupal 7 module"
+    }
+  ],
+  "support": {
+    "issues": "https://www.drupal.org/project/issues/cucumber_ui",
+    "source": "http://cgit.drupalcode.org/cucumber_ui"
+  },
+  "repositories": {
+    "drupal": {
+      "type": "composer",
+      "url": "https://packages.drupal.org/8"
+    }
+  },
+  "require": {
+    "drupal/core": "^9 || ^10",
+    "drupal/drupal-extension": "~4.0",
+    "emuse/cucumber-html-formatter": "^0.2.0"
+  }
+}

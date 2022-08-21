@@ -1,0 +1,5 @@
+cucumber_ui.run_tests:
+  route_name: cucumber_ui.run_tests
+  title: "Cucumber UI"
+  description: "Automated tests using Cucumber/Mink"
+  parent: system.admin_config_development

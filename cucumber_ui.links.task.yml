@@ -1,0 +1,25 @@
+cucumber_ui.run_tests:
+  route_name: cucumber_ui.run_tests
+  title: "Run tests"
+  weight: 10
+  base_route: cucumber_ui.run_tests
+cucumber_ui.new:
+  route_name: cucumber_ui.new
+  title: "Create test"
+  weight: 20
+  base_route: cucumber_ui.run_tests
+cucumber_ui.settings:
+  route_name: cucumber_ui.settings
+  title: "Settings"
+  weight: 30
+  base_route: cucumber_ui.run_tests
+#cucumber_ui.cucumber_dl:
+#  route_name: cucumber_ui.cucumber_dl
+#  title: 'Steps'
+#  weight: 40
+#  base_route: cucumber_ui.run_tests
+#cucumber_ui.cucumber_di:
+#  route_name: cucumber_ui.cucumber_di
+#  title: 'Steps with info'
+#  weight: 50
+#  base_route: cucumber_ui.run_tests

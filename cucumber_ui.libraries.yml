@@ -1,0 +1,38 @@
+style:
+  version: VERSION
+  css:
+    theme:
+      css/theme/cucumber-ui.style.theme.css: {}
+run-tests-scripts:
+  version: VERSION
+  js:
+    js/cucumber-ui.run-tests.js: {}
+  dependencies:
+    - core/drupal
+    - core/drupal.ajax
+    - core/jquery
+    - core/jquery.once
+new-test-scripts:
+  version: VERSION
+  js:
+    js/cucumber-ui.new-test.js: {}
+  dependencies:
+    - core/drupal
+    - core/drupal.ajax
+    - core/jquery
+    - core/jquery.once
+ace-editor:
+  remote: https://raw.githubusercontent.com/ajaxorg/ace-builds/v1.9.6/src/ace.js
+  version: 1.9.6
+  license:
+    name: Ace Editor
+    url: https://ace.c9.io
+  js:
+    //raw.githubusercontent.com/ajaxorg/ace-builds/v1.9.6/src/ace.js: { type: external, minified: true }
+    //raw.githubusercontent.com/ajaxorg/ace-builds/v1.9.6/src/ext-language_tools.js:
+      { type: external, minified: true }
+    //https://raw.githubusercontent.com/ajaxorg/ace-builds/v1.9.6/src/ext-keybinding_menu.js:
+      { type: external, minified: true }
+    js/cucumber-ui.ace-editor.js: {}
+  dependencies:
+    - core/jquery.ui.resizable

@@ -1,0 +1,96 @@
+cucumber_ui.run_tests:
+  path: "/admin/config/development/cucumber-ui"
+  defaults:
+    _title: "Cucumber UI"
+    _form: \Drupal\cucumber_ui\Form\CucumberUiRunTests
+  requirements:
+    _permission: "run all tests in cucumber ui"
+  options:
+    _admin_route: TRUE
+cucumber_ui.settings:
+  path: "/admin/config/development/cucumber-ui/settings"
+  defaults:
+    _title: "Cucumber UI"
+    _form: \Drupal\cucumber_ui\Form\CucumberUiSettings
+  requirements:
+    _permission: "administer cucumber ui settings"
+  options:
+    _admin_route: TRUE
+cucumber_ui.new:
+  path: "/admin/config/development/cucumber-ui/new"
+  defaults:
+    _title: "Create test"
+    _form: \Drupal\cucumber_ui\Form\CucumberUiNew
+  requirements:
+    _permission: "create tests with cucumber ui"
+  options:
+    _admin_route: TRUE
+cucumber_ui.cucumber_dl:
+  path: "/admin/config/development/cucumber-ui/cucumber-dl"
+  defaults:
+    _title: "Cucumber definition steps"
+    _controller: '\Drupal\cucumber_ui\Controller\CucumberUiController::getDefinitionSteps'
+  requirements:
+    _permission: "create tests with cucumber ui"
+  options:
+    _admin_route: TRUE
+cucumber_ui.cucumber_di:
+  path: "/admin/config/development/cucumber-ui/cucumber-di"
+  defaults:
+    _title: "Cucumber definitions steps with extended info"
+    _controller: '\Drupal\cucumber_ui\Controller\CucumberUiController::getDefinitionStepsWithInfo'
+  requirements:
+    _permission: "create tests with cucumber ui"
+  options:
+    _admin_route: TRUE
+cucumber_ui.cucumber_dl_json:
+  path: "/admin/config/development/cucumber-ui/cucumber-dl-json"
+  defaults:
+    _title: "Cucumber definition steps JSON"
+    _controller: '\Drupal\cucumber_ui\Controller\CucumberUiController::getDefinitionStepsJson'
+  requirements:
+    _permission: "create tests with cucumber ui"
+    _format: json
+  options:
+    _admin_route: TRUE
+cucumber_ui.status:
+  path: "/cucumber-ui/status"
+  defaults:
+    _controller: '\Drupal\cucumber_ui\Controller\CucumberUiController::getTestStatus'
+  requirements:
+    _permission: "run all tests in cucumber ui+create tests with cucumber ui"
+  options:
+    _admin_route: TRUE
+cucumber_ui.report:
+  path: "/cucumber-ui/report"
+  defaults:
+    _controller: '\Drupal\cucumber_ui\Controller\CucumberUiController::getTestStatusReport'
+  requirements:
+    _permission: "run all tests in cucumber ui+create tests with cucumber ui"
+  options:
+    _admin_route: TRUE
+cucumber_ui.autocomplete:
+  path: "/cucumber-ui/autocomplete"
+  defaults:
+    _controller: '\Drupal\cucumber_ui\Controller\CucumberUiController::autocompleteStep'
+    _format: json
+  requirements:
+    _permission: "create tests with cucumber ui"
+  options:
+    _admin_route: TRUE
+cucumber_ui.kill:
+  path: "/cucumber-ui/kill"
+  defaults:
+    _controller: '\Drupal\cucumber_ui\Controller\CucumberUiController::kill'
+  requirements:
+    _permission: "run all tests in cucumber ui"
+  options:
+    _admin_route: TRUE
+cucumber_ui.download:
+  path: "/cucumber-ui/download/{format}"
+  defaults:
+    _controller: '\Drupal\cucumber_ui\Controller\CucumberUiController::download'
+  requirements:
+    _permission: "create tests with cucumber ui"
+  options:
+    _admin_route: TRUE

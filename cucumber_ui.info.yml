@@ -1,0 +1,11 @@
+name: "Cucumber UI"
+description: "Create and run Cucumber/Mink tests from the web interface"
+type: module
+configure: cucumber_ui.settings
+core_version_requirement: ^9 || ^10
+dependencies: []
+
+# Information added by Drupal.org packaging script on 2022-07-29
+version: '4.0.3'
+project: 'cucumber_ui'
+datestamp: 1659109049

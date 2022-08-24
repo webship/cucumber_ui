@@ -7,6 +7,11 @@
   "minimum-stability": "dev",
   "authors": [
     {
+      "name": "Vardot",
+      "homepage": "https://www.drupal.org/vardot",
+      "role": "Maintaining Drupal 8/9 module"
+    },
+    {
       "name": "Webship",
       "homepage": "https://www.drupal.org/webship",
       "role": "Volunteer contributions"

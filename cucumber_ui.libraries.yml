@@ -31,7 +31,7 @@ ace-editor:
     //raw.githubusercontent.com/ajaxorg/ace-builds/v1.9.6/src/ace.js: { type: external, minified: true }
     //raw.githubusercontent.com/ajaxorg/ace-builds/v1.9.6/src/ext-language_tools.js:
       { type: external, minified: true }
-    //https://raw.githubusercontent.com/ajaxorg/ace-builds/v1.9.6/src/ext-keybinding_menu.js:
+    //raw.githubusercontent.com/ajaxorg/ace-builds/v1.9.6/src/ext-keybinding_menu.js:
       { type: external, minified: true }
     js/cucumber-ui.ace-editor.js: {}
   dependencies:

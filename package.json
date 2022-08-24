@@ -14,7 +14,7 @@
     "Automated Testing",
     "Automates Functional Testing"
   ],
-  "author": "Webshipco",
+  "author": "Vardot",
   "scripts": {
     "phpcs": "phpcs --standard=./.phpcs.xml .",
     "phpcbf": "phpcbf --standard=./.phpcs.xml .",

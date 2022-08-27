@@ -65,12 +65,7 @@ class CucumberUiSettings extends ConfigFormBase {
       '#description' => $this->t('The Cucumber configuration file, in the Cucumber configuration directory path. Usually <em>cucumber.yml</em>.<br />
               <b>Examples:</b>
               <ul>
-                <li>cucumber.yml</li>
-                <li>cucumber.devshop.yml</li>
-                <li>cucumber.varbase.yml</li>
-                <li>cucumber.install.yml</li>
-                <li>cucumber.tools.yml</li>
-                <li>cucumber.my-custom-config.yml</li>
+                <li>nightwatch.conf.js</li>
               </ul>'),
       '#type' => 'textfield',
       '#maxlength' => 512,
@@ -89,21 +84,6 @@ class CucumberUiSettings extends ConfigFormBase {
       '#type' => 'textfield',
       '#maxlength' => 512,
       '#default_value' => $config->get('cucumber_ui_cucumber_features_path'),
-    ];
-
-    $form['cucumber_ui_autoload_path'] = [
-      '#title' => $this->t('Autoload path'),
-      '#description' => $this->t('The path for the autoload file, relative to the Cucumber configuration directory path.<br />
-        <b>Examples:</b><br />
-        <ul>
-          <li>../../../vendor/autoload.php</li>
-          <li>../../../web/autoload.php</li>
-          <li>../../../docroot/autoload.php</li>
-        </ul>'),
-      '#type' => 'textfield',
-      '#maxlength' => 512,
-      '#default_value' => $config->get('cucumber_ui_autoload_path'),
-      '#suffix' => '</div></div>',
     ];
 
     $form['cucumber_ui_html_report'] = [

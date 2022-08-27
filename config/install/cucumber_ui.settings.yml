@@ -1,8 +1,7 @@
 cucumber_ui_cucumber_config_path: "."
 cucumber_ui_cucumber_bin_path: "php ./bin/cucumber"
-cucumber_ui_cucumber_config_file: "cucumber.yml"
+cucumber_ui_cucumber_config_file: "nightwatch.conf.js"
 cucumber_ui_cucumber_features_path: "tests/features"
-cucumber_ui_autoload_path: "../../../vendor/autoload.php"
 cucumber_ui_html_report: true
 cucumber_ui_html_report_dir: "tests/reports"
 cucumber_ui_log_report_dir: "tests/logs"

@@ -95,15 +95,15 @@ class CucumberUiController extends ControllerBase {
   public function getTestStatusReport() {
     $config = $this->configFactory->getEditable('cucumber_ui.settings');
 
-    $cucumber_ui_html_report = $config->get('cucumber_ui_html_report');
-    $cucumber_ui_html_report_dir = $config->get('cucumber_ui_html_report_dir');
-    $cucumber_ui_log_report_dir = $config->get('cucumber_ui_log_report_dir');
+    $html_report = $config->get('html_report');
+    $html_report_dir = $config->get('html_report_dir');
+    $log_report_dir = $config->get('log_report_dir');
 
     $output = '';
-    if ($cucumber_ui_html_report) {
-      if (isset($cucumber_ui_html_report_dir) && $cucumber_ui_html_report_dir != '') {
+    if ($html_report) {
+      if (isset($html_report_dir) && $html_report_dir != '') {
 
-        $html_report = $cucumber_ui_html_report_dir . '/index.html';
+        $html_report = $html_report_dir . '/index.html';
 
         if ($html_report && file_exists($html_report)) {
           $output = file_get_contents($html_report);
@@ -116,9 +116,9 @@ class CucumberUiController extends ControllerBase {
     }
     else {
 
-      if (isset($cucumber_ui_log_report_dir) && $cucumber_ui_log_report_dir != '') {
+      if (isset($log_report_dir) && $log_report_dir != '') {
 
-        $log_report = $cucumber_ui_log_report_dir . '/bethat-ui-test.log';
+        $log_report = $log_report_dir . '/bethat-ui-test.log';
 
         if ($log_report && file_exists($log_report)) {
           $file_content = file_get_contents($log_report);
@@ -239,14 +239,14 @@ class CucumberUiController extends ControllerBase {
       }
 
       if ($format === 'html') {
-        $cucumber_ui_html_report_dir = $config->get('cucumber_ui_html_report_dir');
-        $output = $cucumber_ui_html_report_dir . '/index.html';
+        $html_report_dir = $config->get('html_report_dir');
+        $output = $html_report_dir . '/index.html';
         readfile($output);
       }
       elseif ($format === 'txt') {
         drupal_add_http_header('Connection', 'close');
-        $cucumber_ui_log_report_dir = $config->get('cucumber_ui_log_report_dir');
-        $output = $cucumber_ui_log_report_dir . '/bethat-ui-test.log';
+        $log_report_dir = $config->get('log_report_dir');
+        $output = $log_report_dir . '/bethat-ui-test.log';
         $plain = file_get_contents($output);
         echo drupal_html_to_text($plain);
       }
@@ -263,8 +263,8 @@ class CucumberUiController extends ControllerBase {
   public function getAutocompleteDefinitionSteps() {
 
     $config = $this->configFactory->getEditable('cucumber_ui.settings');
-    $cucumber_bin = $config->get('cucumber_ui_cucumber_bin_path');
-    $cucumber_config_path = $config->get('cucumber_ui_cucumber_config_path');
+    $cucumber_bin = $config->get('bin_path');
+    $cucumber_config_path = $config->get('config_path');
 
     $command = "cd $cucumber_config_path; $cucumber_bin -dl | sed 's/^\s*//g'";
     $output = shell_exec($command);
@@ -287,8 +287,8 @@ class CucumberUiController extends ControllerBase {
   public function getDefinitionSteps() {
 
     $config = $this->configFactory->getEditable('cucumber_ui.settings');
-    $cucumber_bin = $config->get('cucumber_ui_cucumber_bin_path');
-    $cucumber_config_path = $config->get('cucumber_ui_cucumber_config_path');
+    $cucumber_bin = $config->get('bin_path');
+    $cucumber_config_path = $config->get('config_path');
 
     $cmd = "cd $cucumber_config_path; $cucumber_bin -dl | sed 's/^\s*//g'";
     $output = shell_exec($cmd);
@@ -306,8 +306,8 @@ class CucumberUiController extends ControllerBase {
   public function getDefinitionStepsWithInfo() {
 
     $config = $this->configFactory->getEditable('cucumber_ui.settings');
-    $cucumber_bin = $config->get('cucumber_ui_cucumber_bin_path');
-    $cucumber_config_path = $config->get('cucumber_ui_cucumber_config_path');
+    $cucumber_bin = $config->get('bin_path');
+    $cucumber_config_path = $config->get('config_path');
 
     $command = "cd $cucumber_config_path; $cucumber_bin -di";
     $output = shell_exec($command);
@@ -344,8 +344,8 @@ class CucumberUiController extends ControllerBase {
   public function getDefinitionStepsJson() {
 
     $config = $this->configFactory->getEditable('cucumber_ui.settings');
-    $cucumber_bin = $config->get('cucumber_ui_cucumber_bin_path');
-    $cucumber_config_path = $config->get('cucumber_ui_cucumber_config_path');
+    $cucumber_bin = $config->get('bin_path');
+    $cucumber_config_path = $config->get('config_path');
 
     $cmd = "cd $cucumber_config_path; $cucumber_bin -dl | sed 's/^\s*//g'";
     $output = shell_exec($cmd);

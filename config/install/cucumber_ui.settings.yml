@@ -1,14 +1,14 @@
-cucumber_ui_cucumber_config_path: "."
-cucumber_ui_cucumber_bin_path: "php ./bin/cucumber"
-cucumber_ui_cucumber_config_file: "nightwatch.conf.js"
-cucumber_ui_cucumber_features_path: "tests/features"
-cucumber_ui_html_report: true
-cucumber_ui_html_report_dir: "tests/reports"
-cucumber_ui_log_report_dir: "tests/logs"
-cucumber_ui_editing_mode: "free_text"
-cucumber_ui_http_user: ""
-cucumber_ui_http_password: ""
-cucumber_ui_http_auth_headless_only: true
-cucumber_ui_save_user_testing_features: false
-cucumber_ui_needs_browser: true
-cucumber_ui_cucumber_tags: "javascript|Selenium + JavaScript\r\napi|Drupal API\r\nlocal|Local\r\ndevelopment|Development\r\nstaging|Staging and testing\r\nproduction|Production\r\ninit|Initialization\r\ncleanup|Cleanup"
+config_path: "."
+bin_path: "php ./bin/cucumber"
+config_file: "nightwatch.conf.js"
+features_path: "tests/features"
+html_report: true
+html_report_dir: "tests/reports"
+log_report_dir: "tests/logs"
+editing_mode: "free_text"
+http_user: ""
+http_password: ""
+http_auth_headless_only: true
+save_user_testing_features: false
+needs_browser: true
+cucumber_tags: "javascript|Selenium + JavaScript\r\napi|Drupal API\r\nlocal|Local\r\ndevelopment|Development\r\nstaging|Staging and testing\r\nproduction|Production\r\ninit|Initialization\r\ncleanup|Cleanup"

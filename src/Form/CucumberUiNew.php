@@ -93,8 +93,8 @@ class CucumberUiNew extends FormBase {
 
     $config = $this->configFactory->getEditable('cucumber_ui.settings');
 
-    $cucumber_ui_editing_mode = $config->get('cucumber_ui_editing_mode');
-    if ($cucumber_ui_editing_mode == 'guided_entry') {
+    $editing_mode = $config->get('editing_mode');
+    if ($editing_mode == 'guided_entry') {
       $form['cucumber_ui_new_scenario'] = [
         '#type' => 'markup',
         '#markup' => '<div class="layout-row clearfix">'
@@ -189,7 +189,7 @@ class CucumberUiNew extends FormBase {
         '#description' => $this->t('Check this if this test needs a real browser, which supports JavaScript, in order to perform actions that happen without reloading the page.'),
       ];
     }
-    elseif ($cucumber_ui_editing_mode == 'free_text') {
+    elseif ($editing_mode == 'free_text') {
 
       $form['cucumber_ui_new_feature'] = [
         '#type' => 'markup',
@@ -301,21 +301,21 @@ class CucumberUiNew extends FormBase {
 
     $config = $this->configFactory->getEditable('cucumber_ui.settings');
 
-    $cucumber_ui_cucumber_config_path = $config->get('cucumber_ui_cucumber_config_path');
-    $cucumber_ui_cucumber_features_path = $config->get('cucumber_ui_cucumber_features_path');
-    $cucumber_ui_editing_mode = $config->get('cucumber_ui_editing_mode');
+    $config_path = $config->get('config_path');
+    $features_path = $config->get('features_path');
+    $editing_mode = $config->get('editing_mode');
 
     if ($htmlIdofTriggeredElement == 'edit-cucumber-ui-create') {
       $formValues = $form_state->getValues();
 
-      $file = $cucumber_ui_cucumber_config_path . '/' . $cucumber_ui_cucumber_features_path . '/' . $formValues['cucumber_ui_feature'] . '.feature';
+      $file = $config_path . '/' . $features_path . '/' . $formValues['cucumber_ui_feature'] . '.feature';
 
-      if ($cucumber_ui_editing_mode == 'guided_entry') {
+      if ($editing_mode == 'guided_entry') {
         $feature = file_get_contents($file);
         $scenario = $this->generateScenario($formValues);
         $content = $feature . "\n" . $scenario;
       }
-      elseif ($cucumber_ui_editing_mode == 'free_text') {
+      elseif ($editing_mode == 'free_text') {
         $content = $formValues['free_text'];
       }
 
@@ -345,14 +345,14 @@ class CucumberUiNew extends FormBase {
 
     $config = $this->configFactory->getEditable('cucumber_ui.settings');
 
-    $cucumber_ui_cucumber_config_path = $config->get('cucumber_ui_cucumber_config_path');
-    $cucumber_ui_cucumber_features_path = $config->get('cucumber_ui_cucumber_features_path');
+    $config_path = $config->get('config_path');
+    $features_path = $config->get('features_path');
 
     $features = [];
 
-    $features_path = $cucumber_ui_cucumber_config_path . '/' . $cucumber_ui_cucumber_features_path;
+    $features_path = $config_path . '/' . $features_path;
     if ($this->fileSystem->prepareDirectory($features_path, FileSystemInterface::CREATE_DIRECTORY)) {
-      if ($handle = opendir($cucumber_ui_cucumber_config_path . '/' . $cucumber_ui_cucumber_features_path)) {
+      if ($handle = opendir($config_path . '/' . $features_path)) {
         while (FALSE !== ($file = readdir($handle))) {
           if (preg_match('/\.feature$/', $file)) {
             $feature = preg_replace('/\.feature$/', '', $file);
@@ -376,10 +376,10 @@ class CucumberUiNew extends FormBase {
   public function getFeature($feature_name = 'default.feature') {
     $config = $this->configFactory->getEditable('cucumber_ui.settings');
 
-    $cucumber_ui_cucumber_config_path = $config->get('cucumber_ui_cucumber_config_path');
-    $cucumber_ui_cucumber_features_path = $config->get('cucumber_ui_cucumber_features_path');
+    $config_path = $config->get('config_path');
+    $features_path = $config->get('features_path');
 
-    $default_feature_path = $cucumber_ui_cucumber_config_path . '/' . $cucumber_ui_cucumber_features_path . '/' . $feature_name;
+    $default_feature_path = $config_path . '/' . $features_path . '/' . $feature_name;
 
     if (file_exists($default_feature_path)) {
       return file_get_contents($default_feature_path);
@@ -406,28 +406,28 @@ class CucumberUiNew extends FormBase {
    */
   public function runSingleTest(array &$form, FormStateInterface $form_state) {
     $config = $this->configFactory->getEditable('cucumber_ui.settings');
-    $cucumber_ui_cucumber_bin_path = $config->get('cucumber_ui_cucumber_bin_path');
-    $cucumber_ui_cucumber_config_path = $config->get('cucumber_ui_cucumber_config_path');
-    $cucumber_ui_cucumber_config_file = $config->get('cucumber_ui_cucumber_config_file');
-    $cucumber_ui_cucumber_features_path = $config->get('cucumber_ui_cucumber_features_path');
+    $bin_path = $config->get('bin_path');
+    $config_path = $config->get('config_path');
+    $config_file = $config->get('config_file');
+    $features_path = $config->get('features_path');
 
-    $cucumber_ui_html_report = $config->get('cucumber_ui_html_report');
-    $cucumber_ui_html_report_dir = $config->get('cucumber_ui_html_report_dir');
-    $cucumber_ui_log_report_dir = $config->get('cucumber_ui_log_report_dir');
-    $cucumber_ui_save_user_testing_features = $config->get('cucumber_ui_save_user_testing_features');
-    $cucumber_ui_editing_mode = $config->get('cucumber_ui_editing_mode');
+    $html_report = $config->get('html_report');
+    $html_report_dir = $config->get('html_report_dir');
+    $log_report_dir = $config->get('log_report_dir');
+    $save_user_testing_features = $config->get('save_user_testing_features');
+    $editing_mode = $config->get('editing_mode');
 
     $formValues = $form_state->getValues();
     // Write to temporary file.
     $file_user_time = 'user-' . date('Y-m-d_h-m-s');
-    $file = $cucumber_ui_cucumber_config_path . '/' . $cucumber_ui_cucumber_features_path . '/' . $file_user_time . '.feature';
+    $file = $config_path . '/' . $features_path . '/' . $file_user_time . '.feature';
 
-    if ($cucumber_ui_editing_mode == 'guided_entry') {
+    if ($editing_mode == 'guided_entry') {
       $title = $formValues['cucumber_ui_title'];
       $test = "Feature: $title\n  In order to test \"$title\"\n\n";
       $test .= $this->generateScenario($formValues);
     }
-    elseif ($cucumber_ui_editing_mode == 'free_text') {
+    elseif ($editing_mode == 'free_text') {
       $test = $formValues['free_text'];
     }
 
@@ -436,15 +436,15 @@ class CucumberUiNew extends FormBase {
     fclose($handle);
 
     // Run file.
-    $test_file = $cucumber_ui_cucumber_features_path . '/' . $file_user_time . '.feature';
+    $test_file = $features_path . '/' . $file_user_time . '.feature';
     $command = '';
 
-    if ($cucumber_ui_html_report) {
+    if ($html_report) {
 
-      if (isset($cucumber_ui_html_report_dir) && $cucumber_ui_html_report_dir != '') {
+      if (isset($html_report_dir) && $html_report_dir != '') {
 
-        if ($this->fileSystem->prepareDirectory($cucumber_ui_html_report_dir, FileSystemInterface::CREATE_DIRECTORY)) {
-          $command = "cd $cucumber_ui_cucumber_config_path;$cucumber_ui_cucumber_bin_path  --config=$cucumber_ui_cucumber_config_file $test_file --format pretty --out std --format html --out $cucumber_ui_html_report_dir";
+        if ($this->fileSystem->prepareDirectory($html_report_dir, FileSystemInterface::CREATE_DIRECTORY)) {
+          $command = "cd $config_path;$bin_path  --config=$config_file $test_file --format pretty --out std --format html --out $html_report_dir";
         }
         else {
           $this->messenger->addError($this->t('The HTML Output directory does not exists or is not writable.'));
@@ -457,11 +457,11 @@ class CucumberUiNew extends FormBase {
     }
     else {
 
-      if (isset($cucumber_ui_log_report_dir) && $cucumber_ui_log_report_dir != '') {
+      if (isset($log_report_dir) && $log_report_dir != '') {
 
-        if ($this->fileSystem->prepareDirectory($cucumber_ui_log_report_dir, FileSystemInterface::CREATE_DIRECTORY)) {
-          $log_report_output_file = $cucumber_ui_log_report_dir . '/bethat-ui-test.log';
-          $command = "cd $cucumber_ui_cucumber_config_path;$cucumber_ui_cucumber_bin_path --config=$cucumber_ui_cucumber_config_file  $test_file --format pretty --out std > $log_report_output_file";
+        if ($this->fileSystem->prepareDirectory($log_report_dir, FileSystemInterface::CREATE_DIRECTORY)) {
+          $log_report_output_file = $log_report_dir . '/bethat-ui-test.log';
+          $command = "cd $config_path;$bin_path --config=$config_file  $test_file --format pretty --out std > $log_report_output_file";
         }
         else {
           $this->messenger->addError($this->t('The Log Output directory does not exists or is not writable.'));
@@ -475,14 +475,14 @@ class CucumberUiNew extends FormBase {
     $output = shell_exec($command);
 
     if (isset($output)) {
-      $report_html_file_name_and_path = $cucumber_ui_html_report_dir . '/index.html';
+      $report_html_file_name_and_path = $html_report_dir . '/index.html';
 
       $report_html_handle = fopen($report_html_file_name_and_path, 'r');
       $report_html = fread($report_html_handle, filesize($report_html_file_name_and_path));
       if (isset($report_html)) {
         fclose($report_html_handle);
 
-        if (!$cucumber_ui_save_user_testing_features) {
+        if (!$save_user_testing_features) {
           unlink($file);
         }
       }

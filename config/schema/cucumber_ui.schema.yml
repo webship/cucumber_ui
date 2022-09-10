@@ -2,45 +2,45 @@ cucumber_ui.settings:
   type: mapping
   label: Settings
   mapping:
-    cucumber_ui_cucumber_config_path:
+    config_path:
       type: string
       label: "Cucumber configuration path"
-    cucumber_ui_cucumber_bin_path:
+    bin_path:
       type: string
       label: "Cucumber binary command path"
-    cucumber_ui_cucumber_config_file:
+    config_file:
       type: string
       label: "Cucumber configuration file name"
-    cucumber_ui_cucumber_features_path:
+    features_path:
       type: string
       label: "Cucumber Features path"
-    cucumber_ui_html_report:
+    html_report:
       type: boolean
       label: "Enable HTML report"
-    cucumber_ui_html_report_dir:
+    html_report_dir:
       type: string
       label: "HTML report directory"
-    cucumber_ui_log_report_dir:
+    log_report_dir:
       type: string
       label: "Log report directory"
-    cucumber_ui_editing_mode:
+    editing_mode:
       type: string
       label: "Editing mode"
-    cucumber_ui_http_user:
+    http_user:
       type: string
       label: "HTTP Authentication User"
-    cucumber_ui_http_password:
+    http_password:
       type: string
       label: "HTTP Authentication Password"
-    cucumber_ui_http_auth_headless_only:
+    http_auth_headless_only:
       type: boolean
       label: "HTTP authentication only"
-    cucumber_ui_save_user_testing_features:
+    save_user_testing_features:
       type: boolean
       label: "Save user testing features"
-    cucumber_ui_needs_browser:
+    needs_browser:
       type: boolean
       label: "Needs a real browser"
-    cucumber_ui_cucumber_tags:
+    cucumber_tags:
       type: string
       label: "Cucumber Tags"

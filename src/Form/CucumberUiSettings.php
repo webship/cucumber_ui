@@ -138,25 +138,6 @@ class CucumberUiSettings extends ConfigFormBase {
       '#suffix' => '</div></div>',
     ];
 
-    $form['http_user'] = [
-      '#title' => $this->t('HTTP authentication user'),
-      '#description' => $this->t('Username for the basic authentication for the targeted site.'),
-      '#type' => 'textfield',
-      '#maxlength' => 512,
-      '#default_value' => $config->get('http_user'),
-      '#prefix' => '<div class="panel">
-            <h3 class="panel__title">' . $this->t('HTTP Authentication') . '</h3>
-            <div class="panel__content">',
-    ];
-
-    $form['http_password'] = [
-      '#title' => $this->t('HTTP authentication password'),
-      '#description' => $this->t('Password for the basic authentication for the targeted site.'),
-      '#type' => 'password',
-      '#default_value' => $config->get('http_password'),
-      '#suffix' => '</div></div>',
-    ];
-
     $form['http_auth_headless_only'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Enable HTTP authentication only for headless testing.'),

@@ -6,8 +6,6 @@ html_report: true
 html_report_dir: "tests/reports"
 log_report_dir: "tests/logs"
 editing_mode: "free_text"
-http_user: ""
-http_password: ""
 http_auth_headless_only: true
 save_user_testing_features: false
 needs_browser: true

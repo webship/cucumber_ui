@@ -26,12 +26,6 @@ cucumber_ui.settings:
     editing_mode:
       type: string
       label: "Editing mode"
-    http_user:
-      type: string
-      label: "HTTP Authentication User"
-    http_password:
-      type: string
-      label: "HTTP Authentication Password"
     http_auth_headless_only:
       type: boolean
       label: "HTTP authentication only"

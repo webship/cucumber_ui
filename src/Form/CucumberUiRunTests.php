@@ -104,9 +104,9 @@ class CucumberUiRunTests extends FormBase {
 
     $config = $this->configFactory->getEditable('cucumber_ui.settings');
 
-    $cucumber_ui_html_report = $config->get('cucumber_ui_html_report');
-    $cucumber_ui_html_report_dir = $config->get('cucumber_ui_html_report_dir');
-    $cucumber_ui_log_report_dir = $config->get('cucumber_ui_log_report_dir');
+    $html_report = $config->get('html_report');
+    $html_report_dir = $config->get('html_report_dir');
+    $log_report_dir = $config->get('log_report_dir');
 
     $beaht_ui_tempstore_collection = $this->tempStore->get('cucumber_ui');
     $pid = $beaht_ui_tempstore_collection->get('cucumber_ui_pid');
@@ -129,11 +129,11 @@ class CucumberUiRunTests extends FormBase {
       '#markup' => '<p id="cucumber-ui-status" class="' . $class . '">' . $this->t('Status:') . ' <span>' . $label . '</span></p>',
     ];
 
-    if ($cucumber_ui_html_report) {
+    if ($html_report) {
 
-      if (isset($cucumber_ui_html_report_dir) && $cucumber_ui_html_report_dir != '') {
+      if (isset($html_report_dir) && $html_report_dir != '') {
 
-        $html_report_output = $cucumber_ui_html_report_dir . '/index.html';
+        $html_report_output = $html_report_dir . '/index.html';
         if ($html_report_output && file_exists($html_report_output)) {
 
           $report_url = new Url('cucumber_ui.report');
@@ -157,9 +157,9 @@ class CucumberUiRunTests extends FormBase {
     }
     else {
 
-      if (isset($cucumber_ui_log_report_dir) && $cucumber_ui_log_report_dir != '') {
+      if (isset($log_report_dir) && $log_report_dir != '') {
 
-        $log_report_output = $cucumber_ui_log_report_dir . '/bethat-ui-test.log';
+        $log_report_output = $log_report_dir . '/bethat-ui-test.log';
         if ($log_report_output && file_exists($log_report_output)) {
           $log_report_output_content = nl2br(htmlentities(file_get_contents($log_report_output)));
           $form['cucumber_ui_output'] = [
@@ -198,15 +198,15 @@ class CucumberUiRunTests extends FormBase {
     parent::validateForm($form, $form_state);
 
     $config = $this->configFactory->getEditable('cucumber_ui.settings');
-    $cucumber_ui_cucumber_bin_path = $config->get('cucumber_ui_cucumber_bin_path');
-    $cucumber_ui_cucumber_config_path = $config->get('cucumber_ui_cucumber_config_path');
-    $cucumber_ui_cucumber_config_file = $config->get('cucumber_ui_cucumber_config_file');
+    $bin_path = $config->get('bin_path');
+    $config_path = $config->get('config_path');
+    $config_file = $config->get('config_file');
 
-    $cucumber_ui_cucumber_features_path = $config->get('cucumber_ui_cucumber_features_path');
+    $features_path = $config->get('features_path');
 
-    $cucumber_ui_html_report = $config->get('cucumber_ui_html_report');
-    $cucumber_ui_html_report_dir = $config->get('cucumber_ui_html_report_dir');
-    $cucumber_ui_log_report_dir = $config->get('cucumber_ui_log_report_dir');
+    $html_report = $config->get('html_report');
+    $html_report_dir = $config->get('html_report_dir');
+    $log_report_dir = $config->get('log_report_dir');
 
     $beaht_ui_tempstore_collection = $this->tempStore->get('cucumber_ui');
     $pid = $beaht_ui_tempstore_collection->get('cucumber_ui_pid');
@@ -219,11 +219,11 @@ class CucumberUiRunTests extends FormBase {
     else {
 
       $command = '';
-      if ($cucumber_ui_html_report) {
+      if ($html_report) {
 
-        if (isset($cucumber_ui_html_report_dir) && $cucumber_ui_html_report_dir != '') {
-          if ($this->fileSystem->prepareDirectory($cucumber_ui_html_report_dir, FileSystemInterface::CREATE_DIRECTORY)) {
-            $command = "cd $cucumber_ui_cucumber_config_path;$cucumber_ui_cucumber_bin_path --config=$cucumber_ui_cucumber_config_file $cucumber_ui_cucumber_features_path --format pretty --out std --format html --out $cucumber_ui_html_report_dir";
+        if (isset($html_report_dir) && $html_report_dir != '') {
+          if ($this->fileSystem->prepareDirectory($html_report_dir, FileSystemInterface::CREATE_DIRECTORY)) {
+            $command = "cd $config_path;$bin_path --config=$config_file $features_path --format pretty --out std --format html --out $html_report_dir";
           }
           else {
             $form_state->setErrorByName('submit_button', $this->t('The HTML Output directory does not exists or is not writable.'));
@@ -235,11 +235,11 @@ class CucumberUiRunTests extends FormBase {
       }
       else {
 
-        if (isset($cucumber_ui_log_report_dir) && $cucumber_ui_log_report_dir != '') {
+        if (isset($log_report_dir) && $log_report_dir != '') {
 
-          if ($this->fileSystem->prepareDirectory($cucumber_ui_log_report_dir, FileSystemInterface::CREATE_DIRECTORY)) {
-            $log_report_output_file = $cucumber_ui_log_report_dir . "/bethat-ui-test.log";
-            $command = "cd $cucumber_ui_cucumber_config_path;$cucumber_ui_cucumber_bin_path --config=$cucumber_ui_cucumber_config_file $cucumber_ui_cucumber_features_path --format pretty --out std > $log_report_output_file&";
+          if ($this->fileSystem->prepareDirectory($log_report_dir, FileSystemInterface::CREATE_DIRECTORY)) {
+            $log_report_output_file = $log_report_dir . "/bethat-ui-test.log";
+            $command = "cd $config_path;$bin_path --config=$config_file $features_path --format pretty --out std > $log_report_output_file&";
           }
           else {
             $form_state->setErrorByName('submit_button', $this->t('The Log Output directory does not exists or is not writable.'));

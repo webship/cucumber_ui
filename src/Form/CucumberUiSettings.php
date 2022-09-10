@@ -30,12 +30,12 @@ class CucumberUiSettings extends ConfigFormBase {
   public function buildForm(array $form, FormStateInterface $form_state) {
     $config = $this->config('cucumber_ui.settings');
 
-    $form['cucumber_ui_cucumber_config_path'] = [
+    $form['config_path'] = [
       '#title' => $this->t('Cucumber configuration directory path'),
       '#description' => $this->t('Directory path for Cucumber configuration. This is where the <em>cucumber.yml</em> file lives. Do not include the <em>cucumber.yml</em> file and no trailing slash at the end.'),
       '#type' => 'textfield',
       '#maxlength' => 512,
-      '#default_value' => $config->get('cucumber_ui_cucumber_config_path'),
+      '#default_value' => $config->get('config_path'),
       '#prefix' => '<div class="layout-row clearfix">
           <div class="layout-column layout-column--half">
             <div class="panel">
@@ -43,7 +43,7 @@ class CucumberUiSettings extends ConfigFormBase {
               <div class="panel__content">',
     ];
 
-    $form['cucumber_ui_cucumber_bin_path'] = [
+    $form['bin_path'] = [
       '#title' => $this->t('Cucumber executable command path'),
       '#description' => $this->t('An absolute path, or a relative path based on the Cucumber configuration directory path above.<br />
         <b>Sometimes you will need to include the php executable. For example:</b><br />
@@ -56,11 +56,11 @@ class CucumberUiSettings extends ConfigFormBase {
         </ul>'),
       '#type' => 'textfield',
       '#maxlength' => 512,
-      '#default_value' => $config->get('cucumber_ui_cucumber_bin_path'),
+      '#default_value' => $config->get('bin_path'),
       '#required' => TRUE,
     ];
 
-    $form['cucumber_ui_cucumber_config_file'] = [
+    $form['config_file'] = [
       '#title' => $this->t('Cucumber configuration file name'),
       '#description' => $this->t('The Cucumber configuration file, in the Cucumber configuration directory path. Usually <em>cucumber.yml</em>.<br />
               <b>Examples:</b>
@@ -69,10 +69,10 @@ class CucumberUiSettings extends ConfigFormBase {
               </ul>'),
       '#type' => 'textfield',
       '#maxlength' => 512,
-      '#default_value' => $config->get('cucumber_ui_cucumber_config_file'),
+      '#default_value' => $config->get('config_file'),
     ];
 
-    $form['cucumber_ui_cucumber_features_path'] = [
+    $form['features_path'] = [
       '#title' => $this->t('Cucumber features directory path'),
       '#description' => $this->t('The directory path that has the Gherkin script files with <em>.feature</em> extension. The path is relative to the Cucumber configuration directory path. Do not include trailing slash at the end.<br />
               <b>Examples:</b>
@@ -83,41 +83,41 @@ class CucumberUiSettings extends ConfigFormBase {
               </ul>'),
       '#type' => 'textfield',
       '#maxlength' => 512,
-      '#default_value' => $config->get('cucumber_ui_cucumber_features_path'),
+      '#default_value' => $config->get('features_path'),
     ];
 
-    $form['cucumber_ui_html_report'] = [
+    $form['html_report'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Enable HTML report format'),
-      '#default_value' => $config->get('cucumber_ui_html_report'),
+      '#default_value' => $config->get('html_report'),
       '#description' => $this->t('Check to enable generating an HTML report for your test results.'),
       '#prefix' => '<div class="panel">
           <h3 class="panel__title">' . $this->t('HTML formatted Report') . '</h3>
           <div class="panel__content">',
     ];
 
-    $form['cucumber_ui_html_report_dir'] = [
+    $form['html_report_dir'] = [
       '#title' => $this->t('HTML report directory'),
       '#description' => $this->t('The full absolute path for the tests/reports. No trailing slash at the end.'),
       '#type' => 'textfield',
       '#maxlength' => 512,
-      '#default_value' => $config->get('cucumber_ui_html_report_dir'),
+      '#default_value' => $config->get('html_report_dir'),
       '#suffix' => '</div></div>',
     ];
 
-    $form['cucumber_ui_log_report_dir'] = [
+    $form['log_report_dir'] = [
       '#title' => $this->t('Console log report directory'),
       '#description' => $this->t('The full absolute path for the tests/logs. No trailing slash at the end'),
       '#type' => 'textfield',
       '#maxlength' => 512,
-      '#default_value' => $config->get('cucumber_ui_log_report_dir'),
+      '#default_value' => $config->get('log_report_dir'),
       '#prefix' => '<div class="panel">
           <h3 class="panel__title">' . $this->t('Console Log formatted Report') . '</h3>
           <div class="panel__content">',
       '#suffix' => '</div></div></div>',
     ];
 
-    $editing_mode_default_value = $config->get('cucumber_ui_editing_mode');
+    $editing_mode_default_value = $config->get('editing_mode');
     if (empty($editing_mode_default_value)) {
       $editing_mode_default_value = 'guided_entry';
     }
@@ -127,7 +127,7 @@ class CucumberUiSettings extends ConfigFormBase {
       'free_text' => $this->t('Free text'),
     ];
 
-    $form['cucumber_ui_editing_mode'] = [
+    $form['editing_mode'] = [
       '#type' => 'radios',
       '#options' => $editing_mode_options,
       '#default_value' => $editing_mode_default_value,
@@ -138,50 +138,50 @@ class CucumberUiSettings extends ConfigFormBase {
       '#suffix' => '</div></div>',
     ];
 
-    $form['cucumber_ui_http_user'] = [
+    $form['http_user'] = [
       '#title' => $this->t('HTTP authentication user'),
       '#description' => $this->t('Username for the basic authentication for the targeted site.'),
       '#type' => 'textfield',
       '#maxlength' => 512,
-      '#default_value' => $config->get('cucumber_ui_http_user'),
+      '#default_value' => $config->get('http_user'),
       '#prefix' => '<div class="panel">
             <h3 class="panel__title">' . $this->t('HTTP Authentication') . '</h3>
             <div class="panel__content">',
     ];
 
-    $form['cucumber_ui_http_password'] = [
+    $form['http_password'] = [
       '#title' => $this->t('HTTP authentication password'),
       '#description' => $this->t('Password for the basic authentication for the targeted site.'),
       '#type' => 'password',
-      '#default_value' => $config->get('cucumber_ui_http_password'),
+      '#default_value' => $config->get('http_password'),
       '#suffix' => '</div></div>',
     ];
 
-    $form['cucumber_ui_http_auth_headless_only'] = [
+    $form['http_auth_headless_only'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Enable HTTP authentication only for headless testing.'),
-      '#default_value' => $config->get('cucumber_ui_http_auth_headless_only'),
+      '#default_value' => $config->get('http_auth_headless_only'),
       '#description' => $this->t('Sometimes testing using Selenium (or other driver that allows JavaScript) does not handle HTTP authentication well, for example when you have some link with some JavaScript behavior attached. On these cases, you may enable this HTTP authentication only for headless testing and find another solution for drivers that allow JavaScript (for example, with Selenium + JavaScript you can use the extension Auto Auth and save the credentials on a Firefox profile).'),
     ];
 
-    $form['cucumber_ui_needs_browser'] = [
+    $form['needs_browser'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Needs a real browser'),
-      '#default_value' => $config->get('cucumber_ui_needs_browser'),
+      '#default_value' => $config->get('needs_browser'),
       '#description' => $this->t('Check this if this test needs a real browser driver using Selenium - which supports JavaScript - in order to perform actions that happen without reloading the page.'),
     ];
 
-    $form['cucumber_ui_save_user_testing_features'] = [
+    $form['save_user_testing_features'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Save user testing features'),
-      '#default_value' => $config->get('cucumber_ui_save_user_testing_features'),
+      '#default_value' => $config->get('save_user_testing_features'),
       '#description' => $this->t('Check if you want to save user testing features in the Cucumber features path.'),
     ];
 
-    $form['cucumber_ui_cucumber_tags'] = [
+    $form['cucumber_tags'] = [
       '#type' => 'textarea',
       '#title' => $this->t('List of available Cucumber tags to pass to the run tests to limit scenarios.'),
-      '#default_value' => $config->get('cucumber_ui_cucumber_tags'),
+      '#default_value' => $config->get('cucumber_tags'),
       '#cols' => 60,
       '#rows' => 10,
       '#description' => $this->t('Scenarios are tagged with the Cucumber tags to limit the selection of scnarios based on needed test or what change in the tested site.<br />
@@ -231,22 +231,22 @@ class CucumberUiSettings extends ConfigFormBase {
     parent::submitForm($form, $form_state);
   }
 
-  /**
+  /*
    * Validate Form.
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
 
     // Validate Cucumber UI - cucumber tags values.
-    $cucumber_ui_cucumber_tags_values = self::optionsExtractAllowedListTextValues($form_state->getValue('cucumber_ui_cucumber_tags'));
-    if (!is_array($cucumber_ui_cucumber_tags_values)) {
-      $form_state->setErrorByName('cucumber_ui_cucumber_tags', $this->t('Allowed values list: invalid input.'));
+    $cucumber_tags_values = self::optionsExtractAllowedListTextValues($form_state->getValue('cucumber_tags'));
+    if (!is_array($cucumber_tags_values)) {
+      $form_state->setErrorByName('cucumber_tags', $this->t('Allowed values list: invalid input.'));
     }
     else {
       // Check that keys are valid for the field type.
-      foreach ($cucumber_ui_cucumber_tags_values as $key => $value) {
+      foreach ($cucumber_tags_values as $key => $value) {
         if (mb_strlen($key) > 255) {
-          $form_state->setErrorByName('cucumber_ui_cucumber_tags', $this->t('Allowed values list: each key must be a string at most 255 characters long.'));
+          $form_state->setErrorByName('cucumber_tags', $this->t('Allowed values list: each key must be a string at most 255 characters long.'));
           break;
         }
       }

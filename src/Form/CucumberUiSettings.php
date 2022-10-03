@@ -65,12 +65,16 @@ class CucumberUiSettings extends ConfigFormBase {
       '#description' => $this->t('The Cucumber configuration file, in the Cucumber configuration directory path. Usually <em>cucumber.yml</em>.<br />
               <b>Examples:</b>
               <ul>
+<<<<<<< HEAD
                 <li>cucumber.yml</li>
                 <li>cucumber.devshop.yml</li>
                 <li>cucumber.varbase.yml</li>
                 <li>cucumber.install.yml</li>
                 <li>cucumber.tools.yml</li>
                 <li>cucumber.my-custom-config.yml</li>
+=======
+                <li>nightwatch.conf.js</li>
+>>>>>>> 466cfcedbb1829601a135386b5da1c192e5c36c2
               </ul>'),
       '#type' => 'textfield',
       '#maxlength' => 512,
@@ -91,6 +95,7 @@ class CucumberUiSettings extends ConfigFormBase {
       '#default_value' => $config->get('features_path'),
     ];
 
+<<<<<<< HEAD
     $form['autoload_path'] = [
       '#title' => $this->t('Autoload path'),
       '#description' => $this->t('The path for the autoload file, relative to the Cucumber configuration directory path.<br />
@@ -106,6 +111,8 @@ class CucumberUiSettings extends ConfigFormBase {
       '#suffix' => '</div></div>',
     ];
 
+=======
+>>>>>>> 466cfcedbb1829601a135386b5da1c192e5c36c2
     $form['html_report'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Enable HTML report format'),
@@ -158,6 +165,7 @@ class CucumberUiSettings extends ConfigFormBase {
       '#suffix' => '</div></div>',
     ];
 
+<<<<<<< HEAD
     $form['http_user'] = [
       '#title' => $this->t('HTTP authentication user'),
       '#description' => $this->t('Username for the basic authentication for the targeted site.'),
@@ -177,6 +185,8 @@ class CucumberUiSettings extends ConfigFormBase {
       '#suffix' => '</div></div>',
     ];
 
+=======
+>>>>>>> 466cfcedbb1829601a135386b5da1c192e5c36c2
     $form['http_auth_headless_only'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Enable HTTP authentication only for headless testing.'),
@@ -243,15 +253,25 @@ class CucumberUiSettings extends ConfigFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $config = $this->config('cucumber_ui.settings');
     foreach ($form_state->getValues() as $key => $value) {
+<<<<<<< HEAD
       // if (strpos($key, 'cucumber_ui') !== FALSE) {
         $config->set($key, $value);
       // }
+=======
+      if (strpos($key, 'cucumber_ui') !== FALSE) {
+        $config->set($key, $value);
+      }
+>>>>>>> 466cfcedbb1829601a135386b5da1c192e5c36c2
     }
     $config->save();
     parent::submitForm($form, $form_state);
   }
 
+<<<<<<< HEAD
   /**
+=======
+  /*
+>>>>>>> 466cfcedbb1829601a135386b5da1c192e5c36c2
    * Validate Form.
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {

@@ -185,7 +185,11 @@ class CucumberUiNew extends FormBase {
       $form['cucumber_ui_new_scenario']['cucumber_ui_javascript'] = [
         '#type' => 'checkbox',
         '#title' => $this->t('Needs a real browser'),
+<<<<<<< HEAD
         '#default_value' => $config->get('needs_browser'),
+=======
+        '#default_value' => $config->get('cucumber_ui_needs_browser'),
+>>>>>>> 466cfcedbb1829601a135386b5da1c192e5c36c2
         '#description' => $this->t('Check this if this test needs a real browser, which supports JavaScript, in order to perform actions that happen without reloading the page.'),
       ];
     }

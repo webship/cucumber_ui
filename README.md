@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Cucumber UI
 
 The Cucumber UI module lets any person to run automated tests and create new tests
@@ -59,3 +60,6 @@ Check the module on [Drupal.org](https://www.drupal.org/project/behat_ui).
 * [Vardot](http://www.vardot.com).
 * [Webship](http://webship.org).
 * [Meedan](http://meedan.org).
+=======
+# Cucumber UI
+>>>>>>> 466cfcedbb1829601a135386b5da1c192e5c36c2

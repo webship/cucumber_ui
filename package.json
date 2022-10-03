@@ -14,7 +14,11 @@
     "Automated Testing",
     "Automates Functional Testing"
   ],
+<<<<<<< HEAD
   "author": "Vardot",
+=======
+  "author": "Webship",
+>>>>>>> 466cfcedbb1829601a135386b5da1c192e5c36c2
   "scripts": {
     "phpcs": "phpcs --standard=./.phpcs.xml .",
     "phpcbf": "phpcbf --standard=./.phpcs.xml .",

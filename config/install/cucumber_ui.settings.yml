@@ -1,14 +1,22 @@
 config_path: "."
 bin_path: "php ./bin/cucumber"
+<<<<<<< HEAD
 config_file: "cucumber.yml"
 features_path: "tests/features"
 autoload_path: "../../../vendor/autoload.php"
+=======
+config_file: "nightwatch.conf.js"
+features_path: "tests/features"
+>>>>>>> 466cfcedbb1829601a135386b5da1c192e5c36c2
 html_report: true
 html_report_dir: "tests/reports"
 log_report_dir: "tests/logs"
 editing_mode: "free_text"
+<<<<<<< HEAD
 http_user: ""
 http_password: ""
+=======
+>>>>>>> 466cfcedbb1829601a135386b5da1c192e5c36c2
 http_auth_headless_only: true
 save_user_testing_features: false
 needs_browser: true

@@ -14,9 +14,12 @@ cucumber_ui.settings:
     features_path:
       type: string
       label: "Cucumber Features path"
+<<<<<<< HEAD
     autoload_path:
       type: string
       label: "Vendor autoload path"
+=======
+>>>>>>> 466cfcedbb1829601a135386b5da1c192e5c36c2
     html_report:
       type: boolean
       label: "Enable HTML report"
@@ -29,12 +32,15 @@ cucumber_ui.settings:
     editing_mode:
       type: string
       label: "Editing mode"
+<<<<<<< HEAD
     http_user:
       type: string
       label: "HTTP Authentication User"
     http_password:
       type: string
       label: "HTTP Authentication Password"
+=======
+>>>>>>> 466cfcedbb1829601a135386b5da1c192e5c36c2
     http_auth_headless_only:
       type: boolean
       label: "HTTP authentication only"

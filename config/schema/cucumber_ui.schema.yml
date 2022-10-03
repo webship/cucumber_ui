@@ -14,6 +14,9 @@ cucumber_ui.settings:
     features_path:
       type: string
       label: "Cucumber Features path"
+    autoload_path:
+      type: string
+      label: "Vendor autoload path"
     html_report:
       type: boolean
       label: "Enable HTML report"

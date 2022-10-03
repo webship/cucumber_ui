@@ -1,7 +1,8 @@
 config_path: "."
 bin_path: "php ./bin/cucumber"
-config_file: "nightwatch.conf.js"
+config_file: "cucumber.yml"
 features_path: "tests/features"
+autoload_path: "../../../vendor/autoload.php"
 html_report: true
 html_report_dir: "tests/reports"
 log_report_dir: "tests/logs"

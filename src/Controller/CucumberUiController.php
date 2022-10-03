@@ -266,7 +266,8 @@ class CucumberUiController extends ControllerBase {
     $cucumber_bin = $config->get('bin_path');
     $cucumber_config_path = $config->get('config_path');
 
-    $command = "cd $cucumber_config_path; $cucumber_bin -dl | sed 's/^\s*//g'";
+    $command = "cd $cucumber_config_path; node ./node_modules/webship-js/bin/webship-js-di";
+
     $output = shell_exec($command);
     $output = nl2br(htmlentities($output ?? ''));
 
@@ -290,7 +291,7 @@ class CucumberUiController extends ControllerBase {
     $cucumber_bin = $config->get('bin_path');
     $cucumber_config_path = $config->get('config_path');
 
-    $cmd = "cd $cucumber_config_path; $cucumber_bin -dl | sed 's/^\s*//g'";
+    $cmd = "cd $cucumber_config_path; node ./node_modules/webship-js/bin/webship-js-dl";
     $output = shell_exec($cmd);
     $output = nl2br(htmlentities($output ?? ''));
 
@@ -309,7 +310,7 @@ class CucumberUiController extends ControllerBase {
     $cucumber_bin = $config->get('bin_path');
     $cucumber_config_path = $config->get('config_path');
 
-    $command = "cd $cucumber_config_path; $cucumber_bin -di";
+    $command = "cd $cucumber_config_path; node ./node_modules/webship-js/bin/webship-js-di";
     $output = shell_exec($command);
     $output = nl2br(htmlentities($output ?? ''));
 
@@ -347,7 +348,7 @@ class CucumberUiController extends ControllerBase {
     $cucumber_bin = $config->get('bin_path');
     $cucumber_config_path = $config->get('config_path');
 
-    $cmd = "cd $cucumber_config_path; $cucumber_bin -dl | sed 's/^\s*//g'";
+    $cmd = "cd $cucumber_config_path; node ./node_modules/webship-js/bin/webship-js-dl";
     $output = shell_exec($cmd);
 
     $output = str_replace("default |", '', $output);
@@ -360,11 +361,11 @@ class CucumberUiController extends ControllerBase {
     $output = str_replace('And|', 'And', $output);
     $output = str_replace('But|', 'But', $output);
 
-    $output = str_replace('Given', 'CUCUMBER_UI_DELIMITERGiven', $output);
-    $output = str_replace('When', 'CUCUMBER_UI_DELIMITERWhen', $output);
-    $output = str_replace('Then', 'CUCUMBER_UI_DELIMITERThen', $output);
-    $output = str_replace('And', 'CUCUMBER_UI_DELIMITERAnd', $output);
-    $output = str_replace('But', 'CUCUMBER_UI_DELIMITERBut', $output);
+    $output = str_replace('Given', 'BEHAT_UI_DELIMITERGiven', $output);
+    $output = str_replace('When', 'BEHAT_UI_DELIMITERWhen', $output);
+    $output = str_replace('Then', 'BEHAT_UI_DELIMITERThen', $output);
+    $output = str_replace('And', 'BEHAT_UI_DELIMITERAnd', $output);
+    $output = str_replace('But', 'BEHAT_UI_DELIMITERBut', $output);
 
     $output = str_replace('Given', '', $output);
     $output = str_replace('When', '', $output);
@@ -374,7 +375,7 @@ class CucumberUiController extends ControllerBase {
 
     $cucumberList = [];
 
-    $cucumberList += explode("CUCUMBER_UI_DELIMITER", $output);
+    $cucumberList += explode("BEHAT_UI_DELIMITER", $output);
     sort($cucumberList);
 
     return new JsonResponse($cucumberList);

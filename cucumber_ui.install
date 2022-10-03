@@ -9,7 +9,7 @@
  * Implements hook_install().
  */
 function cucumber_ui_install() {
-  $install_message = t("Automated tests using Cucumber/Mink, Run tests, and create tests under Administration -> Configuration -> Development -> Cucumber UI");
+  $install_message = t("Automated tests using cucumber/Mink, Run tests, and create tests under Administration -> Configuration -> Development -> cucumber UI");
   \Drupal::logger('cucumber_ui')->notice($install_message);
   \Drupal::messenger()->addWarning($install_message);
 }

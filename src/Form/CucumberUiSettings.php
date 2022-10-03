@@ -65,7 +65,12 @@ class CucumberUiSettings extends ConfigFormBase {
       '#description' => $this->t('The Cucumber configuration file, in the Cucumber configuration directory path. Usually <em>cucumber.yml</em>.<br />
               <b>Examples:</b>
               <ul>
-                <li>nightwatch.conf.js</li>
+                <li>cucumber.yml</li>
+                <li>cucumber.devshop.yml</li>
+                <li>cucumber.varbase.yml</li>
+                <li>cucumber.install.yml</li>
+                <li>cucumber.tools.yml</li>
+                <li>cucumber.my-custom-config.yml</li>
               </ul>'),
       '#type' => 'textfield',
       '#maxlength' => 512,
@@ -84,6 +89,21 @@ class CucumberUiSettings extends ConfigFormBase {
       '#type' => 'textfield',
       '#maxlength' => 512,
       '#default_value' => $config->get('features_path'),
+    ];
+
+    $form['autoload_path'] = [
+      '#title' => $this->t('Autoload path'),
+      '#description' => $this->t('The path for the autoload file, relative to the Cucumber configuration directory path.<br />
+        <b>Examples:</b><br />
+        <ul>
+          <li>../../../vendor/autoload.php</li>
+          <li>../../../web/autoload.php</li>
+          <li>../../../docroot/autoload.php</li>
+        </ul>'),
+      '#type' => 'textfield',
+      '#maxlength' => 512,
+      '#default_value' => $config->get('autoload_path'),
+      '#suffix' => '</div></div>',
     ];
 
     $form['html_report'] = [
@@ -223,15 +243,15 @@ class CucumberUiSettings extends ConfigFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $config = $this->config('cucumber_ui.settings');
     foreach ($form_state->getValues() as $key => $value) {
-      if (strpos($key, 'cucumber_ui') !== FALSE) {
+      // if (strpos($key, 'cucumber_ui') !== FALSE) {
         $config->set($key, $value);
-      }
+      // }
     }
     $config->save();
     parent::submitForm($form, $form_state);
   }
 
-  /*
+  /**
    * Validate Form.
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {

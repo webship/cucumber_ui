@@ -198,9 +198,9 @@ class CucumberUiRunTests extends FormBase {
     parent::validateForm($form, $form_state);
 
     $config = $this->configFactory->getEditable('cucumber_ui.settings');
-    $bin_path = $config->get('bin_path');
+    $bin_path = "";
     $config_path = $config->get('config_path');
-    $config_file = $config->get('config_file');
+    $config_file = '';
 
     $features_path = $config->get('features_path');
 

@@ -32,7 +32,7 @@ class CucumberUiSettings extends ConfigFormBase {
 
     $form['config_path'] = [
       '#title' => $this->t('Cucumber configuration directory path'),
-      '#description' => $this->t('Directory path for Cucumber configuration. This is where the <em>cucumber.yml</em> file lives. Do not include the <em>cucumber.yml</em> file and no trailing slash at the end.'),
+      '#description' => $this->t('Directory path for Cucumber configuration. This is where the <em>nightwatch.conf.js</em> file lives. Do not include the <em>cucumber.yml</em> file and no trailing slash at the end.'),
       '#type' => 'textfield',
       '#maxlength' => 512,
       '#default_value' => $config->get('config_path'),
@@ -43,38 +43,13 @@ class CucumberUiSettings extends ConfigFormBase {
               <div class="panel__content">',
     ];
 
-    $form['bin_path'] = [
-      '#title' => $this->t('Cucumber executable command path'),
-      '#description' => $this->t('An absolute path, or a relative path based on the Cucumber configuration directory path above.<br />
-        <b>Sometimes you will need to include the php executable. For example:</b><br />
-        <ul>
-          <li>bin/cucumber</li>
-          <li>php ./bin/cucumber</li>
-          <li>../../../bin/cucumber</li>
-          <li>../../../vendor/cucumber/cucumber</li>
-          <li>/var/www/html/PROJECT_FOLDER/bin/cucumber</li>
-        </ul>'),
-      '#type' => 'textfield',
-      '#maxlength' => 512,
-      '#default_value' => $config->get('bin_path'),
-      '#required' => TRUE,
-    ];
-
     $form['config_file'] = [
       '#title' => $this->t('Cucumber configuration file name'),
       '#description' => $this->t('The Cucumber configuration file, in the Cucumber configuration directory path. Usually <em>cucumber.yml</em>.<br />
               <b>Examples:</b>
               <ul>
-<<<<<<< HEAD
-                <li>cucumber.yml</li>
-                <li>cucumber.devshop.yml</li>
-                <li>cucumber.varbase.yml</li>
-                <li>cucumber.install.yml</li>
-                <li>cucumber.tools.yml</li>
-                <li>cucumber.my-custom-config.yml</li>
-=======
-                <li>nightwatch.conf.js</li>
->>>>>>> 466cfcedbb1829601a135386b5da1c192e5c36c2
+                <li>./nightwatch.conf.js</li>
+                <li>/var/www/html/PROJECT_FOLDER/nightwatch.conf.js</li>
               </ul>'),
       '#type' => 'textfield',
       '#maxlength' => 512,
@@ -95,24 +70,6 @@ class CucumberUiSettings extends ConfigFormBase {
       '#default_value' => $config->get('features_path'),
     ];
 
-<<<<<<< HEAD
-    $form['autoload_path'] = [
-      '#title' => $this->t('Autoload path'),
-      '#description' => $this->t('The path for the autoload file, relative to the Cucumber configuration directory path.<br />
-        <b>Examples:</b><br />
-        <ul>
-          <li>../../../vendor/autoload.php</li>
-          <li>../../../web/autoload.php</li>
-          <li>../../../docroot/autoload.php</li>
-        </ul>'),
-      '#type' => 'textfield',
-      '#maxlength' => 512,
-      '#default_value' => $config->get('autoload_path'),
-      '#suffix' => '</div></div>',
-    ];
-
-=======
->>>>>>> 466cfcedbb1829601a135386b5da1c192e5c36c2
     $form['html_report'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Enable HTML report format'),
@@ -141,7 +98,7 @@ class CucumberUiSettings extends ConfigFormBase {
       '#prefix' => '<div class="panel">
           <h3 class="panel__title">' . $this->t('Console Log formatted Report') . '</h3>
           <div class="panel__content">',
-      '#suffix' => '</div></div></div>',
+      '#suffix' => '</div></div></div></div></div>',
     ];
 
     $editing_mode_default_value = $config->get('editing_mode');
@@ -162,31 +119,8 @@ class CucumberUiSettings extends ConfigFormBase {
           <div class="panel">
             <h3 class="panel__title">' . $this->t('Editing Mode') . '</h3>
             <div class="panel__content">',
-      '#suffix' => '</div></div>',
     ];
 
-<<<<<<< HEAD
-    $form['http_user'] = [
-      '#title' => $this->t('HTTP authentication user'),
-      '#description' => $this->t('Username for the basic authentication for the targeted site.'),
-      '#type' => 'textfield',
-      '#maxlength' => 512,
-      '#default_value' => $config->get('http_user'),
-      '#prefix' => '<div class="panel">
-            <h3 class="panel__title">' . $this->t('HTTP Authentication') . '</h3>
-            <div class="panel__content">',
-    ];
-
-    $form['http_password'] = [
-      '#title' => $this->t('HTTP authentication password'),
-      '#description' => $this->t('Password for the basic authentication for the targeted site.'),
-      '#type' => 'password',
-      '#default_value' => $config->get('http_password'),
-      '#suffix' => '</div></div>',
-    ];
-
-=======
->>>>>>> 466cfcedbb1829601a135386b5da1c192e5c36c2
     $form['http_auth_headless_only'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Enable HTTP authentication only for headless testing.'),
@@ -206,41 +140,6 @@ class CucumberUiSettings extends ConfigFormBase {
       '#title' => $this->t('Save user testing features'),
       '#default_value' => $config->get('save_user_testing_features'),
       '#description' => $this->t('Check if you want to save user testing features in the Cucumber features path.'),
-    ];
-
-    $form['cucumber_tags'] = [
-      '#type' => 'textarea',
-      '#title' => $this->t('List of available Cucumber tags to pass to the run tests to limit scenarios.'),
-      '#default_value' => $config->get('cucumber_tags'),
-      '#cols' => 60,
-      '#rows' => 10,
-      '#description' => $this->t('Scenarios are tagged with the Cucumber tags to limit the selection of scnarios based on needed test or what change in the tested site.<br />
-       <b>For Example:</b><br />
-        <br /> <b>Actions:</b>
-        <ul>
-          <li>[ javascript|Selenium + JavaScript ] <b>@javascript</b> = Run scenarios with Selenium + JavaScript needed in the page.</li>
-          <li>[ api|Drupal API ] <b>@api</b> = Run scenarios with Drupal API when we only have file access to the site.</li>
-        </ul>
-        <br /> <b>Environment:</b>
-        <ul>
-          <li>[ local|Local ] <b>@local</b> = Recommanded to run scenarios only in Local development workstations.</li>
-          <li>[ development|Development ] <b>@development</b> = Recommanded to run scenarios only in Development servers.</li>
-          <li>[ staging|Staging and testing ] <b>@staging</b> = Recommanded to run scenarios only in Staging and testing servers.</li>
-          <li>[ production|Production ] <b>@production</b> = Recommanded to run scenarios only in Production live servers.</li>
-        </ul>
-        <br /> <b>Other:</b> you may have your cucumber tags and flags for your custom usage.
-        <ul>
-          <li>[ frontend|Front-End ] <b>@frontend</b> = Front-End scenarios.</li>
-          <li>[ backend|Back-End ] <b>@backend</b> = Back-End scenarios.</li>
-          <li>[ admin|Administration ] <b>@admin</b> = Testing scenarios for the administration only.</li>
-          <li>[ init|Initialization ] <b>@init</b> = Initialization scenarios before tests.</li>
-          <li>[ cleanup|Cleanup ] <b>@cleanup</b> = Cleanup scenarios after tests.</li>
-          <li>[ tools|Tools ] <b>@tools</b> = tools scenarios.</li>
-        </ul>
-       '),
-      '#prefix' => '<div class="panel">
-          <h3 class="panel__title">' . $this->t('Cucumber Tags') . '</h3>
-          <div class="panel__content">',
       '#suffix' => '</div></div></div></div>',
     ];
 
@@ -253,44 +152,12 @@ class CucumberUiSettings extends ConfigFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $config = $this->config('cucumber_ui.settings');
     foreach ($form_state->getValues() as $key => $value) {
-<<<<<<< HEAD
       // if (strpos($key, 'cucumber_ui') !== FALSE) {
         $config->set($key, $value);
       // }
-=======
-      if (strpos($key, 'cucumber_ui') !== FALSE) {
-        $config->set($key, $value);
-      }
->>>>>>> 466cfcedbb1829601a135386b5da1c192e5c36c2
     }
     $config->save();
     parent::submitForm($form, $form_state);
-  }
-
-<<<<<<< HEAD
-  /**
-=======
-  /*
->>>>>>> 466cfcedbb1829601a135386b5da1c192e5c36c2
-   * Validate Form.
-   */
-  public function validateForm(array &$form, FormStateInterface $form_state) {
-    parent::validateForm($form, $form_state);
-
-    // Validate Cucumber UI - cucumber tags values.
-    $cucumber_tags_values = self::optionsExtractAllowedListTextValues($form_state->getValue('cucumber_tags'));
-    if (!is_array($cucumber_tags_values)) {
-      $form_state->setErrorByName('cucumber_tags', $this->t('Allowed values list: invalid input.'));
-    }
-    else {
-      // Check that keys are valid for the field type.
-      foreach ($cucumber_tags_values as $key => $value) {
-        if (mb_strlen($key) > 255) {
-          $form_state->setErrorByName('cucumber_tags', $this->t('Allowed values list: each key must be a string at most 255 characters long.'));
-          break;
-        }
-      }
-    }
   }
 
   /**

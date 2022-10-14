@@ -185,11 +185,7 @@ class CucumberUiNew extends FormBase {
       $form['cucumber_ui_new_scenario']['cucumber_ui_javascript'] = [
         '#type' => 'checkbox',
         '#title' => $this->t('Needs a real browser'),
-<<<<<<< HEAD
         '#default_value' => $config->get('needs_browser'),
-=======
-        '#default_value' => $config->get('cucumber_ui_needs_browser'),
->>>>>>> 466cfcedbb1829601a135386b5da1c192e5c36c2
         '#description' => $this->t('Check this if this test needs a real browser, which supports JavaScript, in order to perform actions that happen without reloading the page.'),
       ];
     }
@@ -312,7 +308,7 @@ class CucumberUiNew extends FormBase {
     if ($htmlIdofTriggeredElement == 'edit-cucumber-ui-create') {
       $formValues = $form_state->getValues();
 
-      $file = $config_path . '/' . $features_path . '/' . $formValues['cucumber_ui_feature'] . '.feature';
+      $file = $features_path . '/' . $formValues['cucumber_ui_feature'] . '.feature';
 
       if ($editing_mode == 'guided_entry') {
         $feature = file_get_contents($file);
@@ -354,7 +350,7 @@ class CucumberUiNew extends FormBase {
 
     $features = [];
 
-    $features_path = $config_path . '/' . $features_path;
+    // $features_path = $config_path . '/' . $features_path;
     if ($this->fileSystem->prepareDirectory($features_path, FileSystemInterface::CREATE_DIRECTORY)) {
       if ($handle = opendir($config_path . '/' . $features_path)) {
         while (FALSE !== ($file = readdir($handle))) {
@@ -383,7 +379,7 @@ class CucumberUiNew extends FormBase {
     $config_path = $config->get('config_path');
     $features_path = $config->get('features_path');
 
-    $default_feature_path = $config_path . '/' . $features_path . '/' . $feature_name;
+    $default_feature_path = $features_path . '/' . $feature_name;
 
     if (file_exists($default_feature_path)) {
       return file_get_contents($default_feature_path);
@@ -410,9 +406,9 @@ class CucumberUiNew extends FormBase {
    */
   public function runSingleTest(array &$form, FormStateInterface $form_state) {
     $config = $this->configFactory->getEditable('cucumber_ui.settings');
-    $bin_path = $config->get('bin_path');
+    $bin_path = '';
     $config_path = $config->get('config_path');
-    $config_file = $config->get('config_file');
+    $config_file = '';
     $features_path = $config->get('features_path');
 
     $html_report = $config->get('html_report');
@@ -424,7 +420,7 @@ class CucumberUiNew extends FormBase {
     $formValues = $form_state->getValues();
     // Write to temporary file.
     $file_user_time = 'user-' . date('Y-m-d_h-m-s');
-    $file = $config_path . '/' . $features_path . '/' . $file_user_time . '.feature';
+    $file = $features_path . '/' . $file_user_time . '.feature';
 
     if ($editing_mode == 'guided_entry') {
       $title = $formValues['cucumber_ui_title'];

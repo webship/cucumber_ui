@@ -149,3 +149,7 @@
   border: 1px solid;
   font-size: 1.2rem;
 }
+
+.ui-dialog.ui-dialog-off-canvas .ui-widget-content.ui-dialog-content{
+  background: #fff;
+}

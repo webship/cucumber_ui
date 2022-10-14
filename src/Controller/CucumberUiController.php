@@ -118,7 +118,7 @@ class CucumberUiController extends ControllerBase {
 
       if (isset($log_report_dir) && $log_report_dir != '') {
 
-        $log_report = $log_report_dir . '/bethat-ui-test.log';
+        $log_report = $log_report_dir . '/cucumber-ui-test.log';
 
         if ($log_report && file_exists($log_report)) {
           $file_content = file_get_contents($log_report);
@@ -246,7 +246,7 @@ class CucumberUiController extends ControllerBase {
       elseif ($format === 'txt') {
         drupal_add_http_header('Connection', 'close');
         $log_report_dir = $config->get('log_report_dir');
-        $output = $log_report_dir . '/bethat-ui-test.log';
+        $output = $log_report_dir . '/cucumber-ui-test.log';
         $plain = file_get_contents($output);
         echo drupal_html_to_text($plain);
       }
@@ -263,15 +263,9 @@ class CucumberUiController extends ControllerBase {
   public function getAutocompleteDefinitionSteps() {
 
     $config = $this->configFactory->getEditable('cucumber_ui.settings');
-    $cucumber_bin = $config->get('bin_path');
     $cucumber_config_path = $config->get('config_path');
 
-<<<<<<< HEAD
-    $command = "cd $cucumber_config_path; node ./node_modules/webship-js/bin/webship-js-di";
-
-=======
     $command = "cd $cucumber_config_path; $cucumber_bin -dl | sed 's/^\s*//g'";
->>>>>>> 466cfcedbb1829601a135386b5da1c192e5c36c2
     $output = shell_exec($command);
     $output = nl2br(htmlentities($output ?? ''));
 
@@ -292,19 +286,14 @@ class CucumberUiController extends ControllerBase {
   public function getDefinitionSteps() {
 
     $config = $this->configFactory->getEditable('cucumber_ui.settings');
-    $cucumber_bin = $config->get('bin_path');
     $cucumber_config_path = $config->get('config_path');
 
-<<<<<<< HEAD
-    $cmd = "cd $cucumber_config_path; node ./node_modules/webship-js/bin/webship-js-dl";
-=======
-    $cmd = "cd $cucumber_config_path; $cucumber_bin -dl | sed 's/^\s*//g'";
->>>>>>> 466cfcedbb1829601a135386b5da1c192e5c36c2
+    $cmd = "cd $cucumber_config_path; node ./node_modules/webship-js/bin/webship-js-dl --format='html-list'";
     $output = shell_exec($cmd);
-    $output = nl2br(htmlentities($output ?? ''));
+    // $output = nl2br($output);
 
     $build = [
-      '#markup' => $this->formatCucumberSteps($output, '<code>', '</code><br /><hr /><br /><code>'),
+      '#markup' => $this->formatCucumberSteps($output),
     ];
     return $build;
   }
@@ -315,16 +304,12 @@ class CucumberUiController extends ControllerBase {
   public function getDefinitionStepsWithInfo() {
 
     $config = $this->configFactory->getEditable('cucumber_ui.settings');
-    $cucumber_bin = $config->get('bin_path');
     $cucumber_config_path = $config->get('config_path');
 
-<<<<<<< HEAD
-    $command = "cd $cucumber_config_path; node ./node_modules/webship-js/bin/webship-js-di";
-=======
-    $command = "cd $cucumber_config_path; $cucumber_bin -di";
->>>>>>> 466cfcedbb1829601a135386b5da1c192e5c36c2
+    $command = "cd $cucumber_config_path; node ./node_modules/webship-js/bin/webship-js-di --format='html-list'";
+    
     $output = shell_exec($command);
-    $output = nl2br(htmlentities($output ?? ''));
+    // $output = nl2br($output);
 
     $build = [
       '#markup' => $this->formatCucumberSteps($output),
@@ -335,75 +320,28 @@ class CucumberUiController extends ControllerBase {
   /**
    * Format Cucumber Steps.
    */
-  public function formatCucumberSteps($cucumberSteps, $formatCodeBeginValue = '<code>', $formatCodeEndBeginValue = '</code><br /><hr /><code>') {
+  public function formatCucumberSteps($cucumberSteps) {
 
     $formatedCucumberSteps = str_replace('Given ', '<b>Given</b> ', $cucumberSteps);
     $formatedCucumberSteps = str_replace('When ', '<b>When</b> ', $formatedCucumberSteps);
     $formatedCucumberSteps = str_replace('Then ', '<b>Then</b> ', $formatedCucumberSteps);
     $formatedCucumberSteps = str_replace('And ', '<b>And</b> ', $formatedCucumberSteps);
     $formatedCucumberSteps = str_replace('But ', '<b>But</b> ', $formatedCucumberSteps);
-
-    $formatedCucumberSteps = str_replace('Given|', '<b>Given</b>|', $cucumberSteps);
-    $formatedCucumberSteps = str_replace('When|', '<b>When</b>|', $formatedCucumberSteps);
-    $formatedCucumberSteps = str_replace('Then|', '<b>Then</b>|', $formatedCucumberSteps);
-    $formatedCucumberSteps = str_replace('And|', '<b>And</b>|', $formatedCucumberSteps);
-    $formatedCucumberSteps = str_replace('But|', '<b>But</b>|', $formatedCucumberSteps);
-
-    $formatedCucumberSteps = $formatCodeBeginValue . str_replace('default |', $formatCodeEndBeginValue, $formatedCucumberSteps);
-
+    
     return $formatedCucumberSteps;
   }
 
   public function getDefinitionStepsJson() {
 
     $config = $this->configFactory->getEditable('cucumber_ui.settings');
-    $cucumber_bin = $config->get('bin_path');
     $cucumber_config_path = $config->get('config_path');
 
-<<<<<<< HEAD
     $cmd = "cd $cucumber_config_path; node ./node_modules/webship-js/bin/webship-js-dl";
-=======
-    $cmd = "cd $cucumber_config_path; $cucumber_bin -dl | sed 's/^\s*//g'";
->>>>>>> 466cfcedbb1829601a135386b5da1c192e5c36c2
     $output = shell_exec($cmd);
-
-    $output = str_replace("default |", '', $output);
-    $output = str_replace("/^", '', $output);
-    $output = str_replace("$/", '', $output);
-
-    $output = str_replace('Given|', 'Given', $output);
-    $output = str_replace('When|', 'When', $output);
-    $output = str_replace('Then|', 'Then', $output);
-    $output = str_replace('And|', 'And', $output);
-    $output = str_replace('But|', 'But', $output);
-
-<<<<<<< HEAD
-    $output = str_replace('Given', 'BEHAT_UI_DELIMITERGiven', $output);
-    $output = str_replace('When', 'BEHAT_UI_DELIMITERWhen', $output);
-    $output = str_replace('Then', 'BEHAT_UI_DELIMITERThen', $output);
-    $output = str_replace('And', 'BEHAT_UI_DELIMITERAnd', $output);
-    $output = str_replace('But', 'BEHAT_UI_DELIMITERBut', $output);
-=======
-    $output = str_replace('Given', 'CUCUMBER_UI_DELIMITERGiven', $output);
-    $output = str_replace('When', 'CUCUMBER_UI_DELIMITERWhen', $output);
-    $output = str_replace('Then', 'CUCUMBER_UI_DELIMITERThen', $output);
-    $output = str_replace('And', 'CUCUMBER_UI_DELIMITERAnd', $output);
-    $output = str_replace('But', 'CUCUMBER_UI_DELIMITERBut', $output);
->>>>>>> 466cfcedbb1829601a135386b5da1c192e5c36c2
-
-    $output = str_replace('Given', '', $output);
-    $output = str_replace('When', '', $output);
-    $output = str_replace('Then', '', $output);
-    $output = str_replace('And', '', $output);
-    $output = str_replace('But', '', $output);
 
     $cucumberList = [];
 
-<<<<<<< HEAD
     $cucumberList += explode("BEHAT_UI_DELIMITER", $output);
-=======
-    $cucumberList += explode("CUCUMBER_UI_DELIMITER", $output);
->>>>>>> 466cfcedbb1829601a135386b5da1c192e5c36c2
     sort($cucumberList);
 
     return new JsonResponse($cucumberList);

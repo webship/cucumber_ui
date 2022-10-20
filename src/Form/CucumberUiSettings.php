@@ -152,8 +152,8 @@ class CucumberUiSettings extends ConfigFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $config = $this->config('cucumber_ui.settings');
     foreach ($form_state->getValues() as $key => $value) {
-      // if (strpos($key, 'cucumber_ui') !== FALSE) {
-        $config->set($key, $value);
+      // If (strpos($key, 'cucumber_ui') !== FALSE) {.
+      $config->set($key, $value);
       // }
     }
     $config->save();

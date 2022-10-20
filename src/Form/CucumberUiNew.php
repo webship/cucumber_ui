@@ -155,11 +155,11 @@ class CucumberUiNew extends FormBase {
             '#type' => 'select',
             '#options' => [
               '' => '',
-              'Given' => 'Given',
-              'When' => 'When',
-              'Then' => 'Then',
-              'And' => 'And',
-              'But' => 'But',
+              'Given' => this->t('Given'),
+              'When' => this->t('When'),
+              'Then' => this->t('Then'),
+              'And' => this->t('And'),
+              'But' => this->t('But'),
             ],
             '#default_value' => '',
           ];
@@ -241,7 +241,7 @@ class CucumberUiNew extends FormBase {
     $features_default_value = 'default';
     if (count($features_options) > 0) {
       if (!isset($features_options['default'])) {
-        $features_default_value = array_key_first(array($features_default_value));
+        $features_default_value = array_key_first([$features_default_value]);
       }
     }
     $form['cucumber_ui_new_scenario']['cucumber_ui_feature'] = [
@@ -301,7 +301,6 @@ class CucumberUiNew extends FormBase {
 
     $config = $this->configFactory->getEditable('cucumber_ui.settings');
 
-    $config_path = $config->get('config_path');
     $features_path = $config->get('features_path');
     $editing_mode = $config->get('editing_mode');
 
@@ -373,10 +372,12 @@ class CucumberUiNew extends FormBase {
     return $features;
   }
 
+  /**
+   * Get additional features.
+   */
   public function getFeature($feature_name = 'default.feature') {
     $config = $this->configFactory->getEditable('cucumber_ui.settings');
 
-    $config_path = $config->get('config_path');
     $features_path = $config->get('features_path');
 
     $default_feature_path = $features_path . '/' . $feature_name;

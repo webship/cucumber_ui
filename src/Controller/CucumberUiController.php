@@ -291,7 +291,6 @@ class CucumberUiController extends ControllerBase {
     $cmd = "cd $cucumber_config_path; node ./node_modules/webship-js/bin/webship-js-dl --format='html-list'";
     $output = shell_exec($cmd);
     // $output = nl2br($output);
-
     $build = [
       '#markup' => $this->formatCucumberSteps($output),
     ];
@@ -307,10 +306,9 @@ class CucumberUiController extends ControllerBase {
     $cucumber_config_path = $config->get('config_path');
 
     $command = "cd $cucumber_config_path; node ./node_modules/webship-js/bin/webship-js-di --format='html-list'";
-    
+
     $output = shell_exec($command);
     // $output = nl2br($output);
-
     $build = [
       '#markup' => $this->formatCucumberSteps($output),
     ];
@@ -327,10 +325,13 @@ class CucumberUiController extends ControllerBase {
     $formatedCucumberSteps = str_replace('Then ', '<b>Then</b> ', $formatedCucumberSteps);
     $formatedCucumberSteps = str_replace('And ', '<b>And</b> ', $formatedCucumberSteps);
     $formatedCucumberSteps = str_replace('But ', '<b>But</b> ', $formatedCucumberSteps);
-    
+
     return $formatedCucumberSteps;
   }
 
+  /**
+   * Get step definitions to display as autolist in ghirken textarea.
+   */
   public function getDefinitionStepsJson() {
 
     $config = $this->configFactory->getEditable('cucumber_ui.settings');

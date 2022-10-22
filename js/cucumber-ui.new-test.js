@@ -72,7 +72,7 @@
           const selectedTextRange = document.selection.createRange();
           const preSelectionTextRange = document.body.createTextRange();
           preSelectionTextRange.moveToElementText(containerEl);
-          preSelectionTextRange.setEndPoint("EndToStart", selectedTextRange);
+          preSelectionTextRange.setEndPoint('EndToStart', selectedTextRange);
           const start = preSelectionTextRange.text.length;
 
           return {
@@ -85,8 +85,8 @@
           const textRange = document.body.createTextRange();
           textRange.moveToElementText(containerEl);
           textRange.collapse(true);
-          textRange.moveEnd("character", savedSel.end);
-          textRange.moveStart("character", savedSel.start);
+          textRange.moveEnd('character', savedSel.end);
+          textRange.moveStart('character', savedSel.start);
           textRange.select();
         };
       }
@@ -96,13 +96,13 @@
         return text
           .replace(
             /((\([^\)]*\))|(( |(&nbsp;))[0-9]+( |(&nbsp;))))/g,
-            "<span class='step-param'>$1</span>"
+            "<span class='step-param'>$1</span>",
           )
           .replace(
             /"([a-zA-Z0-9\[\]_\-:\/\. ]+)"/g,
-            "\"<span class='step-param'>$1</span>\""
+            '"<span class=\'step-param\'>$1</span>"',
           )
-          .replace(/([\|:])\|/g, "$1<br />|")
+          .replace(/([\|:])\|/g, '$1<br />|')
           .replace(/\|(.*)\|/, '<pre class="step-param">|$1|</pre>')
           .replace(/\|/g, '<span class="step-no-param">|</span>');
       };
@@ -112,33 +112,33 @@
         let appendfunction;
         let selectfunction;
 
-        if (direction === "up") {
-          appendfunction = "before";
-          selectfunction = "prev";
-        } else if (direction === "down") {
-          appendfunction = "after";
-          selectfunction = "next";
+        if (direction === 'up') {
+          appendfunction = 'before';
+          selectfunction = 'prev';
+        } else if (direction === 'down') {
+          appendfunction = 'after';
+          selectfunction = 'next';
         } else {
           return false;
         }
 
-        const $current = $(link).closest(".form-wrapper");
-        const $other = $current[selectfunction](".form-wrapper");
+        const $current = $(link).closest('.form-wrapper');
+        const $other = $current[selectfunction]('.form-wrapper');
 
         if ($other.length) {
           $other[appendfunction]($current);
 
           // Rename fields, otherwise it won't make any difference when form is submitted.
-          const currenttextname = $current.find(".form-text").attr("name");
-          const currentselectname = $current.find(".form-select").attr("name");
+          const currenttextname = $current.find('.form-text').attr('name');
+          const currentselectname = $current.find('.form-select').attr('name');
           $current
-            .find(".form-text")
-            .attr("name", $other.find(".form-text").attr("name"));
+            .find('.form-text')
+            .attr('name', $other.find('.form-text').attr('name'));
           $current
-            .find(".form-select")
-            .attr("name", $other.find(".form-select").attr("name"));
-          $other.find(".form-text").attr("name", currenttextname);
-          $other.find(".form-select").attr("name", currentselectname);
+            .find('.form-select')
+            .attr('name', $other.find('.form-select').attr('name'));
+          $other.find('.form-text').attr('name', currenttextname);
+          $other.find('.form-select').attr('name', currentselectname);
         }
 
         return false;
@@ -149,29 +149,29 @@
   Drupal.behaviors.enrichStepFields = {
     attach(context, settings) {
       $(
-        "#cucumber-ui-new-steps .form-text:not(.form-rich-processed)",
-        context
+        '#cucumber-ui-new-steps .form-text:not(.form-rich-processed)',
+        context,
       ).each(function () {
-        const id = `${$(this).attr("id")}-rich`;
+        const id = `${$(this).attr('id')}-rich`;
         const $rich = $(
-          `<div id="${id}" contenteditable="true" class="form-rich step-no-param" />`
+          `<div id="${id}" contenteditable="true" class="form-rich step-no-param" />`,
         );
         const $plain = $(this);
         const $wrapper = $(
-          `<div id="${id}-wrapper" class="field-rich-wrapper" />`
+          `<div id="${id}-wrapper" class="field-rich-wrapper" />`,
         );
 
         $plain.after($rich);
-        $plain.addClass("form-rich-processed");
+        $plain.addClass('form-rich-processed');
         $rich.html(syntaxHighlight($plain.val()));
         $([$plain[0], $rich[0]]).wrapAll($wrapper);
-        $rich.parents(".field-rich-wrapper").height($rich.height() - 2);
+        $rich.parents('.field-rich-wrapper').height($rich.height() - 2);
 
         $rich.keyup(function () {
           const text = $(this).text();
           const savedSel = saveSelection(this);
           $(this)
-            .parents(".field-rich-wrapper")
+            .parents('.field-rich-wrapper')
             .height($(this).height() - 2);
           $plain.val(text);
           $(this).html(syntaxHighlight(text));
@@ -184,30 +184,30 @@
         // Steps should be sortable and removable.
         const $actions = $('<div class="step-actions" />');
         const $sortup = $('<a href="#" class="sort-up"></a>')
-          .attr("title", Drupal.t("Move this step up"))
-          .html(Drupal.t("Up"));
+          .attr('title', Drupal.t('Move this step up'))
+          .html(Drupal.t('Up'));
         const $sortdown = $('<a href="#" class="sort-down"></a>')
-          .attr("title", Drupal.t("Move this step down"))
-          .html(Drupal.t("Down"));
+          .attr('title', Drupal.t('Move this step down'))
+          .html(Drupal.t('Down'));
         const $remove = $('<a href="#" class="remove"></a>')
-          .attr("title", Drupal.t("Remove this step"))
-          .html(Drupal.t("Remove"));
+          .attr('title', Drupal.t('Remove this step'))
+          .html(Drupal.t('Remove'));
 
         $actions.append($sortup).append($sortdown).append($remove);
         $(this)
-          .closest(".fieldset-wrapper")
-          .find(".form-type-select")
+          .closest('.fieldset-wrapper')
+          .find('.form-type-select')
           .before($actions);
 
         $sortup.click(function () {
-          return sortfunction(this, "up");
+          return sortfunction(this, 'up');
         });
         $sortdown.click(function () {
-          return sortfunction(this, "down");
+          return sortfunction(this, 'down');
         });
 
         $remove.click(function () {
-          $(this).closest(".form-wrapper").remove();
+          $(this).closest('.form-wrapper').remove();
           return false;
         });
       });

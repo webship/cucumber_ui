@@ -18,6 +18,7 @@
   "scripts": {
     "phpcs": "phpcs --standard=./.phpcs.xml .",
     "phpcbf": "phpcbf --standard=./.phpcs.xml .",
+    "lint:yaml": "node ./node_modules/eslint/bin/eslint.js --config=.eslintrc.json --ext .yml .",
     "lint:js": "node ./node_modules/eslint/bin/eslint.js --config=.eslintrc.json .",
     "theme:init": "gulp",
     "theme:build": "gulp compile",
@@ -41,6 +42,7 @@
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-jquery": "^1.5.1",
+    "eslint-plugin-yml": "^0.14.0",
     "farbtastic": "https://github.com/mattfarina/farbtastic/archive/1.3u.tar.gz",
     "glob": "~7",
     "glob-watcher": "~5",

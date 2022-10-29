@@ -88,7 +88,17 @@ class CucumberUiNew extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $form['#attached']['library'][] = 'cucumber_ui/style';
+
+    $active_theme = \Drupal::theme()->getActiveTheme();
+    $base_themes = (array) $active_theme->getBaseThemeExtensions();
+
+    if ($active_theme->getName() === 'gin'|| array_key_exists('gin', $base_themes)) {
+      $form['#attached']['library'][] = 'cucumber_ui/style.gin';
+    }
+    elseif ($active_theme->getName() === 'claro'|| array_key_exists('claro', $base_themes)) {
+      $form['#attached']['library'][] = 'cucumber_ui/style.claro';
+    }
+
     $form['#attached']['library'][] = 'cucumber_ui/new-test-scripts';
 
     $config = $this->configFactory->getEditable('cucumber_ui.settings');

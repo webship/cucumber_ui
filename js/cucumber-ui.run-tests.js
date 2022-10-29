@@ -5,9 +5,48 @@
 
 (function ($, _, Drupal, drupalSettings) {
   Drupal.behaviors.CucumberUiRunTests = {
-    attach(context, settings) {
-      const killProcess = function () {
-        $('#cucumber-ui-kill', context).click(function () {
+    attach(context) {
+      const checkStatus = function () {
+        const cucumberUiStatus = $('#cucumber-ui-status', context);
+        const cucumberUiOutput = $('#cucumber-ui-output', context);
+
+        $.ajax({
+          url: `${drupalSettings.path.baseUrl}cucumber-ui/status?${parseInt(
+            Math.random() * 1000000000,
+            10,
+          )}`,
+          dataType: 'json',
+          success(data) {
+            cucumberUiStatus.removeClass('running');
+
+            if (data.running) {
+              cucumberUiStatus.addClass('running');
+              cucumberUiStatus
+                .find('span')
+                .html(
+                  `${Drupal.t('Process:') + data.pid} ${Drupal.t(
+                    'Running <small><a href="#" id="cucumber-ui-kill">(kill)</a></small>',
+                  )}`,
+                );
+              killProcess();
+              setTimeout(checkStatus, 10000);
+            } else {
+              cucumberUiStatus.find('span').html(Drupal.t('Not running'));
+            }
+
+            cucumberUiOutput.html(data.output);
+          },
+          error(xhr, textStatus, error) {
+            console.log(
+              Drupal.t('An error happened on checking tests status.'),
+            );
+            setTimeout(checkStatus, 10000);
+          },
+        });
+      };
+
+      const killProcess = function killP() {
+        $('#cucumber-ui-kill', context).click(function killClick() {
           $.ajax({
             url: `${drupalSettings.path.baseUrl}cucumber-ui/kill?${parseInt(
               Math.random() * 1000000000,
@@ -29,45 +68,6 @@
             },
           });
           return false;
-        });
-      };
-
-      var checkStatus = function () {
-        const cucumber_ui_status = $('#cucumber-ui-status', context);
-        const cucumber_ui_output = $('#cucumber-ui-output', context);
-
-        $.ajax({
-          url: `${drupalSettings.path.baseUrl}cucumber-ui/status?${parseInt(
-            Math.random() * 1000000000,
-            10,
-          )}`,
-          dataType: 'json',
-          success(data) {
-            cucumber_ui_status.removeClass('running');
-
-            if (data.running) {
-              cucumber_ui_status.addClass('running');
-              cucumber_ui_status
-                .find('span')
-                .html(
-                  `${Drupal.t('Process:') + data.pid} ${Drupal.t(
-                    'Running <small><a href="#" id="cucumber-ui-kill">(kill)</a></small>',
-                  )}`,
-                );
-              killProcess();
-              setTimeout(checkStatus, 10000);
-            } else {
-              cucumber_ui_status.find('span').html(Drupal.t('Not running'));
-            }
-
-            cucumber_ui_output.html(data.output);
-          },
-          error(xhr, textStatus, error) {
-            console.log(
-              Drupal.t('An error happened on checking tests status.'),
-            );
-            setTimeout(checkStatus, 10000);
-          },
         });
       };
 

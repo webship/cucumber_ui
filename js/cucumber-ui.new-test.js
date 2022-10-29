@@ -3,16 +3,16 @@
  * Behaviors Cucumber UI New test scripts.
  */
 
-(function ($, _, Drupal, drupalSettings) {
+(function ($, _, Drupal) {
   Drupal.behaviors.CucumberUiNewTest = {
-    attach(context, settings) {
+    attach() {
       // Keep cursor in position after updating textarea
       // Reference: http://stackoverflow.com/questions/13949059/persisting-the-changes-of-range-objects-after-selection-in-html/13950376#13950376
       let saveSelection;
       let restoreSelection;
 
       if (window.getSelection && document.createRange) {
-        saveSelection = function (containerEl) {
+        saveSelection = function container(containerEl) {
           const range = window.getSelection().getRangeAt(0);
           const preSelectionRange = range.cloneRange();
           preSelectionRange.selectNodeContents(containerEl);
@@ -25,7 +25,7 @@
           };
         };
 
-        restoreSelection = function (containerEl, savedSel) {
+        restoreSelection = function container(containerEl, savedSel) {
           let charIndex = 0;
           const range = document.createRange();
           range.setStart(containerEl, 0);
@@ -36,7 +36,7 @@
           let stop = false;
 
           while (!stop && (node = nodeStack.pop())) {
-            if (node.nodeType == 3) {
+            if (node.nodeType === 3) {
               const nextCharIndex = charIndex + node.length;
               if (
                 !foundStart &&
@@ -68,7 +68,7 @@
           sel.addRange(range);
         };
       } else if (document.selection) {
-        saveSelection = function (containerEl) {
+        saveSelection = function container(containerEl) {
           const selectedTextRange = document.selection.createRange();
           const preSelectionTextRange = document.body.createTextRange();
           preSelectionTextRange.moveToElementText(containerEl);
@@ -92,7 +92,7 @@
       }
 
       // Replace step fields by rich text fields.
-      const syntaxHighlight = function (text) {
+      const syntaxHighlight = function text(text) {
         return text
           .replace(
             /((\([^\)]*\))|(( |(&nbsp;))[0-9]+( |(&nbsp;))))/g,
@@ -213,4 +213,4 @@
       });
     },
   };
-})(window.jQuery, window._, window.Drupal, window.drupalSettings);
+})(window.jQuery, window._, window.Drupal);

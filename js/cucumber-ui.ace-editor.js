@@ -32,7 +32,7 @@
         },
       });
 
-      const cucumber_ui_language_tools = ace.require('ace/ext/language_tools');
+      const cucumberUiLanguageTools = ace.require('ace/ext/language_tools');
 
       editor.setOptions({
         enableBasicAutocompletion: false,
@@ -104,7 +104,7 @@
         },
       };
 
-      cucumber_ui_language_tools.setCompleters([
+      cucumberUiLanguageTools.setCompleters([
         cucumberUICompleter,
         keyCucumberUICompleter,
       ]);

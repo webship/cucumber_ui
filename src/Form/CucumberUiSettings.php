@@ -28,6 +28,17 @@ class CucumberUiSettings extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
+
+    $active_theme = \Drupal::theme()->getActiveTheme();
+    $base_themes = (array) $active_theme->getBaseThemeExtensions();
+
+    if ($active_theme->getName() === 'gin'|| array_key_exists('gin', $base_themes)) {
+      $form['#attached']['library'][] = 'cucumber_ui/style.gin';
+    }
+    elseif ($active_theme->getName() === 'claro'|| array_key_exists('claro', $base_themes)) {
+      $form['#attached']['library'][] = 'cucumber_ui/style.claro';
+    }
+
     $config = $this->config('cucumber_ui.settings');
 
     $form['config_path'] = [

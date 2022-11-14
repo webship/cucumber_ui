@@ -1,0 +1,188 @@
+#cucumber-ui-output {
+  display: block;
+  height: 44.44444rem;
+  margin: 0;
+  border: 1px solid var(--colorGinFormElementBorder);
+  background: var(--colorGinLayer2Background)
+}
+
+#cucumber-ui-output table {
+    width: 90% !important;
+  }
+
+#cucumber-ui-status {
+    font-weight: bold;
+    line-height: 0.88889rem
+  }
+
+#cucumber-ui-status span {
+      color: var(--colorGinDanger);
+      padding-inline-end: 1rem;
+    }
+
+#cucumber-ui-status .running span {
+        color: var(--colorGinGreen);
+        background: transparent url(../../images/loading.gif) left center no-repeat;
+      }
+
+#cucumber .summary {
+      position: static !important
+    }
+
+#cucumber .summary .switchers {
+        display: none !important;
+        }
+
+#cucumber-ui-steps {
+    display: none
+  }
+
+#cucumber-ui-steps .form-type-textfield .form-rich,
+      #cucumber-ui-steps .form-type-textfield .form-text.form-rich-processed {
+        position: absolute;
+        left: 0;
+        top: 0;
+        padding: 0;
+        border: 0;
+        outline: none;
+      }
+
+#cucumber-ui-new-steps.form-type-textfield .form-rich,
+     #cucumber-ui-new-steps.form-type-textfield .form-text.form-rich-processed {
+        position: absolute;
+        left: 0;
+        top: 0;
+        padding: 0;
+        border: 0;
+        outline: none;
+      }
+
+#cucumber-ui-new-steps.form-type-textfield .form-rich {
+        z-index: 1;
+        background: transparent;
+      }
+
+#cucumber-ui-new-steps.form-type-textfield .form-text.form-rich-processed {
+        color: transparent;
+        background-position: 100% 2px
+      }
+
+#cucumber-ui-new-steps.form-type-textfield .form-text.form-rich-processed.throbbing {
+          background-position: 100% -18px;
+        }
+
+#cucumber-ui-new-steps .step-param {
+    font-weight: bold;
+    color: var(--colorGinText);
+  }
+
+#cucumber-ui-new-steps .step-no-param {
+    font-weight: normal;
+    color: var(--colorGinTextLight);
+    font-size: var(--ginSpacingDensitySmall);
+  }
+
+#cucumber-ui-new-steps .sort-up,
+  #cucumber-ui-new-steps .sort-down,
+  #cucumber-ui-new-steps .remove {
+    position: absolute;
+    display: block;
+    width: 0.5rem;
+    height: 0.5rem;
+    text-indent: -5000em;
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-position: center center;
+  }
+
+#cucumber-ui-new-steps .sort-up {
+    left: 0.16667rem;
+    top: 0.61111rem;
+    background-image: url(../../images/up.png)
+  }
+
+#cucumber-ui-new-steps .sort-up:hover {
+            background-image: url(../../images/up-hover.png);
+
+        }
+
+#cucumber-ui-new-steps .sort-down {
+    left: 0.16667rem;
+    top: 1.27778rem;
+    background-image: url(../../images/down.png)
+
+  }
+
+#cucumber-ui-new-steps .sort-down:hover {
+            background-image: url(../../images/down-hover.png);
+        }
+
+#cucumber-ui-new-steps .remove {
+    right: 2px;
+    top: 0.88889rem;
+    background-image: url(../../images/remove.png)
+  }
+
+#cucumber-ui-new-steps .remove:hover {
+        background-image: url(../../images/remove-hover.png);
+        }
+
+#cucumber-ui-new-steps .fieldset__wrapper .form-item {
+        margin: 0
+        }
+
+#cucumber-ui-new-steps .fieldset__wrapper .form-item .fieldset__wrapper {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            padding: 0;
+            margin: 0.16667rem 0
+        }
+
+#cucumber-ui-new-steps .fieldset__wrapper .form-item .fieldset__wrapper .form-element--type-select {
+            font-weight: bolder;
+            }
+
+#cucumber-ui-new-steps .fieldset__wrapper .form-item .fieldset__wrapper .form-type--textfield {
+            width: 87%;
+            }
+
+#cucumber-ui-new-steps .fieldset__wrapper fieldset {
+     border: 0;
+     box-shadow: none;
+     margin: 0;
+    }
+
+#cucumber-ui-new-steps .claro-autocomplete {
+    margin: 0;
+  }
+
+.form-item--free-text {
+  margin: 0;
+}
+
+.free-text-ace-editor {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  tabindex: -1;
+}
+
+#free_text_ace_editor.ace_editor {
+  height: 44.44444rem;
+  border: 1px solid;
+  font-size: var(--ginSpacingDensityMedium);
+}
+
+#edit-cucumber-ui-feature--wrapper {
+  margin: var(--ginSpacingDensityDefault);
+}
+
+.form-item--free-text {
+  margin: 0 !important;
+}
+
+.panel__content {
+  padding: 0 var(--ginSpacingDensityDefault) !important;
+}

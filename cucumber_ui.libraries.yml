@@ -1,8 +1,13 @@
-style:
+style.claro:
   version: VERSION
   css:
     theme:
-      css/theme/cucumber-ui.style.theme.css: {}
+      css/theme/cucumber-ui-style.claro.css: {}
+style.gin:
+  version: VERSION
+  css:
+    theme:
+      css/theme/cucumber-ui-style.gin.css: {}
 run-tests-scripts:
   version: VERSION
   js:

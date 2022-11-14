@@ -23,12 +23,3 @@ cucumber_ui.settings:
     editing_mode:
       type: string
       label: "Editing mode"
-    http_auth_headless_only:
-      type: boolean
-      label: "HTTP authentication only"
-    save_user_testing_features:
-      type: boolean
-      label: "Save user testing features"
-    needs_browser:
-      type: boolean
-      label: "Needs a real browser"

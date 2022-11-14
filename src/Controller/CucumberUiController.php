@@ -41,7 +41,7 @@ class CucumberUiController extends ControllerBase {
   protected $currentRequest;
 
   /**
-   * The tempstore object.
+   * The temp store object.
    *
    * @var \Drupal\Core\TempStore\PrivateTempStoreFactory
    */
@@ -64,7 +64,7 @@ class CucumberUiController extends ControllerBase {
    * @param \Symfony\Component\HttpFoundation\Request $current_request
    *   The current request.
    * @param \Drupal\Core\TempStore\PrivateTempStoreFactory $temp_store_factory
-   *   The tempstore factory.
+   *   The temp store factory.
    * @param \Drupal\Core\Render\RendererInterface $renderer
    *   The renderer.
    */
@@ -288,7 +288,7 @@ class CucumberUiController extends ControllerBase {
     $config = $this->configFactory->getEditable('cucumber_ui.settings');
     $cucumber_config_path = $config->get('config_path');
 
-    $cmd = "cd $cucumber_config_path; node ./node_modules/webship-js/bin/webship-js-dl --format='html-list'";
+    $cmd = "cd $cucumber_config_path; node ./node_modules/webship-js/bin/steplist";
     $output = shell_exec($cmd);
     // $output = nl2br($output);
     $build = [
@@ -305,7 +305,7 @@ class CucumberUiController extends ControllerBase {
     $config = $this->configFactory->getEditable('cucumber_ui.settings');
     $cucumber_config_path = $config->get('config_path');
 
-    $command = "cd $cucumber_config_path; node ./node_modules/webship-js/bin/webship-js-di --format='html-list'";
+    $command = "cd $cucumber_config_path; node ./node_modules/webship-js/bin/steplist -i";
 
     $output = shell_exec($command);
     // $output = nl2br($output);
@@ -337,7 +337,7 @@ class CucumberUiController extends ControllerBase {
     $config = $this->configFactory->getEditable('cucumber_ui.settings');
     $cucumber_config_path = $config->get('config_path');
 
-    $cmd = "cd $cucumber_config_path; node ./node_modules/webship-js/bin/webship-js-dl";
+    $cmd = "cd $cucumber_config_path; node ./node_modules/webship-js/bin/steplist";
     $output = shell_exec($cmd);
 
     $cucumberList = [];

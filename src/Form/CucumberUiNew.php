@@ -94,102 +94,7 @@ class CucumberUiNew extends FormBase {
     $config = $this->configFactory->getEditable('cucumber_ui.settings');
 
     $editing_mode = $config->get('editing_mode');
-    if ($editing_mode == 'guided_entry') {
-      $form['cucumber_ui_new_scenario'] = [
-        '#type' => 'markup',
-        '#markup' => '<div class="layout-row clearfix">'
-        . '  <div class="layout-column layout-column--half">'
-        . '    <div id="cucumber-ui-new-scenario" class="panel">'
-        . '      <h3 class="panel__title">' . $this->t('New scenario') . '</h3>'
-        . '      <div class="panel__content">',
-      ];
-
-      $cucumber_ui_steps_link = new Url('cucumber_ui.cucumber_dl');
-      $form['cucumber_ui_new_scenario']['cucumber_ui_steps_link'] = [
-        '#type' => 'markup',
-        '#markup' => '<a class="button use-ajax"
-              data-dialog-options="{&quot;width&quot;:500}" 
-              data-dialog-renderer="off_canvas" 
-              data-dialog-type="dialog"
-              href="' . $this->currentRequest->getSchemeAndHttpHost() . $cucumber_ui_steps_link->toString() . '" >' . $this->t('Check available steps') . '</a>',
-      ];
-
-      $cucumber_ui_steps_link_with_info = new Url('cucumber_ui.cucumber_di');
-      $form['cucumber_ui_new_scenario']['cucumber_ui_steps_link_with_info'] = [
-        '#type' => 'markup',
-        '#markup' => '<a class="button use-ajax"
-              data-dialog-options="{&quot;width&quot;:500}" 
-              data-dialog-renderer="off_canvas" 
-              data-dialog-type="dialog"
-              href="' . $this->currentRequest->getSchemeAndHttpHost() . $cucumber_ui_steps_link_with_info->toString() . '" >' . $this->t('Full steps with info') . '</a>',
-      ];
-
-      $form['cucumber_ui_new_scenario']['cucumber_ui_title'] = [
-        '#type' => 'textfield',
-        '#maxlength' => 512,
-        '#title' => $this->t('Title of this scenario'),
-        '#required' => TRUE,
-      ];
-
-      $form['cucumber_ui_new_scenario']['cucumber_ui_steps'] = [
-        '#type' => 'fieldset',
-        '#title' => $this->t('Steps'),
-        '#collapsible' => TRUE,
-        '#collapsed' => FALSE,
-        '#tree' => TRUE,
-        '#prefix' => '<div id="cucumber-ui-new-steps">',
-        '#suffix' => '</div>',
-      ];
-      $storage = $form_state->getValues();
-      $stepCount = isset($storage['cucumber_ui_steps']) ? (count($storage['cucumber_ui_steps']) + 1) : 1;
-      if (isset($storage)) {
-        for ($i = 0; $i < $stepCount; $i++) {
-          $form['cucumber_ui_new_scenario']['cucumber_ui_steps'][$i] = [
-            '#type' => 'fieldset',
-            '#collapsible' => FALSE,
-            '#collapsed' => FALSE,
-            '#tree' => TRUE,
-          ];
-
-          $form['cucumber_ui_new_scenario']['cucumber_ui_steps'][$i]['type'] = [
-            '#type' => 'select',
-            '#options' => [
-              '' => '',
-              'Given' => this->t('Given'),
-              'When' => this->t('When'),
-              'Then' => this->t('Then'),
-              'And' => this->t('And'),
-              'But' => this->t('But'),
-            ],
-            '#default_value' => '',
-          ];
-
-          $form['cucumber_ui_new_scenario']['cucumber_ui_steps'][$i]['step'] = [
-            '#type' => 'textfield',
-            '#maxlength' => 512,
-            '#autocomplete_route_name' => 'cucumber_ui.autocomplete',
-          ];
-        }
-      }
-
-      $form['cucumber_ui_new_scenario']['cucumber_ui_add_step'] = [
-        '#type' => 'button',
-        '#value' => $this->t('Add'),
-        '#href' => '',
-        '#ajax' => [
-          'callback' => '::ajaxAddStep',
-          'wrapper' => 'cucumber-ui-new-steps',
-        ],
-      ];
-
-      $form['cucumber_ui_new_scenario']['cucumber_ui_javascript'] = [
-        '#type' => 'checkbox',
-        '#title' => $this->t('Needs a real browser'),
-        '#default_value' => $config->get('needs_browser'),
-        '#description' => $this->t('Check this if this test needs a real browser, which supports JavaScript, in order to perform actions that happen without reloading the page.'),
-      ];
-    }
-    elseif ($editing_mode == 'free_text') {
+   if ($editing_mode == 'free_text') {
 
       $form['cucumber_ui_new_feature'] = [
         '#type' => 'markup',
@@ -309,12 +214,7 @@ class CucumberUiNew extends FormBase {
 
       $file = $features_path . '/' . $formValues['cucumber_ui_feature'] . '.feature';
 
-      if ($editing_mode == 'guided_entry') {
-        $feature = file_get_contents($file);
-        $scenario = $this->generateScenario($formValues);
-        $content = $feature . "\n" . $scenario;
-      }
-      elseif ($editing_mode == 'free_text') {
+    if ($editing_mode == 'free_text') {
         $content = $formValues['free_text'];
       }
 
@@ -386,18 +286,17 @@ class CucumberUiNew extends FormBase {
       return file_get_contents($default_feature_path);
     }
     else {
-      return '
-        Feature: Website requeirment: Website home page.
-          As a visitor to the website 
-          I want to navigate to the home page
-          So that I will be able to see all homepage content
+      $default_feature = '
+Feature: Example test for drupal.org about page
+As a tester
+I want to be able to test the webship.co site
+So that I know it is working
 
-          @javascript @init @check
-          Scenario: check the welcome message at the homepage
-            Given I am an anonymous user
-            When I go to the homepage
-            Then I should see "No front page content has been created yet."
-      ';
+  Scenario: Check the drupal.org about page
+    Given I go to "https://www.drupal.org/about"
+     Then I should see "Drupal is content management software."
+';
+      return trim($default_feature);
     }
 
   }
@@ -423,12 +322,7 @@ class CucumberUiNew extends FormBase {
     $file_user_time = 'user-' . date('Y-m-d_h-m-s');
     $file = $features_path . '/' . $file_user_time . '.feature';
 
-    if ($editing_mode == 'guided_entry') {
-      $title = $formValues['cucumber_ui_title'];
-      $test = "Feature: $title\n  In order to test \"$title\"\n\n";
-      $test .= $this->generateScenario($formValues);
-    }
-    elseif ($editing_mode == 'free_text') {
+    if ($editing_mode == 'free_text') {
       $test = $formValues['free_text'];
     }
 

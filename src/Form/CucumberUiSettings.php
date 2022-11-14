@@ -103,11 +103,10 @@ class CucumberUiSettings extends ConfigFormBase {
 
     $editing_mode_default_value = $config->get('editing_mode');
     if (empty($editing_mode_default_value)) {
-      $editing_mode_default_value = 'guided_entry';
+      $editing_mode_default_value = 'free_text';
     }
 
     $editing_mode_options = [
-      'guided_entry' => $this->t('Guided entry'),
       'free_text' => $this->t('Free text'),
     ];
 
@@ -119,27 +118,6 @@ class CucumberUiSettings extends ConfigFormBase {
           <div class="panel">
             <h3 class="panel__title">' . $this->t('Editing Mode') . '</h3>
             <div class="panel__content">',
-    ];
-
-    $form['http_auth_headless_only'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Enable HTTP authentication only for headless testing.'),
-      '#default_value' => $config->get('http_auth_headless_only'),
-      '#description' => $this->t('Sometimes testing using Selenium (or other driver that allows JavaScript) does not handle HTTP authentication well, for example when you have some link with some JavaScript behavior attached. On these cases, you may enable this HTTP authentication only for headless testing and find another solution for drivers that allow JavaScript (for example, with Selenium + JavaScript you can use the extension Auto Auth and save the credentials on a Firefox profile).'),
-    ];
-
-    $form['needs_browser'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Needs a real browser'),
-      '#default_value' => $config->get('needs_browser'),
-      '#description' => $this->t('Check this if this test needs a real browser driver using Selenium - which supports JavaScript - in order to perform actions that happen without reloading the page.'),
-    ];
-
-    $form['save_user_testing_features'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Save user testing features'),
-      '#default_value' => $config->get('save_user_testing_features'),
-      '#description' => $this->t('Check if you want to save user testing features in the Cucumber features path.'),
       '#suffix' => '</div></div></div></div>',
     ];
 

@@ -288,7 +288,7 @@ class CucumberUiController extends ControllerBase {
     $config = $this->configFactory->getEditable('cucumber_ui.settings');
     $cucumber_config_path = $config->get('config_path');
 
-    $cmd = "cd $cucumber_config_path; node ./node_modules/webship-js/bin/steplist";
+    $cmd = "cd $cucumber_config_path; node ./node_modules/webship-js/steplist -c '$cucumber_config_path/nightwatch.conf.js' -f 'html-spaces'";
     $output = shell_exec($cmd);
     // $output = nl2br($output);
     $build = [
@@ -305,7 +305,7 @@ class CucumberUiController extends ControllerBase {
     $config = $this->configFactory->getEditable('cucumber_ui.settings');
     $cucumber_config_path = $config->get('config_path');
 
-    $command = "cd $cucumber_config_path; node ./node_modules/webship-js/bin/steplist -i";
+    $command = "cd $cucumber_config_path; node ./node_modules/webship-js/steplist -i -c '$cucumber_config_path/nightwatch.conf.js' -f 'html-spaces'";
 
     $output = shell_exec($command);
     // $output = nl2br($output);
@@ -337,7 +337,7 @@ class CucumberUiController extends ControllerBase {
     $config = $this->configFactory->getEditable('cucumber_ui.settings');
     $cucumber_config_path = $config->get('config_path');
 
-    $cmd = "cd $cucumber_config_path; node ./node_modules/webship-js/bin/steplist";
+    $cmd = "cd $cucumber_config_path; node ./node_modules/webship-js/steplist -c '$cucumber_config_path/nightwatch.conf.js' -f 'html-spaces'";
     $output = shell_exec($cmd);
 
     $cucumberList = [];

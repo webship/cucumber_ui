@@ -166,3 +166,12 @@
 .panel__content {
   padding: 0 !important;
 }
+
+#drupal-off-canvas{
+  background: white;
+
+  & .info {
+    border: 4px solid #eee;
+    padding: 2rem;
+   }
+}

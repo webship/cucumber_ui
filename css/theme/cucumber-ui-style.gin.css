@@ -1,9 +1,5 @@
 #cucumber-ui-output {
-  display: block;
-  height: 44.44444rem;
-  margin: 0;
-  border: 1px solid var(--colorGinFormElementBorder);
-  background: var(--colorGinLayer2Background)
+  display: block;   height: 44.44444rem;   margin: 0;   border: 1px solid var(--colorGinFormElementBorder);   background: var(--colorGinLayer2Background)
 }
 
 #cucumber-ui-output table {
@@ -11,8 +7,7 @@
   }
 
 #cucumber-ui-status {
-    font-weight: bold;
-    line-height: 0.88889rem
+    font-weight: bold;     line-height: 0.88889rem
   }
 
 #cucumber-ui-status span {
@@ -63,8 +58,7 @@
       }
 
 #cucumber-ui-new-steps.form-type-textfield .form-text.form-rich-processed {
-        color: transparent;
-        background-position: 100% 2px
+        color: transparent;         background-position: 100% 2px
       }
 
 #cucumber-ui-new-steps.form-type-textfield .form-text.form-rich-processed.throbbing {
@@ -96,9 +90,7 @@
   }
 
 #cucumber-ui-new-steps .sort-up {
-    left: 0.16667rem;
-    top: 0.61111rem;
-    background-image: url(../../images/up.png)
+    left: 0.16667rem;     top: 0.61111rem;     background-image: url(../../images/up.png)
   }
 
 #cucumber-ui-new-steps .sort-up:hover {
@@ -107,9 +99,7 @@
         }
 
 #cucumber-ui-new-steps .sort-down {
-    left: 0.16667rem;
-    top: 1.27778rem;
-    background-image: url(../../images/down.png)
+    left: 0.16667rem;     top: 1.27778rem;     background-image: url(../../images/down.png)
 
   }
 
@@ -118,9 +108,7 @@
         }
 
 #cucumber-ui-new-steps .remove {
-    right: 2px;
-    top: 0.88889rem;
-    background-image: url(../../images/remove.png)
+    right: 2px;     top: 0.88889rem;     background-image: url(../../images/remove.png)
   }
 
 #cucumber-ui-new-steps .remove:hover {
@@ -132,11 +120,7 @@
         }
 
 #cucumber-ui-new-steps .fieldset__wrapper .form-item .fieldset__wrapper {
-            display: flex;
-            flex-direction: row;
-            flex-wrap: nowrap;
-            padding: 0;
-            margin: 0.16667rem 0
+            display: flex;             flex-direction: row;             flex-wrap: nowrap;             padding: 0;             margin: 0.16667rem 0
         }
 
 #cucumber-ui-new-steps .fieldset__wrapper .form-item .fieldset__wrapper .form-element--type-select {
@@ -186,3 +170,12 @@
 .panel__content {
   padding: 0 var(--ginSpacingDensityDefault) !important;
 }
+
+#drupal-off-canvas{
+  background: var(--colorGinLayerBackground)
+}
+
+#drupal-off-canvas .info {
+    border: 4px solid var(--colorGinLayerBorder);
+    padding: 3 var(--ginSpacingDensityDefault);
+   }

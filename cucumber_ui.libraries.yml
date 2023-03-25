@@ -16,7 +16,7 @@ run-tests-scripts:
     - core/drupal
     - core/drupal.ajax
     - core/jquery
-    - core/jquery.once
+    - core/once
 new-test-scripts:
   version: VERSION
   js:
@@ -25,19 +25,17 @@ new-test-scripts:
     - core/drupal
     - core/drupal.ajax
     - core/jquery
-    - core/jquery.once
+    - core/once
 ace-editor:
-  remote: https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js
-  version: 1.4.12
+  remote: https://cdnjs.cloudflare.com/ajax/libs/ace/1.16.0/ace.js
+  version: 1.16.0
   license:
     name: Ace Editor
     url: https://ace.c9.io
   js:
-    //pagecdn.io/lib/ace/1.4.12/ace.js: { type: external, minified: true }
-    //pagecdn.io/lib/ace/1.4.12/ext-language_tools.js:
-      { type: external, minified: true }
-    //pagecdn.io/lib/ace/1.4.12/ext-keybinding_menu.js:
-      { type: external, minified: true }
-    js/cucumber-ui.ace-editor.js: {}
+    //cdnjs.cloudflare.com/ajax/libs/ace/1.16.0/ace.min.js: { type: external, minified: true }
+    //cdnjs.cloudflare.com/ajax/libs/ace/1.16.0/ext-language_tools.min.js: { type: external, minified: true }
+    //cdnjs.cloudflare.com/ajax/libs/ace/1.16.0/ext-keybinding_menu.min.js: { type: external, minified: true }
+    js/behat-ui.ace-editor.js: {}
   dependencies:
     - core/jquery.ui.resizable

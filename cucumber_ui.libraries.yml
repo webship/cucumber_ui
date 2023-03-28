@@ -36,6 +36,6 @@ ace-editor:
     //cdnjs.cloudflare.com/ajax/libs/ace/1.16.0/ace.min.js: { type: external, minified: true }
     //cdnjs.cloudflare.com/ajax/libs/ace/1.16.0/ext-language_tools.min.js: { type: external, minified: true }
     //cdnjs.cloudflare.com/ajax/libs/ace/1.16.0/ext-keybinding_menu.min.js: { type: external, minified: true }
-    js/behat-ui.ace-editor.js: {}
+    js/cucumber-ui.ace-editor.js: {}
   dependencies:
     - core/jquery.ui.resizable

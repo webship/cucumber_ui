@@ -23,8 +23,6 @@
     }
   },
   "require": {
-    "drupal/core": "^9 || ^10",
-    "drupal/drupal-extension": "~4.0 || ~5.0",
-    "webship/cucumber-html-formatter": "~1.0"
+    "drupal/core": "^9 || ^10"
   }
 }

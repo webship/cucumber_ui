@@ -1,6 +1,6 @@
 {
   "name": "cucumber_ui",
-  "description": "Create and run Cucumber/Mink tests from the web interface.",
+  "description": "Create and run Cucumber/Gherkin tests from the web interface using webship-js.",
   "private": true,
   "engines": {
     "yarn": ">= 1.6",
@@ -14,7 +14,7 @@
     "Automated Testing",
     "Automates Functional Testing"
   ],
-  "author": "Webship",
+  "author": "Webship.co",
   "scripts": {
     "phpcs": "phpcs --standard=./.phpcs.xml .",
     "phpcbf": "phpcbf --standard=./.phpcs.xml .",
@@ -24,7 +24,9 @@
     "theme:build": "node scripts/css/postcss-build.js",
     "theme:watch": "node scripts/css/postcss-watch.js"
   },
-  "dependencies": {  },
+  "dependencies": { 
+    "webship-js": "~1.0"
+   },
   "devDependencies": { 
     "autoprefixer": "~9",
     "@babel/core": "~7",

@@ -16,169 +16,174 @@ use Drupal\Core\Messenger\MessengerInterface;
 /**
  * Cucumber Ui New Scenarios/Feature class.
  */
-class CucumberUiNew extends FormBase {
+class CucumberUiNew extends FormBase
+{
 
-  /**
-   * The config factory service.
-   *
-   * @var \Drupal\Core\Config\ConfigFactory
-   */
-  protected $configFactory;
+    /**
+     * The config factory service.
+     *
+     * @var \Drupal\Core\Config\ConfigFactory
+     */
+    protected $configFactory;
 
-  /**
-   * The current request.
-   *
-   * @var \Symfony\Component\HttpFoundation\Request
-   */
-  protected $currentRequest;
+    /**
+     * The current request.
+     *
+     * @var \Symfony\Component\HttpFoundation\Request
+     */
+    protected $currentRequest;
 
-  /**
-   * The messenger service.
-   *
-   * @var \Drupal\Core\Messenger\MessengerInterface
-   */
-  protected $messenger;
+    /**
+     * The messenger service.
+     *
+     * @var \Drupal\Core\Messenger\MessengerInterface
+     */
+    protected $messenger;
 
-  /**
-   * The file system service.
-   *
-   * @var \Drupal\Core\File\FileSystemInterface
-   */
-  protected $fileSystem;
+    /**
+     * The file system service.
+     *
+     * @var \Drupal\Core\File\FileSystemInterface
+     */
+    protected $fileSystem;
 
-  /**
-   * Constructs a CucumberUiNew object.
-   *
-   * @param \Drupal\Core\Config\ConfigFactory $config_factory
-   *   The config factory service.
-   * @param \Symfony\Component\HttpFoundation\Request $current_request
-   *   The current request.
-   * @param \Drupal\Core\Messenger\MessengerInterface $messenger
-   *   The messenger service.
-   * @param \Drupal\Core\File\FileSystemInterface $file_system
-   *   The file system service.
-   */
-  public function __construct(ConfigFactory $config_factory, Request $current_request, MessengerInterface $messenger, FileSystemInterface $file_system) {
-    $this->configFactory = $config_factory;
-    $this->currentRequest = $current_request;
-    $this->messenger = $messenger;
-    $this->fileSystem = $file_system;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container) {
-    return new static(
-      $container->get('config.factory'),
-      $container->get('request_stack')->getCurrentRequest(),
-      $container->get('messenger'),
-      $container->get('file_system')
-    );
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getFormId() {
-    return 'cucumber_ui_new_form';
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function buildForm(array $form, FormStateInterface $form_state) {
-
-    $active_theme = \Drupal::theme()->getActiveTheme();
-    $base_themes = (array) $active_theme->getBaseThemeExtensions();
-
-    if ($active_theme->getName() === 'gin'|| array_key_exists('gin', $base_themes)) {
-      $form['#attached']['library'][] = 'cucumber_ui/style.gin';
-    }
-    elseif ($active_theme->getName() === 'claro'|| array_key_exists('claro', $base_themes)) {
-      $form['#attached']['library'][] = 'cucumber_ui/style.claro';
+    /**
+     * Constructs a CucumberUiNew object.
+     *
+     * @param \Drupal\Core\Config\ConfigFactory         $config_factory
+     *   The config factory service.
+     * @param \Symfony\Component\HttpFoundation\Request $current_request
+     *   The current request.
+     * @param \Drupal\Core\Messenger\MessengerInterface $messenger
+     *   The messenger service.
+     * @param \Drupal\Core\File\FileSystemInterface     $file_system
+     *   The file system service.
+     */
+    public function __construct(ConfigFactory $config_factory, Request $current_request, MessengerInterface $messenger, FileSystemInterface $file_system)
+    {
+        $this->configFactory = $config_factory;
+        $this->currentRequest = $current_request;
+        $this->messenger = $messenger;
+        $this->fileSystem = $file_system;
     }
 
-    $form['#attached']['library'][] = 'cucumber_ui/new-test-scripts';
+    /**
+     * {@inheritdoc}
+     */
+    public static function create(ContainerInterface $container)
+    {
+        return new static(
+            $container->get('config.factory'),
+            $container->get('request_stack')->getCurrentRequest(),
+            $container->get('messenger'),
+            $container->get('file_system')
+        );
+    }
 
-    $config = $this->configFactory->getEditable('cucumber_ui.settings');
+    /**
+     * {@inheritdoc}
+     */
+    public function getFormId()
+    {
+        return 'cucumber_ui_new_form';
+    }
 
-    $editing_mode = $config->get('editing_mode');
-   if ($editing_mode == 'free_text') {
+    /**
+     * {@inheritdoc}
+     */
+    public function buildForm(array $form, FormStateInterface $form_state)
+    {
 
-      $form['cucumber_ui_new_feature'] = [
-        '#type' => 'markup',
-        '#markup' => '<div class="layout-row clearfix">'
-        . '  <div class="layout-column layout-column--half">'
-        . '    <div id="cucumber-ui-new-scenario" class="panel">'
-        . '      <h3 class="panel__title">' . $this->t('New Feature') . '</h3>'
-        . '      <div class="panel__content">',
-      ];
+        $active_theme = \Drupal::theme()->getActiveTheme();
+        $base_themes = (array) $active_theme->getBaseThemeExtensions();
 
-      $cucumber_ui_steps_link = new Url('cucumber_ui.cucumber_dl');
-      $form['cucumber_ui_new_feature']['cucumber_ui_steps_link'] = [
-        '#type' => 'markup',
-        '#markup' => '<a class="button use-ajax"
+        if ($active_theme->getName() === 'gin'|| array_key_exists('gin', $base_themes)) {
+            $form['#attached']['library'][] = 'cucumber_ui/style.gin';
+        }
+        elseif ($active_theme->getName() === 'claro'|| array_key_exists('claro', $base_themes)) {
+            $form['#attached']['library'][] = 'cucumber_ui/style.claro';
+        }
+
+        $form['#attached']['library'][] = 'cucumber_ui/new-test-scripts';
+
+        $config = $this->configFactory->getEditable('cucumber_ui.settings');
+
+        $editing_mode = $config->get('editing_mode');
+        if ($editing_mode == 'free_text') {
+
+            $form['cucumber_ui_new_feature'] = [
+            '#type' => 'markup',
+            '#markup' => '<div class="layout-row clearfix">'
+            . '  <div class="layout-column layout-column--half">'
+            . '    <div id="cucumber-ui-new-scenario" class="panel">'
+            . '      <h3 class="panel__title">' . $this->t('New Feature') . '</h3>'
+            . '      <div class="panel__content">',
+            ];
+
+            $cucumber_ui_steps_link = new Url('cucumber_ui.cucumber_dl');
+            $form['cucumber_ui_new_feature']['cucumber_ui_steps_link'] = [
+            '#type' => 'markup',
+            '#markup' => '<a class="button use-ajax"
               data-dialog-options="{&quot;width&quot;:500}" 
               data-dialog-renderer="off_canvas" 
               data-dialog-type="dialog"
               href="' . $this->currentRequest->getSchemeAndHttpHost() . $cucumber_ui_steps_link->toString() . '" >' . $this->t('Check available steps') . '</a>',
-      ];
+            ];
 
-      $cucumber_ui_steps_link_with_info = new Url('cucumber_ui.cucumber_di');
-      $form['cucumber_ui_new_feature']['cucumber_ui_steps_link_with_info'] = [
-        '#type' => 'markup',
-        '#markup' => '<a class="button use-ajax"
+            $cucumber_ui_steps_link_with_info = new Url('cucumber_ui.cucumber_di');
+            $form['cucumber_ui_new_feature']['cucumber_ui_steps_link_with_info'] = [
+            '#type' => 'markup',
+            '#markup' => '<a class="button use-ajax"
               data-dialog-options="{&quot;width&quot;:500}" 
               data-dialog-renderer="off_canvas" 
               data-dialog-type="dialog"
               href="' . $this->currentRequest->getSchemeAndHttpHost() . $cucumber_ui_steps_link_with_info->toString() . '" >' . $this->t('Full steps with info') . '</a>',
-      ];
+            ];
 
-      $form['cucumber_ui_new_feature']['free_text'] = [
-        '#type' => 'textarea',
-        '#rows' => 30,
-        '#resizable' => TRUE,
-        '#attributes' => [
-          'class' => ['free-text-ace-editor'],
-        ],
-        '#default_value' => $this->getFeature(),
-      ];
-      $form['cucumber_ui_new_feature']['free_text_ace_editor'] = [
+            $form['cucumber_ui_new_feature']['free_text'] = [
+            '#type' => 'textarea',
+            '#rows' => 30,
+            '#resizable' => true,
+            '#attributes' => [
+            'class' => ['free-text-ace-editor'],
+            ],
+            '#default_value' => $this->getFeature(),
+            ];
+            $form['cucumber_ui_new_feature']['free_text_ace_editor'] = [
+            '#type' => 'markup',
+            '#markup' => '<div id="free_text_ace_editor">' . $this->getFeature() . '</div>',
+            ];
+            $form['#attached']['library'][] = 'cucumber_ui/ace-editor';
+        }
+
+        // List of features in the selected cucumber features folder.
+        $features_options = $this->getExistingFeatures();
+        $features_default_value = 'default';
+        if (count($features_options) > 0) {
+            if (!isset($features_options['default'])) {
+                $features_default_value = array_key_first([$features_default_value]);
+            }
+        }
+        $form['cucumber_ui_new_scenario']['cucumber_ui_feature'] = [
+        '#type' => 'radios',
+        '#title' => $this->t('Feature'),
+        '#options' => $features_options,
+        '#default_value' => $features_default_value,
+        '#suffix' => '</div></div></div>',
+        ];
+
+        $form['cucumber_ui_scenario_output'] = [
         '#type' => 'markup',
-        '#markup' => '<div id="free_text_ace_editor">' . $this->getFeature() . '</div>',
-      ];
-      $form['#attached']['library'][] = 'cucumber_ui/ace-editor';
-    }
-
-    // List of features in the selected cucumber features folder.
-    $features_options = $this->getExistingFeatures();
-    $features_default_value = 'default';
-    if (count($features_options) > 0) {
-      if (!isset($features_options['default'])) {
-        $features_default_value = array_key_first([$features_default_value]);
-      }
-    }
-    $form['cucumber_ui_new_scenario']['cucumber_ui_feature'] = [
-      '#type' => 'radios',
-      '#title' => $this->t('Feature'),
-      '#options' => $features_options,
-      '#default_value' => $features_default_value,
-      '#suffix' => '</div></div></div>',
-    ];
-
-    $form['cucumber_ui_scenario_output'] = [
-      '#type' => 'markup',
-      '#markup' => '<div class="layout-column layout-column--half">
+        '#markup' => '<div class="layout-column layout-column--half">
             <div class="panel">
               <h3 class="panel__title">' . $this->t('Scenario output') . '</h3>
               <div id="cucumber-ui-scenario-output" class="panel__content">',
-    ];
+        ];
 
-    $form['cucumber_ui_run'] = [
-      '#type' => 'button',
-      '#value' => $this->t('Run >>'),
-      '#ajax' => [
+        $form['cucumber_ui_run'] = [
+        '#type' => 'button',
+        '#value' => $this->t('Run >>'),
+        '#ajax' => [
         'callback' => '::runSingleTest',
         'event' => 'click',
         'wrapper' => 'cucumber-ui-output',
@@ -186,117 +191,120 @@ class CucumberUiNew extends FormBase {
           'type' => 'throbber',
           'message' => $this->t('Running the testing feature...'),
         ],
-      ],
-    ];
+        ],
+        ];
 
-    $form['cucumber_ui_create'] = [
-      '#type' => 'submit',
-      '#value' => $this->t('Download updated feature'),
-      '#attribute' => [
+        $form['cucumber_ui_create'] = [
+        '#type' => 'submit',
+        '#value' => $this->t('Download updated feature'),
+        '#attribute' => [
         'id' => 'cucumber-ui-create',
         'classes' => ['button'],
-      ],
-    ];
+        ],
+        ];
 
-    $form['cucumber_ui_output'] = [
-      '#title' => $this->t('Tests output'),
-      '#type' => 'markup',
-      '#markup' => '<div id="cucumber-ui-output"><div id="cucumber-ui-output-inner"></div></div></div>',
-    ];
+        $form['cucumber_ui_output'] = [
+        '#title' => $this->t('Tests output'),
+        '#type' => 'markup',
+        '#markup' => '<div id="cucumber-ui-output"><div id="cucumber-ui-output-inner"></div></div></div>',
+        ];
 
-    return $form;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function submitForm(array &$form, FormStateInterface $form_state) {
-    $triggerdElement = $form_state->getTriggeringElement();
-    $htmlIdofTriggeredElement = $triggerdElement['#id'];
-
-    $config = $this->configFactory->getEditable('cucumber_ui.settings');
-
-    $features_path = $config->get('features_path');
-    $editing_mode = $config->get('editing_mode');
-
-    if ($htmlIdofTriggeredElement == 'edit-cucumber-ui-create') {
-      $formValues = $form_state->getValues();
-
-      $file = $features_path . '/' . $formValues['cucumber_ui_feature'] . '.feature';
-
-    if ($editing_mode == 'free_text') {
-        $content = $formValues['free_text'];
-      }
-
-      $handle = fopen($file, 'w+');
-      fwrite($handle, $content);
-      fclose($handle);
-
-      $file_name = $formValues['cucumber_ui_feature'] . '.feature';
-      $file_size = filesize($file);
-      $response = new Response();
-      $response->headers->set('Content-Type', 'text/x-cucumber');
-      $response->headers->set('Content-Disposition', 'attachment; filename="' . $file_name . '"');
-      $response->headers->set('Pragma', 'no-cache');
-      $response->headers->set('Content-Transfer-Encoding', 'binary');
-      $response->headers->set('Content-Length', $file_size);
-      $form_state->disableRedirect();
-      readfile($file);
-      return $response->send();
-
+        return $form;
     }
-  }
 
-  /**
-   * Get existing features.
-   */
-  public function getExistingFeatures() {
+    /**
+     * {@inheritdoc}
+     */
+    public function submitForm(array &$form, FormStateInterface $form_state)
+    {
+        $triggerdElement = $form_state->getTriggeringElement();
+        $htmlIdofTriggeredElement = $triggerdElement['#id'];
 
-    $config = $this->configFactory->getEditable('cucumber_ui.settings');
+        $config = $this->configFactory->getEditable('cucumber_ui.settings');
 
-    $config_path = $config->get('config_path');
-    $features_path = $config->get('features_path');
+        $features_path = $config->get('features_path');
+        $editing_mode = $config->get('editing_mode');
 
-    $features = [];
+        if ($htmlIdofTriggeredElement == 'edit-cucumber-ui-create') {
+            $formValues = $form_state->getValues();
 
-    // $features_path = $config_path . '/' . $features_path;
-    if ($this->fileSystem->prepareDirectory($features_path, FileSystemInterface::CREATE_DIRECTORY)) {
-      if ($handle = opendir($config_path . '/' . $features_path)) {
-        while (FALSE !== ($file = readdir($handle))) {
-          if (preg_match('/\.feature$/', $file)) {
-            $feature = preg_replace('/\.feature$/', '', $file);
-            $name = $file;
-            $features[$feature] = $name;
-          }
+            $file = $features_path . '/' . $formValues['cucumber_ui_feature'] . '.feature';
+
+            if ($editing_mode == 'free_text') {
+                  $content = $formValues['free_text'];
+            }
+
+            $handle = fopen($file, 'w+');
+            fwrite($handle, $content);
+            fclose($handle);
+
+            $file_name = $formValues['cucumber_ui_feature'] . '.feature';
+            $file_size = filesize($file);
+            $response = new Response();
+            $response->headers->set('Content-Type', 'text/x-cucumber');
+            $response->headers->set('Content-Disposition', 'attachment; filename="' . $file_name . '"');
+            $response->headers->set('Pragma', 'no-cache');
+            $response->headers->set('Content-Transfer-Encoding', 'binary');
+            $response->headers->set('Content-Length', $file_size);
+            $form_state->disableRedirect();
+            readfile($file);
+            return $response->send();
+
         }
-      }
-    }
-    else {
-      $this->messenger->addError($this->t('The Features directory does not exists or is not writable.'));
     }
 
-    if (count($features) < 1) {
-      $features['default'] = 'default.feature';
+    /**
+     * Get existing features.
+     */
+    public function getExistingFeatures()
+    {
+
+        $config = $this->configFactory->getEditable('cucumber_ui.settings');
+
+        $config_path = $config->get('config_path');
+        $features_path = $config->get('features_path');
+
+        $features = [];
+
+        // $features_path = $config_path . '/' . $features_path;
+        if ($this->fileSystem->prepareDirectory($features_path, FileSystemInterface::CREATE_DIRECTORY)) {
+            if ($handle = opendir($config_path . '/' . $features_path)) {
+                while (false !== ($file = readdir($handle))) {
+                    if (preg_match('/\.feature$/', $file)) {
+                        $feature = preg_replace('/\.feature$/', '', $file);
+                        $name = $file;
+                        $features[$feature] = $name;
+                    }
+                }
+            }
+        }
+        else {
+            $this->messenger->addError($this->t('The Features directory does not exists or is not writable.'));
+        }
+
+        if (count($features) < 1) {
+            $features['default'] = 'default.feature';
+        }
+
+        return $features;
     }
 
-    return $features;
-  }
+    /**
+     * Get additional features.
+     */
+    public function getFeature($feature_name = 'default.feature')
+    {
+        $config = $this->configFactory->getEditable('cucumber_ui.settings');
 
-  /**
-   * Get additional features.
-   */
-  public function getFeature($feature_name = 'default.feature') {
-    $config = $this->configFactory->getEditable('cucumber_ui.settings');
+        $features_path = $config->get('features_path');
 
-    $features_path = $config->get('features_path');
+        $default_feature_path = $features_path . '/' . $feature_name;
 
-    $default_feature_path = $features_path . '/' . $feature_name;
-
-    if (file_exists($default_feature_path)) {
-      return file_get_contents($default_feature_path);
-    }
-    else {
-      $default_feature = '
+        if (file_exists($default_feature_path)) {
+            return file_get_contents($default_feature_path);
+        }
+        else {
+            $default_feature = '
 Feature: Example test for drupal.org about page
 As a tester
 I want to be able to test the webship.co site
@@ -306,136 +314,139 @@ So that I know it is working
     Given I go to "https://www.drupal.org/about"
      Then I should see "Drupal is content management software."
 ';
-      return trim($default_feature);
+            return trim($default_feature);
+        }
+
     }
 
-  }
+    /**
+     * Run a single test.
+     */
+    public function runSingleTest(array &$form, FormStateInterface $form_state)
+    {
+        $config = $this->configFactory->getEditable('cucumber_ui.settings');
+        $bin_path = '';
+        $config_path = $config->get('config_path');
+        $config_file = '';
+        $features_path = $config->get('features_path');
 
-  /**
-   * Run a single test.
-   */
-  public function runSingleTest(array &$form, FormStateInterface $form_state) {
-    $config = $this->configFactory->getEditable('cucumber_ui.settings');
-    $bin_path = '';
-    $config_path = $config->get('config_path');
-    $config_file = '';
-    $features_path = $config->get('features_path');
+        $html_report = $config->get('html_report');
+        $html_report_dir = $config->get('html_report_dir');
+        $log_report_dir = $config->get('log_report_dir');
+        $save_user_testing_features = $config->get('save_user_testing_features');
+        $editing_mode = $config->get('editing_mode');
 
-    $html_report = $config->get('html_report');
-    $html_report_dir = $config->get('html_report_dir');
-    $log_report_dir = $config->get('log_report_dir');
-    $save_user_testing_features = $config->get('save_user_testing_features');
-    $editing_mode = $config->get('editing_mode');
+        $formValues = $form_state->getValues();
+        // Write to temporary file.
+        $file_user_time = 'user-' . date('Y-m-d_h-m-s');
+        $file = $features_path . '/' . $file_user_time . '.feature';
 
-    $formValues = $form_state->getValues();
-    // Write to temporary file.
-    $file_user_time = 'user-' . date('Y-m-d_h-m-s');
-    $file = $features_path . '/' . $file_user_time . '.feature';
+        if ($editing_mode == 'free_text') {
+            $test = $formValues['free_text'];
+        }
 
-    if ($editing_mode == 'free_text') {
-      $test = $formValues['free_text'];
-    }
+        $handle = fopen($file, 'w+');
+        fwrite($handle, $test);
+        fclose($handle);
 
-    $handle = fopen($file, 'w+');
-    fwrite($handle, $test);
-    fclose($handle);
+        // Run file.
+        $test_file = $features_path . '/' . $file_user_time . '.feature';
+        $command = '';
 
-    // Run file.
-    $test_file = $features_path . '/' . $file_user_time . '.feature';
-    $command = '';
+        if ($html_report) {
 
-    if ($html_report) {
+            if (isset($html_report_dir) && $html_report_dir != '') {
 
-      if (isset($html_report_dir) && $html_report_dir != '') {
+                if ($this->fileSystem->prepareDirectory($html_report_dir, FileSystemInterface::CREATE_DIRECTORY)) {
+                  
+                  $command = "cd $config_path; yarn test;";
+                }
+                else {
+                    $this->messenger->addError($this->t('The HTML Output directory does not exists or is not writable.'));
+                }
+            }
+            else {
+                $this->messenger->addError($this->t('HTML report directory and file is not configured.'));
+            }
 
-        if ($this->fileSystem->prepareDirectory($html_report_dir, FileSystemInterface::CREATE_DIRECTORY)) {
-          $command = "cd $config_path;$bin_path  --config=$config_file $test_file --format pretty --out std --format html --out $html_report_dir";
         }
         else {
-          $this->messenger->addError($this->t('The HTML Output directory does not exists or is not writable.'));
+
+            if (isset($log_report_dir) && $log_report_dir != '') {
+
+                if ($this->fileSystem->prepareDirectory($log_report_dir, FileSystemInterface::CREATE_DIRECTORY)) {
+                    $log_report_output_file = $log_report_dir . '/cucumber-ui-test.log';
+                }
+                else {
+                    $this->messenger->addError($this->t('The Log Output directory does not exists or is not writable.'));
+                }
+            }
+            else {
+                $this->messenger->addError($this->t('The Log directory and file is not configured.'));
+            }
         }
-      }
-      else {
-        $this->messenger->addError($this->t('HTML report directory and file is not configured.'));
-      }
 
-    }
-    else {
+        $output = shell_exec($command);
 
-      if (isset($log_report_dir) && $log_report_dir != '') {
+        if (isset($output)) {
+            $report_html_file_name_and_path = $html_report_dir . '/index.html';
 
-        if ($this->fileSystem->prepareDirectory($log_report_dir, FileSystemInterface::CREATE_DIRECTORY)) {
-          $log_report_output_file = $log_report_dir . '/bethat-ui-test.log';
-          $command = "cd $config_path;$bin_path --config=$config_file  $test_file --format pretty --out std > $log_report_output_file";
+            $report_html_handle = fopen($report_html_file_name_and_path, 'r');
+            $report_html = fread($report_html_handle, filesize($report_html_file_name_and_path));
+            if (isset($report_html)) {
+                fclose($report_html_handle);
+
+                if (!$save_user_testing_features) {
+                    unlink($file);
+                }
+            }
+
         }
-        else {
-          $this->messenger->addError($this->t('The Log Output directory does not exists or is not writable.'));
+
+        $report_url = new Url('cucumber_ui.report');
+
+        $form['cucumber_ui_output'] = [
+        '#title' => $this->t('Tests output'),
+        '#type' => 'markup',
+        '#markup' => Markup::create('<div id="cucumber-ui-output"><iframe id="cucumber-ui-output-iframe"  src="' . $this->currentRequest->getSchemeAndHttpHost() . $report_url->toString() . '" width="100%" height="100%"></iframe></div>'),
+        ];
+
+        return $form['cucumber_ui_output'];
+    }
+
+    /**
+     * Given a form_state, return a Cucumber scenario.
+     */
+    public function generateScenario($formValues)
+    {
+        $scenario = "";
+        if ($formValues['cucumber_ui_javascript']) {
+            $scenario .= " @javascript";
         }
-      }
-      else {
-        $this->messenger->addError($this->t('The Log directory and file is not configured.'));
-      }
-    }
+        $title = $formValues['cucumber_ui_title'];
+        $scenario .= "\nScenario: $title\n";
 
-    $output = shell_exec($command);
+        $steps_count = count($formValues['cucumber_ui_steps']);
 
-    if (isset($output)) {
-      $report_html_file_name_and_path = $html_report_dir . '/index.html';
+        for ($i = 0; $i < $steps_count; $i++) {
+            $type = $formValues['cucumber_ui_steps'][$i]['type'];
+            $step = $formValues['cucumber_ui_steps'][$i]['step'];
 
-      $report_html_handle = fopen($report_html_file_name_and_path, 'r');
-      $report_html = fread($report_html_handle, filesize($report_html_file_name_and_path));
-      if (isset($report_html)) {
-        fclose($report_html_handle);
-
-        if (!$save_user_testing_features) {
-          unlink($file);
+            if (!empty($type) && !empty($step)) {
+                $step = preg_replace('/\n\|/', "\n  |", preg_replace('/([:\|])\|/', "$1\n|", $step));
+                $scenario .= "  $type $step\n";
+            }
         }
-      }
 
+        return $scenario;
     }
 
-    $report_url = new Url('cucumber_ui.report');
-
-    $form['cucumber_ui_output'] = [
-      '#title' => $this->t('Tests output'),
-      '#type' => 'markup',
-      '#markup' => Markup::create('<div id="cucumber-ui-output"><iframe id="cucumber-ui-output-iframe"  src="' . $this->currentRequest->getSchemeAndHttpHost() . $report_url->toString() . '" width="100%" height="100%"></iframe></div>'),
-    ];
-
-    return $form['cucumber_ui_output'];
-  }
-
-  /**
-   * Given a form_state, return a Cucumber scenario.
-   */
-  public function generateScenario($formValues) {
-    $scenario = "";
-    if ($formValues['cucumber_ui_javascript']) {
-      $scenario .= " @javascript";
+    /**
+     * Cucumber Ui add step AJAX.
+     */
+    public function ajaxAddStep($form, $form_state)
+    {
+        return $form['cucumber_ui_new_scenario']['cucumber_ui_steps'];
     }
-    $title = $formValues['cucumber_ui_title'];
-    $scenario .= "\nScenario: $title\n";
-
-    $steps_count = count($formValues['cucumber_ui_steps']);
-
-    for ($i = 0; $i < $steps_count; $i++) {
-      $type = $formValues['cucumber_ui_steps'][$i]['type'];
-      $step = $formValues['cucumber_ui_steps'][$i]['step'];
-
-      if (!empty($type) && !empty($step)) {
-        $step = preg_replace('/\n\|/', "\n  |", preg_replace('/([:\|])\|/', "$1\n|", $step));
-        $scenario .= "  $type $step\n";
-      }
-    }
-
-    return $scenario;
-  }
-
-  /**
-   * Cucumber Ui add step AJAX.
-   */
-  public function ajaxAddStep($form, $form_state) {
-    return $form['cucumber_ui_new_scenario']['cucumber_ui_steps'];
-  }
 
 }

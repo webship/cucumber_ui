@@ -169,7 +169,7 @@ class CucumberUiRunTests extends FormBase {
 
       if (isset($log_report_dir) && $log_report_dir != '') {
 
-        $log_report_output = $log_report_dir . '/bethat-ui-test.log';
+        $log_report_output = $log_report_dir . '/cucumber-ui-test.log';
         if ($log_report_output && file_exists($log_report_output)) {
           $log_report_output_content = nl2br(htmlentities(file_get_contents($log_report_output)));
           $form['cucumber_ui_output'] = [
@@ -248,7 +248,7 @@ class CucumberUiRunTests extends FormBase {
         if (isset($log_report_dir) && $log_report_dir != '') {
 
           if ($this->fileSystem->prepareDirectory($log_report_dir, FileSystemInterface::CREATE_DIRECTORY)) {
-            $log_report_output_file = $log_report_dir . "/bethat-ui-test.log";
+            $log_report_output_file = $log_report_dir . "/cucumber-ui-test.log";
             $command = "cd $config_path;$bin_path --config=$config_file $features_path --format pretty --out std > $log_report_output_file&";
           }
           else {

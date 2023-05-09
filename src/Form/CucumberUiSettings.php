@@ -99,6 +99,18 @@ class CucumberUiSettings extends ConfigFormBase {
       '#default_value' => $config->get('html_report_dir'),
       '#suffix' => '</div></div>',
     ];
+    
+    $form['html_report_formatter'] = [
+      '#title' => $this->t('HTML report format'),
+      '#description' => $this->t('The report formatter.'),
+      '#type' => 'select',
+      '#options' => [
+        'cucumberjs_html_formatter' => $this->t('Cucumber-js HTML formatter'),
+        'bootstrap_html_formatter' => $this->t('Bootstrap HTML formatter'),
+      ],
+      '#default_value' => $config->get('html_report_formatter'),
+      '#suffix' => '</div></div>',
+    ];
 
     $form['log_report_dir'] = [
       '#title' => $this->t('Console log report directory'),

@@ -17,6 +17,9 @@ cucumber_ui.settings:
     html_report_dir:
       type: string
       label: "HTML report directory"
+    html_report_formatter:
+      type: string
+      label: "HTML report formatter"
     log_report_dir:
       type: string
       label: "Log report directory"

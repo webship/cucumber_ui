@@ -332,6 +332,16 @@ So that I know it is working
 
         $html_report = $config->get('html_report');
         $html_report_dir = $config->get('html_report_dir');
+        $html_report_formatter = $config->get('html_report_formatter');
+        $html_report_format = '';
+
+        if ($html_report_formatter == 'cucumberjs_html_formatter') {
+            $html_report_format = "yarn nightwatch --format html:./tests/reports/index.html";
+        }
+        elseif ($html_report_formatter == 'bootstrap_html_formatter') {
+            $html_report_format = "yarn nightwatch --format bootstrap:./tests/reports/index.html";
+        }
+        
         $log_report_dir = $config->get('log_report_dir');
         $save_user_testing_features = $config->get('save_user_testing_features');
         $editing_mode = $config->get('editing_mode');
@@ -357,9 +367,8 @@ So that I know it is working
 
             if (isset($html_report_dir) && $html_report_dir != '') {
 
-                if ($this->fileSystem->prepareDirectory($html_report_dir, FileSystemInterface::CREATE_DIRECTORY)) {
-                  
-                  $command = "cd $config_path; yarn test;";
+                if ($this->fileSystem->prepareDirectory($html_report_dir, FileSystemInterface::CREATE_DIRECTORY)) {     
+                    $command = "cd $config_path; $html_report_format;";          
                 }
                 else {
                     $this->messenger->addError($this->t('The HTML Output directory does not exists or is not writable.'));
@@ -376,6 +385,7 @@ So that I know it is working
 
                 if ($this->fileSystem->prepareDirectory($log_report_dir, FileSystemInterface::CREATE_DIRECTORY)) {
                     $log_report_output_file = $log_report_dir . '/cucumber-ui-test.log';
+                    $command = "cd $config_path; $html_report_format;";
                 }
                 else {
                     $this->messenger->addError($this->t('The Log Output directory does not exists or is not writable.'));

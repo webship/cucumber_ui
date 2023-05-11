@@ -305,15 +305,15 @@ class CucumberUiNew extends FormBase
         }
         else {
             $default_feature = '
-Feature: Example test for drupal.org about page
+Feature: First test for cucumber
 As a tester
-I want to be able to test the webship.co site
+I want to be able to test the cucumber site
 So that I know it is working
 
-  Scenario: Check the drupal.org about page
-    Given I go to "https://www.drupal.org/about"
-     Then I should see "Drupal is content management software."
-';
+    Scenario: Check the cucumber site
+    Given I go to "/user/login"
+        Then I should see "Log in"
+            ';
             return trim($default_feature);
         }
 

@@ -69,13 +69,7 @@ class CucumberUiSettings extends ConfigFormBase {
 
     $form['features_path'] = [
       '#title' => $this->t('Cucumber features directory path'),
-      '#description' => $this->t('The directory path that has the Gherkin script files with <em>.feature</em> extension. The path is relative to the Cucumber configuration directory path. Do not include trailing slash at the end.<br />
-              <b>Examples:</b>
-              <ul>
-                <li>features</li>
-                <li>tests/features</li>
-                <li>tests/features/commerce</li>
-              </ul>'),
+      '#description' => $this->t('The directory full path that has the Gherkin script files with <em>.feature</em> extension. The path is relative to the Cucumber configuration directory path. Do not include trailing slash at the end.'),
       '#type' => 'textfield',
       '#maxlength' => 512,
       '#default_value' => $config->get('features_path'),
@@ -97,7 +91,6 @@ class CucumberUiSettings extends ConfigFormBase {
       '#type' => 'textfield',
       '#maxlength' => 512,
       '#default_value' => $config->get('html_report_dir'),
-      '#suffix' => '</div></div>',
     ];
     
     $form['html_report_formatter'] = [

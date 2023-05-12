@@ -98,6 +98,8 @@ class CucumberUiController extends ControllerBase {
     $html_report = $config->get('html_report');
     $html_report_dir = $config->get('html_report_dir');
     $log_report_dir = $config->get('log_report_dir');
+    $json_report = $config->get('json_report');
+    $json_report_dir = $config->get('json_report_dir');
 
     $output = '';
     if ($html_report) {
@@ -114,6 +116,19 @@ class CucumberUiController extends ControllerBase {
       }
 
     }
+    else if ($json_report) {
+      if (isset($json_report_dir) && $json_report_dir != '') {
+
+          $json_report = $json_report_dir . '/index.json';
+
+          if ($json_report && file_exists($json_report)) {
+              $output = file_get_contents($json_report);
+          }
+          else {
+              $output = $this->t('No JSON test report yet!');
+          }
+      }
+  }
     else {
 
       if (isset($log_report_dir) && $log_report_dir != '') {

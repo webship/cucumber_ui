@@ -20,6 +20,12 @@ cucumber_ui.settings:
     html_report_formatter:
       type: string
       label: "HTML report formatter"
+    json_report:
+      type: boolean
+      label: "Enable JSON report"
+    json_report_dir:
+      type: string
+      label: "JSON report directory"
     log_report_dir:
       type: string
       label: "Log report directory"

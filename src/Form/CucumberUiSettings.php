@@ -73,6 +73,7 @@ class CucumberUiSettings extends ConfigFormBase {
       '#type' => 'textfield',
       '#maxlength' => 512,
       '#default_value' => $config->get('features_path'),
+      '#suffix' => '</div></div>',
     ];
 
     $form['html_report'] = [
@@ -105,6 +106,25 @@ class CucumberUiSettings extends ConfigFormBase {
       '#suffix' => '</div></div>',
     ];
 
+    $form['json_report'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Enable JSON report format'),
+      '#default_value' => $config->get('json_report'),
+      '#description' => $this->t('Check to enable generating an JSON report for your test results.'),
+      '#prefix' => '<div class="panel">
+          <h3 class="panel__title">' . $this->t('JSON formatted Report') . '</h3>
+          <div class="panel__content">',
+    ];
+
+    $form['json_report_dir'] = [
+      '#title' => $this->t('JSON report directory'),
+      '#description' => $this->t('The full absolute path for the tests/json-reports. No trailing slash at the end.'),
+      '#type' => 'textfield',
+      '#maxlength' => 512,
+      '#default_value' => $config->get('json_report_dir'),
+      '#suffix' => '</div></div>',
+    ];
+    
     $form['log_report_dir'] = [
       '#title' => $this->t('Console log report directory'),
       '#description' => $this->t('The full absolute path for the tests/logs. No trailing slash at the end'),

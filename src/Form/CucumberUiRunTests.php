@@ -227,10 +227,10 @@ class CucumberUiRunTests extends FormBase
         $html_report_format = '';
 
         if ($html_report_formatter == 'cucumberjs_html_formatter') {
-            $html_report_format = "yarn nightwatch --format html:./tests/reports/index.html";
+            $html_report_format = " --format html:".$html_report_dir."/index.html";
         }
         elseif ($html_report_formatter == 'bootstrap_html_formatter') {
-            $html_report_format = "yarn nightwatch --format bootstrap:./tests/reports/index.html";
+            $html_report_format = " --format bootstrap:".$html_report_dir."/index.html";
         }
         $log_report_dir = $config->get('log_report_dir');
 
@@ -249,7 +249,7 @@ class CucumberUiRunTests extends FormBase
 
                 if (isset($html_report_dir) && $html_report_dir != '') {
                     if ($this->fileSystem->prepareDirectory($html_report_dir, FileSystemInterface::CREATE_DIRECTORY)) {
-                      $command = "cd $config_path; $html_report_format;";
+                      $command = "cd $config_path; yarn nightwatch  $html_report_format";
                     }
                     else {
                         $form_state->setErrorByName('submit_button', $this->t('The HTML Output directory does not exists or is not writable.'));
@@ -265,7 +265,7 @@ class CucumberUiRunTests extends FormBase
 
                     if ($this->fileSystem->prepareDirectory($log_report_dir, FileSystemInterface::CREATE_DIRECTORY)) {
                         $log_report_output_file = $log_report_dir . "/cucumber-ui-test.log";
-                        $command = "cd $config_path; $html_report_format;";
+                        $command = "cd $config_path; yarn nightwatch $html_report_format";
                       }
                     else {
                         $form_state->setErrorByName('submit_button', $this->t('The Log Output directory does not exists or is not writable.'));
@@ -276,7 +276,28 @@ class CucumberUiRunTests extends FormBase
                 }
             }
 
-            $process = new Process($command);
+            // JSON report format
+        $json_report = $config->get('json_report');
+        $json_report_dir = $config->get('json_report_dir');
+
+        if ($json_report) {
+
+            if (isset($json_report_dir) && $json_report_dir != '') {
+
+                if ($this->fileSystem->prepareDirectory($json_report_dir, FileSystemInterface::CREATE_DIRECTORY)) {     
+                    $command .= " --format json:".$json_report_dir."/index.json";          
+                }
+                else {
+                    $this->messenger->addError($this->t('The JSON Output directory does not exists or is not writable.'));
+                }
+            }
+            else {
+                $this->messenger->addError($this->t('HTML report directory and file is not configured.'));
+            }
+        }
+
+        $command .= ';';
+        $process = new Process($command);
             $process->enableOutput();
 
             try {

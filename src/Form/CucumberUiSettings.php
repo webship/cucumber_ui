@@ -134,7 +134,7 @@ class CucumberUiSettings extends ConfigFormBase {
       '#prefix' => '<div class="panel">
           <h3 class="panel__title">' . $this->t('Console Log formatted Report') . '</h3>
           <div class="panel__content">',
-      '#suffix' => '</div></div></div></div></div>',
+      '#suffix' => '</div></div></div>',
     ];
 
     $editing_mode_default_value = $config->get('editing_mode');

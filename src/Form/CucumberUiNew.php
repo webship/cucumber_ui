@@ -268,7 +268,7 @@ class CucumberUiNew extends FormBase
 
         // $features_path = $config_path . '/' . $features_path;
         if ($this->fileSystem->prepareDirectory($features_path, FileSystemInterface::CREATE_DIRECTORY)) {
-            if ($handle = opendir($config_path . '/' . $features_path)) {
+            if ($handle = opendir($features_path)) {
                 while (false !== ($file = readdir($handle))) {
                     if (preg_match('/\.feature$/', $file)) {
                         $feature = preg_replace('/\.feature$/', '', $file);

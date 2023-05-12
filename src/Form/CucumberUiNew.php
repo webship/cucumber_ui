@@ -336,10 +336,10 @@ So that I know it is working
         $html_report_format = '';
 
         if ($html_report_formatter == 'cucumberjs_html_formatter') {
-            $html_report_format = "yarn nightwatch --format html:./tests/reports/index.html";
+            $html_report_format = "yarn nightwatch --format html:".$html_report_dir."/index.html";
         }
         elseif ($html_report_formatter == 'bootstrap_html_formatter') {
-            $html_report_format = "yarn nightwatch --format bootstrap:./tests/reports/index.html";
+            $html_report_format = "yarn nightwatch --format bootstrap:".$html_report_dir."/index.html";
         }
         
         $log_report_dir = $config->get('log_report_dir');

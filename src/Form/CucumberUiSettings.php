@@ -154,7 +154,7 @@ class CucumberUiSettings extends ConfigFormBase {
           <div class="panel">
             <h3 class="panel__title">' . $this->t('Editing Mode') . '</h3>
             <div class="panel__content">',
-      '#suffix' => '</div></div></div></div>',
+      '#suffix' => '</div></div></div>',
     ];
 
     return parent::buildForm($form, $form_state);

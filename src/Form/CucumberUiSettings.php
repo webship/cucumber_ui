@@ -99,8 +99,8 @@ class CucumberUiSettings extends ConfigFormBase {
       '#description' => $this->t('The report HTML formatter list.'),
       '#type' => 'select',
       '#options' => [
-        'cucumberjs_html_formatter' => $this->t('Cucumber-js HTML formatter'),
-        'bootstrap_html_formatter' => $this->t('Bootstrap HTML formatter'),
+        'html' => $this->t('Cucumber-js HTML formatter'),
+        'bootstrap' => $this->t('Bootstrap HTML formatter'),
       ],
       '#default_value' => $config->get('html_report_formatter'),
       '#suffix' => '</div></div>',

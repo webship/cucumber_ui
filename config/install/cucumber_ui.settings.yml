@@ -3,7 +3,7 @@ config_file: "./nightwatch.conf.js"
 features_path: "tests/features"
 html_report: true
 html_report_dir: "tests/reports"
-html_report_format: "cucumberjs_html_formatter"
+html_report_format: "html"
 json_report: false
 json_report_dir: "tests/reports"
 log_report_dir: "tests/logs"

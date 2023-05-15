@@ -223,15 +223,10 @@ class CucumberUiRunTests extends FormBase
 
         $html_report = $config->get('html_report');
         $html_report_dir = $config->get('html_report_dir');
-        $html_report_formatter = $config->get('html_report_formatter');
-        $html_report_format = '';
 
-        if ($html_report_formatter == 'cucumberjs_html_formatter') {
-            $html_report_format = " --format html:".$html_report_dir."/index.html";
-        }
-        elseif ($html_report_formatter == 'bootstrap_html_formatter') {
-            $html_report_format = " --format bootstrap:".$html_report_dir."/index.html";
-        }
+        $html_report_formatter = $config->get('html_report_formatter');
+        $html_report_format = " --format $html_report_formatter:".$html_report_dir."/index.html";
+       
         $log_report_dir = $config->get('log_report_dir');
 
         $beaht_ui_tempstore_collection = $this->tempStore->get('cucumber_ui');

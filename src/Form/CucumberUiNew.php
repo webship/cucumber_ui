@@ -412,6 +412,9 @@ So that I know it is working
         $this->messenger->addError($this->t('HTML report directory and file is not configured.'));
       }
     }
+    else{
+        unlink($html_report_format."/*.json");
+    }
 
     $command .= ';';
     $output = shell_exec($command);

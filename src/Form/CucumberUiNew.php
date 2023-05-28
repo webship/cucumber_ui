@@ -358,6 +358,9 @@ So that I know it is working
 
         if ($this->fileSystem->prepareDirectory($html_report_dir, FileSystemInterface::CREATE_DIRECTORY)) {
           $command = "cd $config_path; yarn nightwatch $html_report_format";
+          if ($html_report_formatter != "html") {
+            $command .= "; node generate-reports.js";
+          }
         }
         else {
           $this->messenger->addError($this->t('The HTML Output directory does not exists or is not writable.'));
@@ -376,7 +379,7 @@ So that I know it is working
           $log_report_output_file = $log_report_dir . '/cucumber-ui-test.log';
           $command = "cd $config_path; yarn nightwatch $html_report_format";
           if ($html_report_formatter != "html") {
-            $command .= "; yarn report";
+            $command .= "; node generate-reports.js";
           }
         }
         else {

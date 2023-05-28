@@ -16,22 +16,22 @@ module.exports = (filePath, callback) => {
   fs.readFile(filePath, (err, css) => {
     postcss([
       postcssImport({
-       plugins: [
-         // On import, remove the comments from variables.pcss.css so they don't
-         // appear as useless comments at the top files that import these
-         // variables.
-         postcss.plugin('remove-unwanted-comments-from-variables', (options) => {
-           return css => {
-             if (css.source.input.file.indexOf('variables.pcss.css') !== -1) {
-               css.walk(node => {
-                 if (node.type === 'comment') {
-                   node.remove();
-                 }
-               });
-             }
-           };
-         }),
-       ],
+        plugins: [
+          // On import, remove the comments from variables.pcss.css so they don't
+          // appear as useless comments at the top files that import these
+          // variables.
+          postcss.plugin('remove-unwanted-comments-from-variables', (options) => {
+            return css => {
+              if (css.source.input.file.indexOf('variables.pcss.css') !== -1) {
+                css.walk(node => {
+                  if (node.type === 'comment') {
+                    node.remove();
+                  }
+                });
+              }
+            };
+          }),
+        ],
       }),
       postcssPresetEnv({
         stage: 1,
@@ -51,24 +51,24 @@ module.exports = (filePath, callback) => {
       }),
       postcssCalc,
       postcssPixelsToRem({
-          rootValue: 18,
-          selectorBlackList: ["html"],
-          propList: [
-            '*',
-            '!background-position',
-            '!border',
-            '!border-width',
-            '!box-shadow',
-            '!border-top*',
-            '!border-right*',
-            '!border-bottom*',
-            '!border-left*',
-            '!border-start*',
-            '!border-end*',
-            '!outline*',
-          ],
-          mediaQuery: true,
-          minPixelValue: 3,
+        rootValue: 18,
+        selectorBlackList: ["html"],
+        propList: [
+          '*',
+          '!background-position',
+          '!border',
+          '!border-width',
+          '!box-shadow',
+          '!border-top*',
+          '!border-right*',
+          '!border-bottom*',
+          '!border-left*',
+          '!border-start*',
+          '!border-end*',
+          '!outline*',
+        ],
+        mediaQuery: true,
+        minPixelValue: 3,
       }),
       postcssUrl({
         filter: '**/*.svg',
@@ -76,13 +76,13 @@ module.exports = (filePath, callback) => {
         optimizeSvgEncode: true,
       })
     ])
-    .process(css, { from: filePath })
-    .then(result => {
-      callback(result.css);
-    })
-    .catch(error => {
-      log(chalk.red(error));
-      process.exitCode = 1;
-    });
+      .process(css, { from: filePath })
+      .then(result => {
+        callback(result.css);
+      })
+      .catch(error => {
+        log(chalk.red(error));
+        process.exitCode = 1;
+      });
   });
 };

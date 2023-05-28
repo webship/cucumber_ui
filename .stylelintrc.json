@@ -18,12 +18,15 @@
     "no-duplicate-selectors": null,
     "no-unknown-animations": true,
     "max-line-length": null,
-    "media-feature-name-no-unknown": [true, {
-      "ignoreMediaFeatureNames": [
-        "prefers-reduced-motion",
-        "min--moz-device-pixel-ratio"
-      ]
-    }],
+    "media-feature-name-no-unknown": [
+      true,
+      {
+        "ignoreMediaFeatureNames": [
+          "prefers-reduced-motion",
+          "min--moz-device-pixel-ratio"
+        ]
+      }
+    ],
     "media-feature-name-no-vendor-prefix": null,
     "number-leading-zero": "always",
     "number-max-precision": 5,
@@ -48,7 +51,6 @@
       "right",
       "bottom",
       "left",
-
       "display",
       "visibility",
       "float",
@@ -61,7 +63,6 @@
       "-webkit-overflow-scrolling",
       "clip",
       "zoom",
-
       "flex",
       "flex-flow",
       "flex-direction",
@@ -71,7 +72,6 @@
       "flex-shrink",
       "flex-order",
       "flex-pack",
-
       "-ms-grid",
       "grid",
       "grid-area",
@@ -97,7 +97,6 @@
       "grid-column-gap",
       "-ms-grid-row-align",
       "-ms-grid-column-align",
-
       "place-content",
       "place-items",
       "align-content",
@@ -106,9 +105,7 @@
       "justify-content",
       "justify-items",
       "justify-self",
-
       "order",
-
       "-webkit-box-sizing",
       "-moz-box-sizing",
       "box-sizing",
@@ -136,7 +133,6 @@
       "padding-block-end",
       "padding-inline-start",
       "padding-inline-end",
-
       "table-layout",
       "-webkit-columns",
       "-moz-columns",
@@ -177,7 +173,6 @@
       "list-style-position",
       "list-style-type",
       "list-style-image",
-
       "content",
       "quotes",
       "counter-reset",
@@ -312,7 +307,6 @@
       "widows",
       "object-fit",
       "object-position",
-
       "opacity",
       "filter:progid:DXImageTransform.Microsoft.Alpha(Opacity",
       "-ms-filter:\\'progid:DXImageTransform.Microsoft.Alpha",
@@ -428,7 +422,6 @@
       "filter:progid:DXImageTransform.Microsoft.gradient",
       "-ms-filter:\\'progid:DXImageTransform.Microsoft.gradient",
       "text-shadow",
-
       "$font-face",
       "font",
       "font-family",
@@ -464,14 +457,30 @@
     "selector-pseudo-element-colon-notation": null,
     "shorthand-property-no-redundant-values": null,
     "string-quotes": "double",
-    "unit-allowed-list": ["ch", "deg", "em", "ex", "fr", "ms", "rem", "%", "s", "px", "vw", "vh"],
-    "value-keyword-case": ["lower", {
-      "camelCaseSvgKeywords": true,
-      "ignoreProperties": [
-        "--font-family",
-        "font-family"
-      ]
-    }],
+    "unit-allowed-list": [
+      "ch",
+      "deg",
+      "em",
+      "ex",
+      "fr",
+      "ms",
+      "rem",
+      "%",
+      "s",
+      "px",
+      "vw",
+      "vh"
+    ],
+    "value-keyword-case": [
+      "lower",
+      {
+        "camelCaseSvgKeywords": true,
+        "ignoreProperties": [
+          "--font-family",
+          "font-family"
+        ]
+      }
+    ],
     "value-no-vendor-prefix": null
   }
 }

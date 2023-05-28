@@ -13,13 +13,3 @@ cucumber_ui.settings:
   title: "Settings"
   weight: 30
   base_route: cucumber_ui.run_tests
-#cucumber_ui.cucumber_dl:
-#  route_name: cucumber_ui.cucumber_dl
-#  title: 'Steps'
-#  weight: 40
-#  base_route: cucumber_ui.run_tests
-#cucumber_ui.cucumber_di:
-#  route_name: cucumber_ui.cucumber_di
-#  title: 'Steps with info'
-#  weight: 50
-#  base_route: cucumber_ui.run_tests

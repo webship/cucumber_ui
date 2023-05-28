@@ -62,6 +62,4 @@ Check [this video](http://ca.ios.ba/files/drupal/behatui.ogv) to understand
 Check the module on [Drupal.org](https://www.drupal.org/project/behat_ui).
 
 ## Sponsored
-* [Vardot](http://www.vardot.com).
-* [Webship](http://webship.org).
-* [Meedan](http://meedan.org).
+* [Webship](http://webship.co).

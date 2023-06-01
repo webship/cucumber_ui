@@ -297,14 +297,11 @@ class CucumberUiNew extends FormBase {
     }
     else {
       $default_feature = '
-Feature: First test for cucumber
-As a tester
-I want to be able to test the cucumber site
-So that I know it is working
+Feature: Default festing feature
 
-    Scenario: Check the cucumber site
-    Given I go to "/user/login"
-        Then I should see "Log in"
+    Scenario: Check Most viewed at home page
+    Given I am on homepage
+        Then I should see "Welcome"
             ';
       return trim($default_feature);
     }

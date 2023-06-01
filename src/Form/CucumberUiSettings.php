@@ -126,7 +126,7 @@ class CucumberUiSettings extends ConfigFormBase
 
         $form['json_report_dir'] = [
         '#title' => $this->t('JSON report directory'),
-        '#description' => $this->t('The full absolute path for the tests/json-reports. No trailing slash at the end.'),
+        '#description' => $this->t('The full absolute path for the tests/reports. No trailing slash at the end.'),
         '#type' => 'textfield',
         '#maxlength' => 512,
         '#default_value' => $config->get('json_report_dir'),

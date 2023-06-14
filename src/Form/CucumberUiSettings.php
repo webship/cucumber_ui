@@ -100,7 +100,7 @@ class CucumberUiSettings extends ConfigFormBase
         '#default_value' => $config->get('html_report_dir'),
         ];
     
-        $form['html_report_formatter'] = [
+        $form['html_report_format'] = [
         '#title' => $this->t('HTML report format'),
         '#description' => $this->t('The report HTML formatter list.'),
         '#type' => 'select',
@@ -110,7 +110,7 @@ class CucumberUiSettings extends ConfigFormBase
         'foundation' => $this->t('Foundation HTML formatter'),
         'simple' => $this->t('Simple HTML formatter'),
         ],
-        '#default_value' => $config->get('html_report_formatter'),
+        '#default_value' => $config->get('html_report_format'),
         '#suffix' => '</div></div>',
         ];
 

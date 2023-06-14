@@ -321,7 +321,7 @@ Feature: Default festing feature
     $html_report = $config->get('html_report');
     $html_report_dir = $config->get('html_report_dir');
 
-    $html_report_formatter = $config->get('html_report_formatter');
+    $html_report_formatter = $config->get('html_report_format');
     if ($html_report_formatter == "html") {
       $html_report_format = " --format $html_report_formatter:" . $html_report_dir . "/index.html";
     }

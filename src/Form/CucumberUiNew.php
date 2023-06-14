@@ -356,7 +356,7 @@ Feature: Default festing feature
         if ($this->fileSystem->prepareDirectory($html_report_dir, FileSystemInterface::CREATE_DIRECTORY)) {
           $command = "cd $config_path; yarn nightwatch $html_report_format";
           if ($html_report_formatter != "html") {
-            $command .= "; node generate-reports.js";
+            $command .= "; node ".$html_report_formatter.".js";
           }
         }
         else {
@@ -376,7 +376,7 @@ Feature: Default festing feature
           $log_report_output_file = $log_report_dir . '/cucumber-ui-test.log';
           $command = "cd $config_path; yarn nightwatch $html_report_format";
           if ($html_report_formatter != "html") {
-            $command .= "; node generate-reports.js";
+            $command .= "; node ".$html_report_formatter.".js";
           }
         }
         else {

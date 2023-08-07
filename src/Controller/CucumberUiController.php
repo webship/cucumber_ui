@@ -374,7 +374,7 @@ class CucumberUiController extends ControllerBase
 
         $cucumberList = [];
 
-        $cucumberList += explode("BEHAT_UI_DELIMITER", $output);
+        $cucumberList += explode("CUCUMBER_UI_DELIMITER", $output);
         sort($cucumberList);
 
         return new JsonResponse($cucumberList);

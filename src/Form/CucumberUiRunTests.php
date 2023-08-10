@@ -123,8 +123,8 @@ class CucumberUiRunTests extends FormBase
         $html_report_dir = $config->get('html_report_dir');
         $log_report_dir = $config->get('log_report_dir');
 
-        $beaht_ui_tempstore_collection = $this->tempStore->get('cucumber_ui');
-        $pid = $beaht_ui_tempstore_collection->get('cucumber_ui_pid');
+        $cucumber_ui_tempstore_collection = $this->tempStore->get('cucumber_ui');
+        $pid = $cucumber_ui_tempstore_collection->get('cucumber_ui_pid');
 
         $label = $this->t('Not running');
         $class = '';
@@ -229,8 +229,8 @@ class CucumberUiRunTests extends FormBase
        
         $log_report_dir = $config->get('log_report_dir');
 
-        $beaht_ui_tempstore_collection = $this->tempStore->get('cucumber_ui');
-        $pid = $beaht_ui_tempstore_collection->get('cucumber_ui_pid');
+        $cucumber_ui_tempstore_collection = $this->tempStore->get('cucumber_ui');
+        $pid = $cucumber_ui_tempstore_collection->get('cucumber_ui_pid');
 
         $command = '';
 
@@ -292,22 +292,22 @@ class CucumberUiRunTests extends FormBase
             }
 
             $command .= ';';
-            $process = new Process($command);
-            $process->enableOutput();
+            // $process = new Process($command);
+            // $process->enableOutput();
 
-            try {
-                $process->start();
-                $new_pid = $process->getPid() + 1;
-                $this->messenger->addMessage($this->t("Started running tests using prcess ID: @pid", ["@pid" => $new_pid]));
-                $beaht_ui_tempstore_collection->set('cucumber_ui_pid', $new_pid);
+            // try {
+            //     $process->start();
+            //     $new_pid = $process->getPid() + 1;
+            //     $this->messenger->addMessage($this->t("Started running tests using prcess ID: @pid", ["@pid" => $new_pid]));
+            //     $cucumber_ui_tempstore_collection->set('cucumber_ui_pid', $new_pid);
 
-                if (!$process->isSuccessful()) {
-                    $this->messenger->addMessage($process->getErrorOutput());
-                }
-            }
-            catch (ProcessFailedException $exception) {
-                $form_state->setErrorByName('submit_button', $exception->getMessage());
-            }
+            //     if (!$process->isSuccessful()) {
+            //         $this->messenger->addMessage($process->getErrorOutput());
+            //     }
+            // }
+            // catch (ProcessFailedException $exception) {
+            //     $form_state->setErrorByName('submit_button', $exception->getMessage());
+            // }
         }
     }
 

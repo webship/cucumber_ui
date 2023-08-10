@@ -172,8 +172,8 @@ class CucumberUiController extends ControllerBase
         $report_url = new Url('cucumber_ui.report');
         $output = '<iframe id="cucumber-ui-output-iframe" src="' . $this->currentRequest->getSchemeAndHttpHost() . $report_url->toString() . '" width="100%" height="100%"></iframe>';
 
-        $beaht_ui_tempstore_collection = $this->tempStore->get('cucumber_ui');
-        $pid = $beaht_ui_tempstore_collection->get('cucumber_ui_pid');
+        $cucumber_ui_tempstore_collection = $this->tempStore->get('cucumber_ui');
+        $pid = $cucumber_ui_tempstore_collection->get('cucumber_ui_pid');
 
         if ($pid && posix_kill(intval($pid), 0)) {
 
@@ -231,13 +231,13 @@ class CucumberUiController extends ControllerBase
     public function kill()
     {
         $response = false;
-        $beaht_ui_tempstore_collection = $this->tempStore->get('cucumber_ui');
-        $pid = $beaht_ui_tempstore_collection->get('cucumber_ui_pid');
+        $cucumber_ui_tempstore_collection = $this->tempStore->get('cucumber_ui');
+        $pid = $cucumber_ui_tempstore_collection->get('cucumber_ui_pid');
 
         if ($pid && posix_kill(intval($pid), 0)) {
             try {
                 $response = posix_kill($pid, SIGKILL);
-                $beaht_ui_tempstore_collection->delete('cucumber_ui_pid');
+                $cucumber_ui_tempstore_collection->delete('cucumber_ui_pid');
             }
             catch (Exception $e) {
                 $response = false;

@@ -222,7 +222,10 @@ class CucumberUiNew extends FormBase {
     if ($htmlIdofTriggeredElement == 'edit-cucumber-ui-create') {
       $formValues = $form_state->getValues();
 
-      $file = $features_path . '/' . $formValues['cucumber_ui_feature'] . '.feature';
+      $files = scandir($directory);
+      $num_files = count($files)-2;
+
+      $file = $features_path . '/' . $num_files . '.feature';
 
       if ($editing_mode == 'free_text') {
         $content = $formValues['free_text'];
@@ -338,7 +341,7 @@ Feature: Default festing feature
     $file = $features_path . '/' . $file_user_time . '.feature';
 
     if ($editing_mode == 'free_text') {
-      $test = $formValues['free_text'];
+      $test = "@currentTest\n" . $formValues['free_text'];
     }
 
     $handle = fopen($file, 'w+');
@@ -354,7 +357,7 @@ Feature: Default festing feature
       if (isset($html_report_dir) && $html_report_dir != '') {
 
         if ($this->fileSystem->prepareDirectory($html_report_dir, FileSystemInterface::CREATE_DIRECTORY)) {
-          $command = "cd $config_path; yarn nightwatch $html_report_format";
+          $command = "cd $config_path; yarn nightwatch --tags @currentTest $html_report_format";
           if ($html_report_formatter != "html") {
             $command .= "; node ".$html_report_formatter.".js";
           }
@@ -374,7 +377,7 @@ Feature: Default festing feature
 
         if ($this->fileSystem->prepareDirectory($log_report_dir, FileSystemInterface::CREATE_DIRECTORY)) {
           $log_report_output_file = $log_report_dir . '/cucumber-ui-test.log';
-          $command = "cd $config_path; yarn nightwatch $html_report_format";
+          $command = "cd $config_path; yarn nightwatch --tags @currentTest $html_report_format";
           if ($html_report_formatter != "html") {
             $command .= "; node ".$html_report_formatter.".js";
           }

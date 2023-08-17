@@ -222,7 +222,7 @@ class CucumberUiNew extends FormBase {
     if ($htmlIdofTriggeredElement == 'edit-cucumber-ui-create') {
       $formValues = $form_state->getValues();
 
-      $files = scandir($directory);
+      $files = scandir($features_path);
       $num_files = count($files)-2;
 
       $file = $features_path . '/' . $num_files . '.feature';

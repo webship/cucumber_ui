@@ -189,9 +189,23 @@ class CucumberUiNew extends FormBase {
       ],
       ];
 
+    $form['cucumber_ui_save'] = [
+      '#type' => 'button',
+      '#value' => $this->t('Save'),
+      '#ajax' => [
+      'callback' => '::saveSingleTest',
+      'event' => 'click',
+      'wrapper' => 'cucumber-ui-save-output',
+      'progress' => [
+        'type' => 'throbber',
+        'message' => $this->t('Saving the testing feature...'),
+      ],
+      ],
+      ];
+
     $form['cucumber_ui_create'] = [
       '#type' => 'submit',
-      '#value' => $this->t('Download updated feature'),
+      '#value' => $this->t('Download'),
       '#attribute' => [
       'id' => 'cucumber-ui-create',
       'classes' => ['button'],
@@ -202,6 +216,12 @@ class CucumberUiNew extends FormBase {
       '#title' => $this->t('Tests output'),
       '#type' => 'markup',
       '#markup' => '<div id="cucumber-ui-output"><div id="cucumber-ui-output-inner"></div></div></div>',
+      ];
+
+    $form['cucumber_ui_save_output'] = [
+      '#title' => $this->t('Tests save'),
+      '#type' => 'markup',
+      '#markup' => '<div id="cucumber-ui-save-output"><div id="cucumber-ui-save-inner"></div></div></div>',
       ];
 
     return $form;
@@ -231,11 +251,7 @@ class CucumberUiNew extends FormBase {
         $content = $formValues['free_text'];
       }
 
-      $handle = fopen($file, 'w+');
-      fwrite($handle, $content);
-      fclose($handle);
-
-      $file_name = $formValues['cucumber_ui_feature'] . '.feature';
+      $file_name = date('m-d-Y_hia') . '.feature';
       $file_size = filesize($file);
       $response = new Response();
       $response->headers->set('Content-Type', 'text/x-cucumber');
@@ -311,6 +327,33 @@ Feature: Default festing feature
 
   }
 
+  /**
+   * Run a single test.
+   */
+  public function saveSingleTest(array &$form, FormStateInterface $form_state) {
+
+    $config = $this->configFactory->getEditable('cucumber_ui.settings');
+
+    $features_path = $config->get('features_path');
+    $editing_mode = $config->get('editing_mode');
+
+      $formValues = $form_state->getValues();
+
+      if ($editing_mode == 'free_text') {
+        $content = $formValues['free_text'];
+      }
+      $featureName = preg_split('#\r?\n#', ltrim($content), 2)[0];
+      $featureName = str_replace(array("Feature : ", "Feature: "), "", $featureName);
+      $featureName = str_replace(" ", "-", $featureName);
+      
+      $file = $features_path . '/' . $featureName . '.feature';
+
+      $handle = fopen($file, 'w+');
+      fwrite($handle, $content);
+      fclose($handle);
+
+    return $form['cucumber_ui_save_output'];
+  }
   /**
    * Run a single test.
    */

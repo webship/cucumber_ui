@@ -231,39 +231,39 @@ class CucumberUiNew extends FormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $triggerdElement = $form_state->getTriggeringElement();
-    $htmlIdofTriggeredElement = $triggerdElement['#id'];
-
     $config = $this->configFactory->getEditable('cucumber_ui.settings');
 
     $features_path = $config->get('features_path');
     $editing_mode = $config->get('editing_mode');
 
-    if ($htmlIdofTriggeredElement == 'edit-cucumber-ui-create') {
       $formValues = $form_state->getValues();
-
-      $files = scandir($features_path);
-      $num_files = count($files)-2;
-
-      $file = $features_path . '/' . $num_files . '.feature';
 
       if ($editing_mode == 'free_text') {
         $content = $formValues['free_text'];
       }
 
-      $file_name = date('m-d-Y_hia') . '.feature';
+      $featureName = preg_split('#\r?\n#', ltrim($content), 2)[0];
+      $featureName = str_replace(array("Feature : ", "Feature: "), "", $featureName);
+      $featureName = str_replace(" ", "-", $featureName);
+      $featureName = strtolower($featureName);
+      
+      $file = $features_path . '/' . $featureName . '-dl.feature';
+
+      $handle = fopen($file, 'w+');
+      fwrite($handle, $content);
+      fclose($handle);
+
       $file_size = filesize($file);
       $response = new Response();
       $response->headers->set('Content-Type', 'text/x-cucumber');
-      $response->headers->set('Content-Disposition', 'attachment; filename="' . $file_name . '"');
+      $response->headers->set('Content-Disposition', 'attachment; filename="' . $featureName . '"');
       $response->headers->set('Pragma', 'no-cache');
       $response->headers->set('Content-Transfer-Encoding', 'binary');
       $response->headers->set('Content-Length', $file_size);
       $form_state->disableRedirect();
       readfile($file);
+      unlink($file);
       return $response->send();
-
-    }
   }
 
   /**
@@ -345,6 +345,7 @@ Feature: Default festing feature
       $featureName = preg_split('#\r?\n#', ltrim($content), 2)[0];
       $featureName = str_replace(array("Feature : ", "Feature: "), "", $featureName);
       $featureName = str_replace(" ", "-", $featureName);
+      $featureName = strtolower($featureName);
       
       $file = $features_path . '/' . $featureName . '.feature';
 

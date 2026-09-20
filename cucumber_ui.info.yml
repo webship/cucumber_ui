@@ -2,5 +2,5 @@ name: "cucumber UI"
 description: "Create and run cucumber/Mink tests from the web interface"
 type: module
 configure: cucumber_ui.settings
-core_version_requirement: ^9 || ^10
+core_version_requirement: ^11.4 || ^12
 dependencies: []

@@ -3,8 +3,8 @@
   "description": "Create and run Cucumber/Gherkin tests from the web interface using webship-js.",
   "private": true,
   "engines": {
-    "yarn": ">= 1.6",
-    "node": ">= 16.0"
+    "yarn": ">= 4.9.3",
+    "node": ">= 20.0"
   },
   "keywords": [
     "Drupal",
@@ -18,92 +18,43 @@
   "scripts": {
     "phpcs": "phpcs --standard=./.phpcs.xml .",
     "phpcbf": "phpcbf --standard=./.phpcs.xml .",
-    "lint:yaml": "node ./node_modules/eslint/bin/eslint.js --config=.eslintrc.json --ext .yml .",
-    "lint:js": "node ./node_modules/eslint/bin/eslint.js --config=.eslintrc.json --ext .js .",
-    "lint:css": "npx stylelint --config=.stylelintrc.json .",
+    "lint:js": "node ./node_modules/eslint/bin/eslint.js .",
+    "lint:css": "stylelint \"**/*.css\"",
+    "lint:yaml": "node ./node_modules/eslint/bin/eslint.js --ext .yml .",
     "theme:build": "node scripts/css/postcss-build.js",
-    "theme:watch": "node scripts/css/postcss-watch.js"
-  },
-  "dependencies": {
-    "webship-js": "~1.0"
+    "theme:watch": "node scripts/css/postcss-watch.js",
+    "test": "cucumber-js --config cucumber.js",
+    "test:headed": "HEADLESS=false cucumber-js --config cucumber.js",
+    "test:chromium": "BROWSER=chromium cucumber-js --config cucumber.js"
   },
   "devDependencies": {
-    "autoprefixer": "~9",
-    "@babel/core": "~7",
-    "@babel/preset-env": "~7",
-    "@babel/register": "^7.7.7",
-    "browser-sync": "~2",
-    "chalk": "~2",
-    "chokidar": "~3",
-    "chromedriver": "*",
-    "geckodriver": "*",
-    "cross-env": "~5",
-    "del": "~3",
-    "dotenv-safe": "~5",
-    "eslint": "~8.0",
-    "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-config-prettier": "^8.4.0",
-    "eslint-plugin-import": "^2.25.4",
-    "eslint-plugin-jquery": "^1.5.1",
-    "eslint-plugin-prettier": "^4.0.0",
-    "eslint-plugin-yml": "^0.14.0",
-    "farbtastic": "https://github.com/mattfarina/farbtastic/archive/1.3u.tar.gz",
-    "glob": "~7",
-    "glob-watcher": "~5",
-    "joyride": "https://github.com/zurb/joyride/archive/refs/heads/v2.1.tar.gz",
-    "merge-stream": "~2",
-    "minimatch": "~5",
+    "eslint": "~8",
+    "eslint-config-airbnb-base": "~15",
+    "eslint-config-prettier": "~8",
+    "eslint-plugin-import": "~2",
+    "eslint-plugin-jquery": "~1",
+    "eslint-plugin-prettier": "~4",
+    "eslint-plugin-yml": "~1",
+    "glob": "~8",
     "minimist": "~1",
     "mkdirp": "~1",
-    "postcss": "^7.0.18",
-    "postcss-calc": "^7.0.1",
-    "postcss-header": "^2.0.0",
-    "postcss-import": "^12.0.1",
-    "postcss-preset-env": "^6.7.0",
-    "postcss-pxtorem": "^5.1.1",
-    "postcss-url": "^8.0.0",
-    "prettier": "^2.1.2",
-    "raw-loader": "^4.0.2",
-    "shepherd.js": "^9.0.0",
-    "sortablejs": "^1.13.0",
-    "stylelint": "^14.0.1",
+    "postcss": "~8",
+    "postcss-header": "~3",
+    "postcss-import": "~15",
+    "postcss-preset-env": "~8",
+    "postcss-pxtorem": "~6",
+    "postcss-url": "~10",
+    "prettier": "~2",
+    "stylelint": "~15",
     "stylelint-checkstyle-formatter": "^0.1.2",
-    "stylelint-config-standard": "^23.0.0",
-    "stylelint-order": "^5.0.0",
-    "tabbable": "^5.2.0",
-    "terser": "^5.3.4",
-    "terser-webpack-plugin": "^5.2.0",
-    "underscore": "^1.13.1",
-    "webpack": "^5.51.1",
-    "webpack-cli": "^4.4.0"
-  },
-  "//": "'development is the default environment, and legacy is for transpiling the old jQuery codebase",
-  "babel": {
-    "env": {
-      "development": {
-        "presets": [
-          [
-            "@babel/preset-env",
-            {
-              "modules": "commonjs",
-              "targets": {
-                "node": "current"
-              }
-            }
-          ]
-        ]
-      },
-      "legacy": {
-        "presets": [
-          [
-            "@babel/preset-env",
-            {
-              "modules": false
-            }
-          ]
-        ]
-      }
-    }
+    "stylelint-config-standard": "~33",
+    "stylelint-order": "~6",
+    "terser": "~5",
+    "terser-webpack-plugin": "~5",
+    "underscore": "~1",
+    "webpack": "~5",
+    "webpack-cli": "~5",
+    "webship-js": "~2.0"
   },
   "browserslist": [
     "last 2 Chrome major versions",
@@ -113,5 +64,9 @@
     "last 2 Opera versions",
     "last 2 iOS major versions",
     "Firefox ESR"
-  ]
+  ],
+  "packageManager": "yarn@4.9.3",
+  "resolutions": {
+    "@cucumber/cucumber": "10.0.1"
+  }
 }

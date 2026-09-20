@@ -1,1 +1,23 @@
-**/node_modules
+node_modules/
+.yarn/
+vendor/
+web/
+# Ignore deliberately malformed YAML files.
+drupalci.yml
+# Build and cache artefacts.
+*.min.js
+*.map
+.eslintcache
+# Per-developer gitlab-ci-local runtime and generated test artefacts.
+.gitlab-ci-local/
+tests/reports/
+tests/screenshots/
+tests/videos/
+# TypeScript config (no TS parser configured).
+*.ts
+# Legacy front-end sources kept out of the lint gate for now: the module's
+# jQuery behaviours and the PostCSS build scripts predate this config and
+# need their own clean-up issue before they can pass `eslint .`.
+js/
+scripts/
+postcss.config.js

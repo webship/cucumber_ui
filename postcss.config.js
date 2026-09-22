@@ -1,12 +1,12 @@
-module.exports = ctx => ({
+module.exports = (ctx) => ({
   map: !ctx.env || ctx.env !== 'production' ? { inline: false } : false,
   plugins: [
     require('postcss-custom-properties')({
-      preserve: true
+      preserve: true,
     }),
-    require("postcss-calc"),
+    require('postcss-calc'),
     require('autoprefixer')({
-      cascade: false
+      cascade: false,
     }),
-  ]
+  ],
 });

@@ -19,12 +19,20 @@
     padding-inline-end: 18px;
   }
 
-  & .running {
-    & span {
-      color: var(--colorGinGreen);
-      background: transparent url(../../images/loading.gif) left center no-repeat;
-    }
+  &.running span {
+    color: var(--colorGinGreen);
+    background: transparent url(../../images/loading.gif) left center no-repeat;
   }
+}
+
+#cucumber-ui-kill {
+  border: 0;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  padding: 0;
+  text-decoration: underline;
 }
 
 #cucumber {

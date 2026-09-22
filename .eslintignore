@@ -15,9 +15,3 @@ tests/screenshots/
 tests/videos/
 # TypeScript config (no TS parser configured).
 *.ts
-# Legacy front-end sources kept out of the lint gate for now: the module's
-# jQuery behaviours and the PostCSS build scripts predate this config and
-# need their own clean-up issue before they can pass `eslint .`.
-js/
-scripts/
-postcss.config.js

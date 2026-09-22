@@ -1,0 +1,13 @@
+services:
+  cucumber_ui.fragments:
+    class: Drupal\cucumber_ui\CucumberUiFragments
+    arguments:
+      - "@config.factory"
+      - "@tempstore.private"
+      - "@csrf_token"
+  cucumber_ui.runner:
+    class: Drupal\cucumber_ui\CucumberUiRunner
+    arguments:
+      - "@config.factory"
+      - "@file_system"
+      - "@messenger"

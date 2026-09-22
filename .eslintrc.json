@@ -26,7 +26,8 @@
     "once": true,
     "CKEDITOR": true,
     "CKEditor5": true,
-    "tabbable": true
+    "tabbable": true,
+    "ace": true
   },
   "rules": {
     "prettier/prettier": "error",
@@ -98,6 +99,20 @@
         "valid-jsdoc": "off",
         "import/no-extraneous-dependencies": "off",
         "no-console": "off"
+      }
+    },
+    {
+      "files": [
+        "scripts/**/*.js",
+        "postcss.config.js"
+      ],
+      "rules": {
+        "strict": "off",
+        "global-require": "off",
+        "no-console": "off",
+        "import/no-extraneous-dependencies": "off",
+        "import/no-unresolved": "off",
+        "func-names": "off"
       }
     }
   ]

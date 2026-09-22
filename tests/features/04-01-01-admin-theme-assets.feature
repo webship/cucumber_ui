@@ -6,15 +6,17 @@ Feature: Cucumber UI attaches its administration theme assets
   Background:
     Given I am a logged in user with the "Webmaster" user
 
-  Scenario: The run tests page loads the Claro stylesheet and its script
+  Scenario: The run tests page loads the Claro stylesheet and HTMX
     When I navigate to "/admin/config/development/cucumber-ui"
     Then the page should load the asset "cucumber-ui-style.claro.css"
-     And the page should load the asset "cucumber-ui.run-tests.js"
+     And the page should load the asset "htmx.min.js"
+     And the page should load the asset "htmx-behaviors.js"
 
-  Scenario: The create test page loads the Claro stylesheet and its script
+  Scenario: The create test page loads the Claro stylesheet, HTMX and the editor
     When I navigate to "/admin/config/development/cucumber-ui/new"
     Then the page should load the asset "cucumber-ui-style.claro.css"
-     And the page should load the asset "cucumber-ui.new-test.js"
+     And the page should load the asset "htmx.min.js"
+     And the page should load the asset "cucumber-ui.ace-editor.js"
 
   Scenario: The settings page loads the Claro stylesheet
     When I navigate to "/admin/config/development/cucumber-ui/settings"

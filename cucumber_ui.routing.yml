@@ -34,6 +34,7 @@ cucumber_ui.cucumber_dl:
     _permission: "create tests with cucumber ui"
   options:
     _admin_route: TRUE
+    _htmx_route: TRUE
 cucumber_ui.cucumber_di:
   path: "/admin/config/development/cucumber-ui/cucumber-di"
   defaults:
@@ -43,6 +44,7 @@ cucumber_ui.cucumber_di:
     _permission: "create tests with cucumber ui"
   options:
     _admin_route: TRUE
+    _htmx_route: TRUE
 cucumber_ui.cucumber_dl_json:
   path: "/admin/config/development/cucumber-ui/cucumber-dl-json"
   defaults:
@@ -61,6 +63,38 @@ cucumber_ui.status:
     _permission: "run all tests in cucumber ui+create tests with cucumber ui"
   options:
     _admin_route: TRUE
+    _htmx_route: TRUE
+cucumber_ui.output:
+  path: "/cucumber-ui/output"
+  defaults:
+    _controller: '\Drupal\cucumber_ui\Controller\CucumberUiController::getTestOutput'
+  requirements:
+    _permission: "run all tests in cucumber ui+create tests with cucumber ui"
+  options:
+    _admin_route: TRUE
+    _htmx_route: TRUE
+cucumber_ui.save_feature:
+  path: "/cucumber-ui/save"
+  methods: [POST]
+  defaults:
+    _controller: '\Drupal\cucumber_ui\Controller\CucumberUiController::saveFeature'
+  requirements:
+    _permission: "create tests with cucumber ui"
+    _csrf_request_header_token: "TRUE"
+  options:
+    _admin_route: TRUE
+    _htmx_route: TRUE
+cucumber_ui.run_feature:
+  path: "/cucumber-ui/run"
+  methods: [POST]
+  defaults:
+    _controller: '\Drupal\cucumber_ui\Controller\CucumberUiController::runFeature'
+  requirements:
+    _permission: "create tests with cucumber ui"
+    _csrf_request_header_token: "TRUE"
+  options:
+    _admin_route: TRUE
+    _htmx_route: TRUE
 cucumber_ui.report:
   path: "/cucumber-ui/report"
   defaults:
@@ -80,12 +114,15 @@ cucumber_ui.autocomplete:
     _admin_route: TRUE
 cucumber_ui.kill:
   path: "/cucumber-ui/kill"
+  methods: [POST]
   defaults:
     _controller: '\Drupal\cucumber_ui\Controller\CucumberUiController::kill'
   requirements:
     _permission: "run all tests in cucumber ui"
+    _csrf_request_header_token: "TRUE"
   options:
     _admin_route: TRUE
+    _htmx_route: TRUE
 cucumber_ui.download:
   path: "/cucumber-ui/download/{format}"
   defaults:

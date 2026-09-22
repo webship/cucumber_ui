@@ -1,15 +1,14 @@
 const chalk = require('chalk');
-const log = require('./log');
 const fs = require('fs');
 const postcss = require('postcss');
-const postcssCalc = require("postcss-calc");
+const postcssCalc = require('postcss-calc');
 const postcssImport = require('postcss-import');
 const postcssHeader = require('postcss-header');
 const postcssUrl = require('postcss-url');
 const postcssPresetEnv = require('postcss-preset-env');
 // cspell:ignore pxtorem
 const postcssPixelsToRem = require('postcss-pxtorem');
-
+const log = require('./log');
 
 module.exports = (filePath, callback) => {
   // Transform the file.
@@ -20,10 +19,10 @@ module.exports = (filePath, callback) => {
           // On import, remove the comments from variables.pcss.css so they don't
           // appear as useless comments at the top files that import these
           // variables.
-          postcss.plugin('remove-unwanted-comments-from-variables', (options) => {
-            return css => {
-              if (css.source.input.file.indexOf('variables.pcss.css') !== -1) {
-                css.walk(node => {
+          postcss.plugin('remove-unwanted-comments-from-variables', () => {
+            return (root) => {
+              if (root.source.input.file.indexOf('variables.pcss.css') !== -1) {
+                root.walk((node) => {
                   if (node.type === 'comment') {
                     node.remove();
                   }
@@ -47,12 +46,12 @@ module.exports = (filePath, callback) => {
           'has-pseudo-class': false,
           'image-set-function': false,
           'prefers-color-scheme-query': false,
-        }
+        },
       }),
       postcssCalc,
       postcssPixelsToRem({
         rootValue: 18,
-        selectorBlackList: ["html"],
+        selectorBlackList: ['html'],
         propList: [
           '*',
           '!background-position',
@@ -74,13 +73,13 @@ module.exports = (filePath, callback) => {
         filter: '**/*.svg',
         url: 'inline',
         optimizeSvgEncode: true,
-      })
+      }),
     ])
       .process(css, { from: filePath })
-      .then(result => {
+      .then((result) => {
         callback(result.css);
       })
-      .catch(error => {
+      .catch((error) => {
         log(chalk.red(error));
         process.exitCode = 1;
       });

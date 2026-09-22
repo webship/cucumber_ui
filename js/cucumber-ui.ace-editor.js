@@ -1,129 +1,163 @@
 /**
  * @file
- * Cucumber UI Ace Editor.
+ * Cucumber UI Ace editor.
+ *
+ * Binds the Ace editor to the Gherkin textarea of the create test screen and
+ * feeds it the step definitions of the site. No jQuery: the Cucumber family
+ * drives its behaviour with HTMX and plain DOM APIs.
  */
 
-(function ($, Drupal) {
+((Drupal, once) => {
+  /**
+   * The Gherkin keywords offered before any step definition is fetched.
+   *
+   * @type {Array.<string>}
+   */
+  const keywords = [
+    'Feature: ',
+    'Background: ',
+    'Scenario: ',
+    'Outline ',
+    'Examples ',
+    'Given ',
+    'When ',
+    'Then',
+    'And ',
+    'But',
+    '@javascript ',
+    '@api ',
+    '@check ',
+    '@local ',
+    '@development ',
+    '@staging ',
+    '@production ',
+    '@init ',
+    '@cleanup ',
+  ];
+
+  /**
+   * The step definitions of the site, fetched once and then reused.
+   *
+   * @type {?Promise.<Array.<string>>}
+   */
+  let stepDefinitions = null;
+
+  /**
+   * Fetches the step definitions of the site.
+   *
+   * @return {Promise.<Array.<string>>}
+   *   The list of step definitions, empty when the request fails.
+   */
+  function fetchStepDefinitions() {
+    if (stepDefinitions === null) {
+      stepDefinitions = fetch(
+        Drupal.url('admin/config/development/cucumber-ui/cucumber-dl-json'),
+        { headers: { Accept: 'application/json' } },
+      )
+        .then((response) => (response.ok ? response.json() : []))
+        .catch(() => []);
+    }
+
+    return stepDefinitions;
+  }
+
+  /**
+   * Turns a list of strings into Ace completions.
+   *
+   * @param {Array.<string>} values
+   *   The completion values.
+   * @param {string} prefix
+   *   The text already typed, prepended to every value.
+   *
+   * @return {Array.<object>}
+   *   The Ace completions.
+   */
+  function toCompletions(values, prefix) {
+    return values.map((value) => ({
+      name: prefix + value,
+      value: prefix + value,
+    }));
+  }
+
+  /**
+   * Attaches the Ace editor to the Gherkin textarea.
+   *
+   * @type {Drupal~behavior}
+   *
+   * @prop {Drupal~behaviorAttach} attach
+   *   Starts the editor and keeps the textarea in sync with it.
+   */
   Drupal.behaviors.cucumberUiAceEditor = {
-    attach() {
+    attach(context) {
       if (typeof ace === 'undefined' || typeof ace.edit !== 'function') {
         return;
       }
 
-      const editor = ace.edit('free_text_ace_editor');
-      editor.getSession().setMode('ace/mode/gherkin');
-      editor.getSession().setTabSize(2);
+      once('cucumber-ui-ace-editor', '#free_text_ace_editor', context).forEach(
+        (element) => {
+          const textarea = document.querySelector('.free-text-ace-editor');
+          if (!textarea) {
+            return;
+          }
 
-      editor.setOption('autoScrollEditorIntoView', 'always');
-      editor.setOption('mergeUndoDeltas', 'always');
-      editor.setOption('hScrollBarAlwaysVisible', true);
-      editor.setOption('vScrollBarAlwaysVisible', true);
+          const editor = ace.edit(element);
+          const session = editor.getSession();
 
-      // Add command to lazy-load keybinding_menu extension.
-      ace.require('ace/ext/keybinding_menu');
-      editor.commands.addCommand({
-        name: 'showKeyboardShortcuts',
-        bindKey: { win: 'Ctrl-Alt-h', mac: 'Command-Alt-h' },
-        exec(editor) {
-          ace.config.loadModule('ace/ext/keybinding_menu', function (module) {
-            module.init(editor);
-            editor.showKeyboardShortcuts();
+          session.setMode('ace/mode/gherkin');
+          session.setTabSize(2);
+
+          editor.setOption('autoScrollEditorIntoView', 'always');
+          editor.setOption('mergeUndoDeltas', 'always');
+          editor.setOption('hScrollBarAlwaysVisible', true);
+          editor.setOption('vScrollBarAlwaysVisible', true);
+
+          ace.require('ace/ext/keybinding_menu');
+          editor.commands.addCommand({
+            name: 'showKeyboardShortcuts',
+            bindKey: { win: 'Ctrl-Alt-h', mac: 'Command-Alt-h' },
+            exec(currentEditor) {
+              ace.config.loadModule('ace/ext/keybinding_menu', (module) => {
+                module.init(currentEditor);
+                currentEditor.showKeyboardShortcuts();
+              });
+            },
+          });
+
+          const languageTools = ace.require('ace/ext/language_tools');
+
+          languageTools.setCompleters([
+            {
+              getCompletions(currentEditor, currentSession, pos, prefix, done) {
+                if (!['Given', 'When', 'Then', 'And', 'But'].includes(prefix)) {
+                  done(null, []);
+                  return;
+                }
+                fetchStepDefinitions().then((steps) => {
+                  done(null, toCompletions(steps, prefix));
+                });
+              },
+            },
+            {
+              getCompletions(currentEditor, currentSession, pos, prefix, done) {
+                done(null, toCompletions(keywords, ''));
+              },
+            },
+          ]);
+
+          editor.setOptions({ enableBasicAutocompletion: true });
+
+          session.setValue(textarea.value);
+          session.on('change', () => {
+            textarea.value = session.getValue();
+          });
+
+          // When the form fails to validate because the textarea is required,
+          // shift the focus to the editor.
+          textarea.addEventListener('focus', () => {
+            editor.focus();
           });
         },
-      });
-
-      const cucumberUiLanguageTools = ace.require('ace/ext/language_tools');
-
-      editor.setOptions({
-        enableBasicAutocompletion: false,
-      });
-
-      const cucumberUICompleter = {
-        getCompletions(editor, session, pos, prefix, callback) {
-          const gList = ['Given', 'When', 'Then', 'And', 'But'];
-
-          if (prefix.length === 0) {
-            callback(null, []);
-            return;
-          }
-          if (!gList.includes(prefix)) {
-            callback(null, []);
-            return;
-          }
-
-          $.getJSON(
-            Drupal.url('admin/config/development/cucumber-ui/cucumber-dl-json'),
-            function (cucumberUiList) {
-              callback(
-                null,
-                cucumberUiList.map(function (cucumberUiItem) {
-                  return {
-                    name: prefix + cucumberUiItem,
-                    value: prefix + cucumberUiItem,
-                  };
-                }),
-              );
-            },
-          );
-        },
-      };
-
-      const keyCucumberList = [
-        'Feature: ',
-        'Background: ',
-        'Scenario: ',
-        'Outline ',
-        'Examples ',
-        'Given ',
-        'When ',
-        'Then',
-        'And ',
-        'But',
-        '@javascript ',
-        '@api ',
-        '@check ',
-        '@local ',
-        '@development ',
-        '@staging ',
-        '@production ',
-        '@init ',
-        '@cleanup ',
-      ];
-
-      const keyCucumberUICompleter = {
-        getCompletions(editor, session, pos, prefix, callback) {
-          callback(
-            null,
-            keyCucumberList.map(function (keyCucumberUiItem) {
-              return {
-                name: keyCucumberUiItem,
-                value: keyCucumberUiItem,
-              };
-            }),
-          );
-        },
-      };
-
-      cucumberUiLanguageTools.setCompleters([
-        cucumberUICompleter,
-        keyCucumberUICompleter,
-      ]);
-
-      editor.setOptions({
-        enableBasicAutocompletion: true,
-      });
-
-      editor.getSession().on('change', function () {
-        $('.free-text-ace-editor').val(editor.getSession().getValue());
-      });
-
-      editor.getSession().setValue($('.free-text-ace-editor').val());
-
-      // When the form fails to validate because the text area is required,
-      // shift the focus to the editor.
-      $('.free-text-ace-editor').on('focus', function () {
-        editor.getSession().textInput.focus();
-      });
+      );
     },
   };
-})(jQuery, Drupal);
+})(Drupal, once);

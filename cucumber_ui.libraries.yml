@@ -8,24 +8,6 @@ style.gin:
   css:
     theme:
       css/theme/cucumber-ui-style.gin.css: {}
-run-tests-scripts:
-  version: VERSION
-  js:
-    js/cucumber-ui.run-tests.js: {}
-  dependencies:
-    - core/drupal
-    - core/drupal.ajax
-    - core/jquery
-    - core/once
-new-test-scripts:
-  version: VERSION
-  js:
-    js/cucumber-ui.new-test.js: {}
-  dependencies:
-    - core/drupal
-    - core/drupal.ajax
-    - core/jquery
-    - core/once
 ace-editor:
   remote: https://cdnjs.cloudflare.com/ajax/libs/ace/1.16.0/ace.js
   version: 1.16.0
@@ -41,4 +23,5 @@ ace-editor:
       { type: external, minified: true }
     js/cucumber-ui.ace-editor.js: {}
   dependencies:
-    - core/jquery.ui.resizable
+    - core/drupal
+    - core/once

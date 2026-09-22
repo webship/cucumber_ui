@@ -26,7 +26,7 @@ const log = require('./log');
 const fileMatch = './**/*.pcss.css';
 // Ignore everything in node_modules
 const globOptions = {
-  ignore: './node_modules/**'
+  ignore: './node_modules/**',
 };
 const processFiles = (error, filePaths) => {
   if (error) {
@@ -42,8 +42,7 @@ const processFiles = (error, filePaths) => {
 
 if (argv.file) {
   processFiles(null, [].concat(argv.file));
-}
-else {
+} else {
   glob(fileMatch, globOptions, processFiles);
 }
 process.exitCode = 0;

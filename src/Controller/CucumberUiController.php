@@ -2,17 +2,19 @@
 
 namespace Drupal\cucumber_ui\Controller;
 
-use Drupal\Core\Controller\ControllerBase;
-use Symfony\Component\HttpFoundation\Request;
 use Drupal\Component\Utility\Xss;
-use Drupal\Core\Url;
 use Drupal\Core\Config\ConfigFactory;
+use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Htmx\Htmx;
 use Drupal\Core\Messenger\MessengerInterface;
-use Drupal\Core\TempStore\PrivateTempStoreFactory;
 use Drupal\Core\Render\RendererInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
+use Drupal\Core\TempStore\PrivateTempStoreFactory;
+use Drupal\cucumber_ui\CucumberUiFragments;
+use Drupal\cucumber_ui\CucumberUiRunner;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Default Cucumber Ui controller for the Cucumber Ui module.
@@ -56,6 +58,20 @@ class CucumberUiController extends ControllerBase
     protected $renderer;
 
     /**
+     * The Cucumber UI runner.
+     *
+     * @var \Drupal\cucumber_ui\CucumberUiRunner
+     */
+    protected $runner;
+
+    /**
+     * The Cucumber UI fragment builder.
+     *
+     * @var \Drupal\cucumber_ui\CucumberUiFragments
+     */
+    protected $fragments;
+
+    /**
      * Constructs a CucumberUIController object.
      *
      * @param \Drupal\Core\Config\ConfigFactory              $config_factory
@@ -68,14 +84,20 @@ class CucumberUiController extends ControllerBase
      *   The temp store factory.
      * @param \Drupal\Core\Render\RendererInterface          $renderer
      *   The renderer.
+     * @param \Drupal\cucumber_ui\CucumberUiRunner            $runner
+     *   The Cucumber UI runner.
+     * @param \Drupal\cucumber_ui\CucumberUiFragments        $fragments
+     *   The Cucumber UI fragment builder.
      */
-    public function __construct(ConfigFactory $config_factory, MessengerInterface $messenger, Request $current_request, PrivateTempStoreFactory $temp_store_factory, RendererInterface $renderer)
+    public function __construct(ConfigFactory $config_factory, MessengerInterface $messenger, Request $current_request, PrivateTempStoreFactory $temp_store_factory, RendererInterface $renderer, CucumberUiRunner $runner, CucumberUiFragments $fragments)
     {
         $this->configFactory = $config_factory;
         $this->messenger = $messenger;
         $this->currentRequest = $current_request;
         $this->tempStore = $temp_store_factory;
         $this->renderer = $renderer;
+        $this->runner = $runner;
+        $this->fragments = $fragments;
     }
 
     /**
@@ -88,7 +110,9 @@ class CucumberUiController extends ControllerBase
             $container->get('messenger'),
             $container->get('request_stack')->getCurrentRequest(),
             $container->get('tempstore.private'),
-            $container->get('renderer')
+            $container->get('renderer'),
+            $container->get('cucumber_ui.runner'),
+            $container->get('cucumber_ui.fragments')
         );
     }
 
@@ -164,38 +188,45 @@ class CucumberUiController extends ControllerBase
     }
 
     /**
-     * Get Cucumber test status.
+     * Get the Cucumber test status region.
+     *
+     * Served to the HTMX poll of the run tests screen. When a run has just
+     * finished the response also carries an `HX-Trigger` header, which makes
+     * the tests output region reload itself.
+     *
+     * @return array
+     *   A render array holding the status region.
      */
     public function getTestStatus()
     {
+        $tempstore = $this->tempStore->get('cucumber_ui');
+        $was_running = (bool) $tempstore->get('cucumber_ui_was_running');
+        $is_running = $this->fragments->runningPid() !== NULL;
 
-        $report_url = new Url('cucumber_ui.report');
-        $output = '<iframe id="cucumber-ui-output-iframe" src="' . $this->currentRequest->getSchemeAndHttpHost() . $report_url->toString() . '" width="100%" height="100%"></iframe>';
-
-        $cucumber_ui_tempstore_collection = $this->tempStore->get('cucumber_ui');
-        $pid = $cucumber_ui_tempstore_collection->get('cucumber_ui_pid');
-
-        if ($pid && posix_kill(intval($pid), 0)) {
-
-            return new JsonResponse(
-                [
-                'running' => true,
-                'pid' => $pid,
-                'output' => $output,
-                ]
-            );
-        }
-        else {
-
-            return new JsonResponse(
-                [
-                'running' => false,
-                'pid' => '',
-                'output' => $output,
-                ]
-            );
+        if ($was_running !== $is_running) {
+            $tempstore->set('cucumber_ui_was_running', $is_running);
         }
 
+        $build = $this->fragments->buildStatus();
+
+        if ($was_running && !$is_running) {
+            (new Htmx())
+                ->triggerHeader(CucumberUiFragments::FINISHED_EVENT)
+                ->applyTo($build);
+        }
+
+        return $build;
+    }
+
+    /**
+     * Get the Cucumber tests output region.
+     *
+     * @return array
+     *   A render array holding the tests output region.
+     */
+    public function getTestOutput()
+    {
+        return $this->fragments->buildOutput();
     }
 
     /**
@@ -226,24 +257,107 @@ class CucumberUiController extends ControllerBase
     }
 
     /**
-     * Kill running test.
+     * Kill the running test process.
+     *
+     * @return array
+     *   A render array holding the refreshed status region.
      */
     public function kill()
     {
-        $response = false;
         $cucumber_ui_tempstore_collection = $this->tempStore->get('cucumber_ui');
         $pid = $cucumber_ui_tempstore_collection->get('cucumber_ui_pid');
 
-        if ($pid && posix_kill(intval($pid), 0)) {
-            try {
-                $response = posix_kill($pid, SIGKILL);
-                $cucumber_ui_tempstore_collection->delete('cucumber_ui_pid');
-            }
-            catch (Exception $e) {
-                $response = false;
-            }
+        if ($pid && posix_kill((int) $pid, 0)) {
+            // SIGKILL is only defined when ext-pcntl is loaded, so use its
+            // POSIX signal number directly.
+            posix_kill((int) $pid, 9);
+            $cucumber_ui_tempstore_collection->delete('cucumber_ui_pid');
+            $cucumber_ui_tempstore_collection->set('cucumber_ui_was_running', FALSE);
+            $this->messenger->addStatus($this->t('The Cucumber test process was killed.'));
         }
-        return new JsonResponse(['response' => $response]);
+
+        $build = $this->fragments->buildStatus();
+        (new Htmx())
+            ->triggerHeader(CucumberUiFragments::FINISHED_EVENT)
+            ->applyTo($build);
+
+        return $build;
+    }
+
+    /**
+     * Save the Gherkin feature of the create test screen.
+     *
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *   The current request, carrying the editor content.
+     *
+     * @return array
+     *   A render array holding the save output region.
+     */
+    public function saveFeature(Request $request)
+    {
+        $content = (string) $request->request->get('free_text', '');
+
+        if (trim($content) === '') {
+            return $this->buildSaveOutput($this->t('Nothing to save: the feature is empty.'));
+        }
+
+        $file = $this->runner->writeFeature($this->runner->featureName($content) . '.feature', $content);
+
+        if ($file === NULL) {
+            return $this->buildSaveOutput($this->t('The testing feature could not be saved.'));
+        }
+
+        return $this->buildSaveOutput($this->t('Saved the testing feature to @file', ['@file' => $file]));
+    }
+
+    /**
+     * Run the Gherkin feature of the create test screen.
+     *
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *   The current request, carrying the editor content.
+     *
+     * @return array
+     *   A render array holding the tests output region.
+     */
+    public function runFeature(Request $request)
+    {
+        $config = $this->configFactory->get('cucumber_ui.settings');
+        $content = (string) $request->request->get('free_text', '');
+        $file = NULL;
+
+        if (trim($content) !== '') {
+            $file = $this->runner->writeFeature(
+                'user-' . date('Y-m-d_H-i-s') . '.feature',
+                "@currentTest\n" . $content
+            );
+        }
+
+        $this->runner->run('--tags @currentTest');
+
+        if ($file !== NULL && file_exists($file) && !$config->get('save_user_testing_features')) {
+            unlink($file);
+        }
+
+        return $this->fragments->buildOutput();
+    }
+
+    /**
+     * Wrap a save result message in the region the create test screen swaps.
+     *
+     * @param \Drupal\Core\StringTranslation\TranslatableMarkup $message
+     *   The message to show.
+     *
+     * @return array
+     *   A render array.
+     */
+    protected function buildSaveOutput($message)
+    {
+        return [
+        '#type' => 'container',
+        '#attributes' => ['id' => 'cucumber-ui-save-output'],
+        '#cache' => ['max-age' => 0],
+        'message' => ['#markup' => $message],
+        ];
     }
 
     /**
@@ -254,34 +368,30 @@ class CucumberUiController extends ControllerBase
 
         $config = $this->configFactory->getEditable('cucumber_ui.settings');
 
-        if (($format === 'html' || $format === 'txt')) {
-
-            $headers = [
-            'Content-Type' => 'text/x-cucumber',
-            'Content-Disposition' => 'attachment; filename="cucumber_ui_output.' . $format . '"',
-            ];
-
-            foreach ($headers as $key => $value) {
-                drupal_add_http_header($key, $value);
-            }
-
-            if ($format === 'html') {
-                $html_report_dir = $config->get('html_report_dir');
-                $output = $html_report_dir . '/index.html';
-                readfile($output);
-            }
-            elseif ($format === 'txt') {
-                drupal_add_http_header('Connection', 'close');
-                $log_report_dir = $config->get('log_report_dir');
-                $output = $log_report_dir . '/cucumber-ui-test.log';
-                $plain = file_get_contents($output);
-                echo drupal_html_to_text($plain);
-            }
+        if ($format === 'html') {
+            $output = $config->get('html_report_dir') . '/index.html';
+            $type = 'text/html';
+        }
+        elseif ($format === 'txt') {
+            $output = $config->get('log_report_dir') . '/cucumber-ui-test.log';
+            $type = 'text/plain';
         }
         else {
-            $this->messenger->addError($this->t('Output file not found. Please run the tests again in order to generate it.'));
-            drupal_goto('cucumber_ui.run_tests');
+            $output = NULL;
+            $type = '';
         }
+
+        if ($output === NULL || !file_exists($output)) {
+            $this->messenger->addError($this->t('Output file not found. Please run the tests again in order to generate it.'));
+            return $this->redirect('cucumber_ui.run_tests');
+        }
+
+        return new Response(
+            file_get_contents($output), 200, [
+            'Content-Type' => $type,
+            'Content-Disposition' => 'attachment; filename="cucumber_ui_output.' . $format . '"',
+            ]
+        );
     }
 
     /**
@@ -293,7 +403,7 @@ class CucumberUiController extends ControllerBase
         $config = $this->configFactory->getEditable('cucumber_ui.settings');
         $cucumber_config_path = $config->get('config_path');
 
-        $command = "cd $cucumber_config_path; $cucumber_bin -dl | sed 's/^\s*//g'";
+        $command = "cd $cucumber_config_path; yarn nightwatch -dl | sed 's/^\s*//g'";
         $output = shell_exec($command);
         $output = nl2br(htmlentities($output ?? ''));
 
@@ -319,11 +429,8 @@ class CucumberUiController extends ControllerBase
 
         $cmd = "cd $cucumber_config_path; node ./node_modules/webship-js/steplist -c '$cucumber_config_path/nightwatch.conf.js'";
         $output = shell_exec($cmd);
-        // $output = nl2br($output);
-        $build = [
-        '#markup' => $this->formatCucumberSteps($output),
-        ];
-        return $build;
+
+        return $this->buildStepListBody($output);
     }
 
     /**
@@ -338,11 +445,31 @@ class CucumberUiController extends ControllerBase
         $command = "cd $cucumber_config_path; node ./node_modules/webship-js/steplist -i -c '$cucumber_config_path/nightwatch.conf.js'";
 
         $output = shell_exec($command);
-        // $output = nl2br($output);
-        $build = [
-        '#markup' => $this->formatCucumberSteps($output),
+
+        return $this->buildStepListBody($output);
+    }
+
+    /**
+     * Wrap a step list in the region the create test screen swaps.
+     *
+     * @param string|null $output
+     *   The raw output of the step list command.
+     *
+     * @return array
+     *   A render array.
+     */
+    protected function buildStepListBody($output)
+    {
+        $steps = $this->formatCucumberSteps($output ?? '');
+
+        return [
+        '#type' => 'container',
+        '#attributes' => ['class' => ['cucumber-ui-steps__body']],
+        '#cache' => ['max-age' => 0],
+        'steps' => [
+          '#markup' => trim($steps) !== '' ? $steps : $this->t('No step definitions were found.'),
+        ],
         ];
-        return $build;
     }
 
     /**
@@ -374,7 +501,7 @@ class CucumberUiController extends ControllerBase
 
         $cucumberList = [];
 
-        $cucumberList += explode("CUCUMBER_UI_DELIMITER", $output);
+        $cucumberList += explode("CUCUMBER_UI_DELIMITER", $output ?? '');
         sort($cucumberList);
 
         return new JsonResponse($cucumberList);

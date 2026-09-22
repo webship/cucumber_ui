@@ -1,18 +1,71 @@
 # Cucumber UI
 
-**Cucumber UI** is a powerful automated testing module designed to assist users in effortlessly constructing essential tests for their websites. With its intuitive and user-friendly interface, it empowers users to effortlessly develop desired features and provides a list of steps with examples for reference.
+Create, edit and run Cucumber (Gherkin) feature tests for your site from
+the Drupal administration interface.
 
-It is necessary to fulfill certain general requirements. These include having the latest version of **Chrome driver** and **Selenium** server.
 
-**Cucumber UI** needs configuration files to function fully, you can install these files by executing the following command on your project:
+## Table of contents
+
+- Features
+- Requirements
+- Installation
+- Configuration
+- Usage
+
+
+## Features
+
+- A "Run tests" page at `/admin/config/development/cucumber-ui` that runs
+  the Cucumber tests of the site and shows the process status, with a
+  kill link while a run is in progress.
+- A "Create test" page that writes a `.feature` file in an Ace-powered
+  editor, with step autocomplete, and Run, Save and Download buttons.
+- A "Settings" page for the Cucumber configuration path and file, the
+  features directory, and the HTML, JSON and console log report
+  directories.
+- The test output is rendered from the generated HTML report through the
+  `cucumber_ui_report` theme template, or from the console log.
+- Three permissions: create tests, run all tests, and administer the
+  settings.
+- Claro and Gin stylesheets, attached per active admin theme.
+
+
+## Requirements
+
+Drupal core `^9 || ^10 || ^11`. No contributed module is required.
+
+Running the tests themselves needs a Cucumber runner on the server, such
+as [webship-js](https://www.npmjs.com/package/webship-js) (Playwright +
+Cucumber-js), configured through the module settings.
+
+
+## Installation
+
+Install as you would normally install a contributed Drupal module:
+
 ```
-bash <(wget -O - https://raw.githubusercontent.com/webship/wbash/v1/cucumber_ui/drupal10.sh)
+composer require drupal/cucumber_ui
+drush en cucumber_ui
 ```
 
-Or you can refer to the module documentation [Cucumber UI Documentation](https://www.drupal.org/docs/extending-drupal/contributed-modules/contributed-modules/cucumber-ui) which fully explains the Cucumber UI installation and how to use it.
+
+## Configuration
+
+Go to `admin/config/development/cucumber-ui/settings` and set the
+Cucumber configuration directory and file name, the features directory,
+and the report directories. Then grant "Create tests with Cucumber UI",
+"Run all tests in Cucumber UI" and "Administer Cucumber UI settings" to
+the right roles.
 
 
-Check the module on [Drupal.org](https://www.drupal.org/project/cucumber_ui).
+## Usage
+
+Open `admin/config/development/cucumber-ui`, press "Run cucumber tests"
+and watch the report in the output pane. Use the "Create test" tab to
+write a new scenario, run it on its own, then save or download the
+`.feature` file.
+
 
 ## Sponsored
-* [Webship](http://webship.co).
+
+- [Webship](https://webship.co).

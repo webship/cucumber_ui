@@ -1,0 +1,25 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the cucumber UI module.
+ */
+
+use Drupal\Core\Recipe\Recipe;
+use Drupal\Core\Recipe\RecipeRunner;
+
+/**
+ * Implements hook_install().
+ */
+function cucumber_ui_install($is_syncing) {
+  // Configuration imports bring their own configuration.
+  if (\Drupal::isConfigSyncing()) {
+    return;
+  }
+
+  // When the module is installed on its own, apply its default recipe. When
+  // the default recipe installs the module, the recipe is already applied.
+  if (!$is_syncing) {
+    RecipeRunner::processRecipe(Recipe::createFromDirectory(__DIR__ . '/recipes/default'));
+  }
+}

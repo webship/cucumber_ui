@@ -1,0 +1,16 @@
+name: 'cucumber UI'
+description: 'Installs the cucumber UI module, the web interface that creates and runs Cucumber/Mink tests from the browser, with the default settings it ships: where the test suite lives, how it is run and where its results are written.'
+type: install
+install:
+  - cucumber_ui
+config:
+  # Only create what a site does not have yet. Re-applying this recipe on a
+  # site that already has this configuration is a no-op.
+  strict: false
+  import:
+    # A recipe installs modules with the configuration installer in syncing
+    # mode, which creates simple configuration but no configuration entities
+    # (see \Drupal\Core\Recipe\RecipeRunner::installModules()). Import the
+    # settings here, so applying this recipe leaves the same configuration
+    # behind as installing the module does.
+    cucumber_ui: '*'

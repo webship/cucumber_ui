@@ -13,8 +13,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Cucumber UI Run Tests class.
  */
-class CucumberUiRunTests extends FormBase
-{
+class CucumberUiRunTests extends FormBase {
 
   /**
    * The config factory service.
@@ -45,88 +44,92 @@ class CucumberUiRunTests extends FormBase
   protected $runner;
 
   /**
+   * The theme manager.
+   *
+   * @var \Drupal\Core\Theme\ThemeManagerInterface
+   */
+  protected $themeManager;
+
+  /**
    * Constructs a CucumberUiRunTests object.
    *
-   * @param \Drupal\Core\Config\ConfigFactory         $config_factory
+   * @param \Drupal\Core\Config\ConfigFactory $config_factory
    *   The config factory service.
    * @param \Drupal\Core\Messenger\MessengerInterface $messenger
    *   The messenger service.
-   * @param \Drupal\cucumber_ui\CucumberUiFragments   $fragments
+   * @param \Drupal\cucumber_ui\CucumberUiFragments $fragments
    *   The Cucumber UI fragment builder.
-   * @param \Drupal\cucumber_ui\CucumberUiRunner      $runner
+   * @param \Drupal\cucumber_ui\CucumberUiRunner $runner
    *   The Cucumber UI runner.
    */
-  public function __construct(ConfigFactory $config_factory, MessengerInterface $messenger, CucumberUiFragments $fragments, CucumberUiRunner $runner)
-  {
-      $this->configFactory = $config_factory;
-      $this->messenger = $messenger;
-      $this->fragments = $fragments;
-      $this->runner = $runner;
+  public function __construct(ConfigFactory $config_factory, MessengerInterface $messenger, CucumberUiFragments $fragments, CucumberUiRunner $runner) {
+    $this->configFactory = $config_factory;
+    $this->messenger = $messenger;
+    $this->fragments = $fragments;
+    $this->runner = $runner;
   }
 
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container)
-  {
-      return new static(
+  public static function create(ContainerInterface $container) {
+    $instance = new static(
           $container->get('config.factory'),
           $container->get('messenger'),
           $container->get('cucumber_ui.fragments'),
           $container->get('cucumber_ui.runner')
       );
+    $instance->themeManager = $container->get('theme.manager');
+    return $instance;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getFormId()
-  {
-      return 'cucumber_ui_run_tests';
+  public function getFormId() {
+    return 'cucumber_ui_run_tests';
   }
 
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state)
-  {
+  public function buildForm(array $form, FormStateInterface $form_state) {
 
-      $active_theme = \Drupal::theme()->getActiveTheme();
-      $base_themes = (array) $active_theme->getBaseThemeExtensions();
+    $active_theme = $this->themeManager->getActiveTheme();
+    $base_themes = (array) $active_theme->getBaseThemeExtensions();
 
-      if ($active_theme->getName() === 'gin'|| array_key_exists('gin', $base_themes)) {
-          $form['#attached']['library'][] = 'cucumber_ui/style.gin';
-      }
-      elseif ($active_theme->getName() === 'claro'|| array_key_exists('claro', $base_themes)) {
-          $form['#attached']['library'][] = 'cucumber_ui/style.claro';
-      }
+    if ($active_theme->getName() === 'gin'|| array_key_exists('gin', $base_themes)) {
+      $form['#attached']['library'][] = 'cucumber_ui/style.gin';
+    }
+    elseif ($active_theme->getName() === 'claro'|| array_key_exists('claro', $base_themes)) {
+      $form['#attached']['library'][] = 'cucumber_ui/style.claro';
+    }
 
-      $form['submit_button'] = [
+    $form['submit_button'] = [
       '#type' => 'submit',
       '#value' => $this->t('Run cucumber tests'),
       ];
 
-      $form['cucumber_ui_status'] = $this->fragments->buildStatus();
-      $form['cucumber_ui_output'] = $this->fragments->buildOutput();
-      $form['cucumber_ui_output']['#title'] = $this->t('Tests output');
+    $form['cucumber_ui_status'] = $this->fragments->buildStatus();
+    $form['cucumber_ui_output'] = $this->fragments->buildOutput();
+    $form['cucumber_ui_output']['#title'] = $this->t('Tests output');
 
-      return $form;
+    return $form;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function submitForm(array &$form, FormStateInterface $form_state)
-  {
-      $this->runner->run();
-      $form_state->setRebuild();
+  public function submitForm(array &$form, FormStateInterface $form_state) {
+    $this->runner->run();
+    $form_state->setRebuild();
   }
 
   /**
    * Validate Form.
    */
-  public function validateForm(array &$form, FormStateInterface $form_state)
-  {
-      parent::validateForm($form, $form_state);
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+    parent::validateForm($form, $form_state);
   }
+
 }

@@ -6,9 +6,20 @@ include:
       - "/includes/include.drupalci.variables.yml"
       - "/includes/include.drupalci.workflows.yml"
 
+variables:
+  # No yarn.lock is committed; Yarn 4 defaults to immutable installs and would
+  # refuse to create one. Allow lockfile creation in CI for every job.
+  YARN_ENABLE_IMMUTABLE_INSTALLS: "false"
+
+.composer-base:
+  variables:
+    # Drupal core's own Yarn 4.9.1 would read the project .yarnrc.yml (Yarn >= 4.14 keys) too.
+    YARN_RC_FILENAME: .yarnrc.core.yml
+    YARN_NODE_LINKER: node-modules
+
 cspell:
   stage: validate
-  image: node:20
+  image: node:24
   before_script:
     - npm install -g cspell
   script:
@@ -24,18 +35,18 @@ cspell:
 #   2. `yarn install --mode=skip-build` — skips every package's build/postinstall
 #      step (eslint/stylelint need none, and it avoids webship-js's postinstall
 #      pulling the Playwright browsers). Install drops to ~10s.
-#   3. Lockfile-keyed cache of `.yarn/cache` so later pipelines reuse packages.
+#   3. package.json-keyed cache of `.yarn/cache` so later pipelines reuse packages.
 # The paired .eslintignore excludes vendor/, .yarn/, web/ and node_modules/ so
 # `eslint .` only lints real module source.
 .lint-yarn:
-  image: node:20
+  image: node:24
   dependencies: []
   variables:
     YARN_ENABLE_GLOBAL_CACHE: "false"
   cache:
     key:
       files:
-        - yarn.lock
+        - package.json
     paths:
       - .yarn/cache
   before_script:
@@ -116,8 +127,8 @@ stylelint:
     # Per-role test users are provisioned by the first scenario in the suite
     # (01-01-01-users-login.feature, "Webmaster can log in and provision
     # testing users"), so no separate drush step is needed here.
-    # Node.js 20.
-    - curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
+    # Node.js 24.
+    - curl -fsSL https://deb.nodesource.com/setup_24.x | bash -
     - apt-get install -y nodejs
     - node --version && npm --version
     # Yarn deps + Playwright Chromium.

@@ -61,6 +61,13 @@ class CucumberUiNew extends FormBase {
   protected $runner;
 
   /**
+   * The theme manager.
+   *
+   * @var \Drupal\Core\Theme\ThemeManagerInterface
+   */
+  protected $themeManager;
+
+  /**
    * Constructs a CucumberUiNew object.
    *
    * @param \Drupal\Core\Config\ConfigFactory $config_factory
@@ -86,13 +93,15 @@ class CucumberUiNew extends FormBase {
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
-    return new static(
+    $instance = new static(
       $container->get('config.factory'),
       $container->get('messenger'),
       $container->get('file_system'),
       $container->get('cucumber_ui.fragments'),
       $container->get('cucumber_ui.runner')
     );
+    $instance->themeManager = $container->get('theme.manager');
+    return $instance;
   }
 
   /**
@@ -107,7 +116,7 @@ class CucumberUiNew extends FormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
 
-    $active_theme = \Drupal::theme()->getActiveTheme();
+    $active_theme = $this->themeManager->getActiveTheme();
     $base_themes = (array) $active_theme->getBaseThemeExtensions();
 
     if ($active_theme->getName() === 'gin' || array_key_exists('gin', $base_themes)) {

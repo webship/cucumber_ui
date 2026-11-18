@@ -186,6 +186,9 @@ class CucumberUiSettings extends ConfigFormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $config = $this->config('cucumber_ui.settings');
+    // Only the settings are saved: the values of the form itself, its token
+    // and its button among them, stay out of the configuration.
+    $form_state->cleanValues();
     foreach ($form_state->getValues() as $key => $value) {
       // If (strpos($key, 'cucumber_ui') !== FALSE) {.
       $config->set($key, $value);

@@ -1,5 +1,5 @@
 cucumber_ui.settings:
-  type: mapping
+  type: config_object
   label: Settings
   mapping:
     config_path:
@@ -17,7 +17,7 @@ cucumber_ui.settings:
     html_report_dir:
       type: string
       label: "HTML report directory"
-    html_report_formatter:
+    html_report_format:
       type: string
       label: "HTML report formatter"
     json_report:

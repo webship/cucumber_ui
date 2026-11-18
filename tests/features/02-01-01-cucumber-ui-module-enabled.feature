@@ -10,7 +10,7 @@ Feature: Cucumber UI module is enabled
     When I navigate to "/admin/modules"
     Then I should see "cucumber UI"
      And I should see "Create and run cucumber/Mink tests from the web interface"
-     And the element "#edit-modules-cucumber-ui-enable" with the attribute "checked" and the value "checked" should exist
+     And the "cucumber_ui" module should be installed
 
   Scenario: Cucumber UI permissions are listed
     When I navigate to "/admin/people/permissions/module/cucumber_ui"

@@ -1,6 +1,8 @@
 /**
  * @file
- * Cucumber UI steps: shared Webship login/provisioning plus UI assertions.
+ * Cucumber UI steps: the field, button, local task and asset checks of the
+ * Cucumber UI pages. The login by handle comes from
+ * @webship-js/drupal-core-steps.
  */
 
 const { Given, Then } = require('@cucumber/cucumber');
@@ -102,6 +104,8 @@ Then(/^(?:I |we )?should see the button "([^"]*)"$/, async function (text) {
 
 /**
  * Assert that a Drupal local task (primary tab) with the given title is shown.
+ * The tabs are found by the "Primary tabs" navigation core's themes and UIkit
+ * Admin label, or by the classes of core's themes (Claro, Olivero, Gin).
  *
  * Example #1: Then I should see the local task "Run tests"
  * Example #2: Then I should see the local task "Create test"
@@ -113,11 +117,12 @@ Then(
   /^(?:I |we )?should see the local task "([^"]*)"$/,
   async function (title) {
     await attempt(async () => {
+      const name = title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
       const locator = this.page
         .locator(
-          'nav.tabs a, ul.tabs a, .tabs__tab a, .block-local-tasks-block a',
+          'nav[aria-label="Primary tabs"] a, [aria-labelledby="primary-tabs-title"] a, nav.tabs a, ul.tabs a, .tabs__tab a, .block-local-tasks-block a',
         )
-        .filter({ hasText: new RegExp(`^\\s*${title}\\s*$`) })
+        .filter({ hasText: new RegExp(`^\\s*${name}\\s*$`) })
         .first();
       await locator.waitFor({ state: 'attached', timeout: 10000 });
     }, `Expected to find a local task named "${title}"`);

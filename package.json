@@ -29,7 +29,7 @@
     "test:dry": "node ./node_modules/@cucumber/cucumber/bin/cucumber.js --config cucumber.js --dry-run"
   },
   "devDependencies": {
-    "@webship-js/drupal-core-steps": "^2.1.0",
+    "@webship-js/drupal-core-steps": "^2.2.3",
     "eslint": "^8.0.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-prettier": "^8.0.0",
@@ -56,7 +56,7 @@
     "underscore": "^1.0.0",
     "webpack": "^5.0.0",
     "webpack-cli": "^5.0.0",
-    "webship-js": "^2.0.6"
+    "webship-js": "^2.0.12"
   },
   "browserslist": [
     "last 2 Chrome major versions",
@@ -67,8 +67,5 @@
     "last 2 iOS major versions",
     "Firefox ESR"
   ],
-  "packageManager": "yarn@4.18.1",
-  "resolutions": {
-    "@cucumber/cucumber": "10.0.1"
-  }
+  "packageManager": "yarn@4.18.1"
 }
